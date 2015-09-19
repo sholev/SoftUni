@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "05. KnightPath", "KnightPath\05. KnightPath.csproj", "{0C2E092E-69F3-4A37-9172-52DEE16646F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "04. ArrayMatcher", "ArrayMatcher\04. ArrayMatcher.csproj", "{DCF32BE6-EC8A-45AA-B8A2-324421B88A7F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "03. MagicWand", "MagicWand\03. MagicWand.csproj", "{BBA28B9A-2D10-4222-92ED-1BDA890274CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0C2E092E-69F3-4A37-9172-52DEE16646F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C2E092E-69F3-4A37-9172-52DEE16646F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C2E092E-69F3-4A37-9172-52DEE16646F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C2E092E-69F3-4A37-9172-52DEE16646F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCF32BE6-EC8A-45AA-B8A2-324421B88A7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCF32BE6-EC8A-45AA-B8A2-324421B88A7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCF32BE6-EC8A-45AA-B8A2-324421B88A7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCF32BE6-EC8A-45AA-B8A2-324421B88A7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BBA28B9A-2D10-4222-92ED-1BDA890274CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBA28B9A-2D10-4222-92ED-1BDA890274CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBA28B9A-2D10-4222-92ED-1BDA890274CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BBA28B9A-2D10-4222-92ED-1BDA890274CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

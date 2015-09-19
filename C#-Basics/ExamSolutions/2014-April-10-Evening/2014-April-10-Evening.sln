@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "03. Eclipse", "Eclipse\03. Eclipse.csproj", "{C3869C09-EB1E-4BBD-B446-84423681690F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "04. Hayvan Numbers", "Hayvan Numbers\04. Hayvan Numbers.csproj", "{D249B702-C4C7-4709-85F1-BC690634D7D6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C3869C09-EB1E-4BBD-B446-84423681690F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3869C09-EB1E-4BBD-B446-84423681690F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3869C09-EB1E-4BBD-B446-84423681690F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3869C09-EB1E-4BBD-B446-84423681690F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D249B702-C4C7-4709-85F1-BC690634D7D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D249B702-C4C7-4709-85F1-BC690634D7D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D249B702-C4C7-4709-85F1-BC690634D7D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D249B702-C4C7-4709-85F1-BC690634D7D6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

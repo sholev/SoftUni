@@ -1,0 +1,5 @@
+/*  C# & .NET Framework
+	* The difference between C# and .NET Framework is that C# is a programing language
+	*	while .NET Framework is a programming infrastructure for building and running
+	*	applications and services. C# is one of the languages that can be used on the .NET platform.
+	/

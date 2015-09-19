@@ -1,0 +1,32 @@
+// Since my knowledge on the matter and my time are currently limited,
+// here is some copy/paste to indicate some effort on the subject. :)
+
+/* Java 
+	* A general-purpose computer programming language that is concurrent, class-based,
+	*	object-oriented, and specifically designed to have as few implementation dependencies as possible.
+	*/
+
+/* C
+	* An imperative (procedural) language. It was designed to be compiled using a relatively straightforward
+	*	compiler, to provide low-level access to memory, to provide language constructs that map efficiently
+	*	to machine instructions, and to require minimal run-time support.
+	*/
+
+/* C++
+	* A general-purpose programming language. It has imperative, object-oriented and
+	*	generic programming features, while also providing facilities for low-level memory manipulation.
+	*	It is designed with a bias toward system programming and embedded, resource-constrained and
+	*	large systems, with performance, efficiency and flexibility of use as its design highlights.
+	*/
+
+/* JavaScript
+	* A dynamic programming language. It is most commonly used as part of web browsers,
+	*	whose implementations allow client-side scripts to interact with the user,
+	*	control the browser, communicate asynchronously, and alter the document content that is displayed.
+	*/
+
+/* Assembly
+	* A low-level programming language for a computer, or other programmable device,
+	*	in which there is a very strong (generally one-to-one) correspondence between
+	*	the language and the architecture's machine code instructions. 
+	*/

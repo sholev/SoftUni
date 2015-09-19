@@ -1,0 +1,44 @@
+// Since my knowledge on the matter and my time are currently limited,
+// here is some copy/paste to indicate some effort on the subject. :)
+
+/* MonoDevelop
+	* An open source integrated development environment for Linux, OS X,[5] and Windows.
+	*	Its primary focus is development of projects that use Mono and .NET frameworks.
+	*	MonoDevelop integrates features similar to those of NetBeans and Microsoft Visual Studio,
+	*	such as automatic code completion, source control, a graphical user interface (GUI)
+	*	and Web designer. MonoDevelop integrates a Gtk# GUI designer called Stetic.
+	*	It supports Boo, C, C++, C#, CIL, D, F#, Java, Oxygene, Python, Vala, and Visual Basic.NET.
+	*/
+
+/* Code::Blocks
+	* A free, open source cross-platform IDE which supports multiple
+	*	compilers including GCC, Clang and Visual C++. It is developed in C++ using 
+	*	wxWidgets as the GUI toolkit. Using a plugin architecture, its capabilities
+	*	and features are defined by the provided plugins. Currently, Code::Blocks is
+	*	oriented towards C, C++, and Fortran. It has a custom build system and
+	*	optional Make support.
+	*/
+
+/* Eclipse
+	* Written mostly in Java it can be used to develop applications in many programming languages:
+	*	Ada, ABAP, C, C++, COBOL, Fortran, Haskell, JavaScript, Lasso, Lua, Natural, Perl,
+	*	PHP, Prolog, Python, R, Ruby (including Ruby on Rails framework), Scala, Clojure,
+	*	Groovy, Scheme, and Erlang. It can also be used to develop packages for the software
+	*	Mathematica. Development environments include the Eclipse Java development tools (JDT)
+	*	for Java and Scala, Eclipse CDT for C/C++ and Eclipse PDT for PHP, among others.
+	*/
+
+/* NetBeans
+	* A software development platform written in Java. The NetBeans Platform allows applications
+	*	to be developed from a set of modular software components called modules. Applications 
+	*	based on the NetBeans Platform, including the NetBeans integrated development environment
+	*	can be extended by third party developers. The NetBeans IDE is primarily intended for
+	*	development in Java, but also supports other languages, in particular PHP, C/C++ and HTML5.
+	*/
+
+/* Xcode
+	* Xcode is Apple’s integrated development environment that can be used to build apps for Apple
+	*	products such as the iPad, iPhone, and Mac. Xcode provides tools to manage the entire
+	*	development workflow — from creating the app, to testing, optimizing, and submitting it
+	*	to the App Store.
+	*/
