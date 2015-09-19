@@ -1,29 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 class NightLife
-{
+{ 
     static void Main()
     {
-        Dictionary<string, SortedDictionary<string, string[]>> performances = new Dictionary<string, SortedDictionary<string, string[]>>();
-        Dictionary<string, string[]> tempVenuePerformance = new Dictionary<string, string[]>();
-        string[] tempPerformances = new string[0];
+        Dictionary<string, SortedDictionary<string, SortedSet<string>>> performances = new Dictionary<string, SortedDictionary<string, SortedSet<string>>>();
+
         string input = Console.ReadLine();
         
         while (input != "END")
         {
-            string[] locationVenuePerformer = input.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            string[] cityVenuePerformer = input.Split(";".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            string city = cityVenuePerformer[0];
+            string venue = cityVenuePerformer[1];
+            string performer = cityVenuePerformer[2];
 
-            if (!performances.ContainsKey(locationVenuePerformer[0]))
+            if (!performances.ContainsKey(city))
             {
-                tempVenuePerformance.Add(locationVenuePerformer[1], )
-                performances.Add(locationVenuePerformer[0], tempVenuePerformance);
+                performances[city] = new SortedDictionary<string, SortedSet<string>>();
+            }
+            if (!performances[city].ContainsKey(venue))
+            {
+                performances[city][venue] = new SortedSet<string>();
+            }
+            if (!performances[city][venue].Contains(performer))
+            {
+                performances[city][venue].Add(performer);
             }
 
             input = Console.ReadLine();
+        }
+
+        foreach (var cityVenue in performances)
+        {
+            Console.WriteLine($"\r\n{cityVenue.Key}");
+
+            foreach (var venueWithPerformers in cityVenue.Value)
+            {
+                Console.WriteLine("->{0}: {1}", venueWithPerformers.Key, string.Join(", ", venueWithPerformers.Value));
+            }
         }
     }
 }
