@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "09. TerroristsWin", "Terror
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "10. PlusRemove", "PlusRemove\10. PlusRemove.csproj", "{AD1F0A5B-F814-4F5D-B5C9-B4590D11043C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "11. StringMatrixRotation", "StringMatrixRotation\11. StringMatrixRotation.csproj", "{40FA989D-7D1F-407A-B233-21EB39D51D1D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{AD1F0A5B-F814-4F5D-B5C9-B4590D11043C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AD1F0A5B-F814-4F5D-B5C9-B4590D11043C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AD1F0A5B-F814-4F5D-B5C9-B4590D11043C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40FA989D-7D1F-407A-B233-21EB39D51D1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40FA989D-7D1F-407A-B233-21EB39D51D1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40FA989D-7D1F-407A-B233-21EB39D51D1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40FA989D-7D1F-407A-B233-21EB39D51D1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
