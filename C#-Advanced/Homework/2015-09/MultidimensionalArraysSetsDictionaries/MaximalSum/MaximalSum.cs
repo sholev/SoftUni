@@ -42,7 +42,7 @@ class MaximalSum
 
     private static void PrintJaggedMatrixFromGivenPosition(int[][] matrix, int[] position, int lenth)
     {
-        // Might want to check if going out of array if using somewhere else.
+        // Might want to check if going out of array.
         for (int row = position[0]; row <= position[0] + lenth; row++)
         {
             for (int col = position[1]; col <= position[1] + lenth; col++)

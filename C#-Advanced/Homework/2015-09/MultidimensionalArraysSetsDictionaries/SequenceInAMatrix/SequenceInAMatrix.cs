@@ -1,8 +1,7 @@
 ﻿using System;
 
 // I couldn't solve this on my own, so for keeping the homework deadline
-// I'm copying this solution with a bit of modifications. Feel free to 
-// 
+// I'm copying this solution with a bit of modifications.
 
 class LineColumnOrDagonal
 {
@@ -245,7 +244,7 @@ class LineColumnOrDagonal
 }
 
 // =========================================================================
-// This is another solution I found, again did a bit of modification.
+// This is another solution I worked on.
 // But it is wrong, keeping it here if I ever get
 // the time and motivation to try and figure it out:
 // =========================================================================

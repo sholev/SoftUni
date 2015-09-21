@@ -12,7 +12,7 @@ class PlusRemove
 
         while (input != "END")
         {
-            // If I use inputLines = forRemoval both of them will just point to the same location in memory.
+            // When I use inputLines = forRemoval both of them will just point to the same location in memory.
             // I'm saving the input for both of them. Not sure if I can avoid this some other way.
             inputLines.Add(new List<string>());
             inputLines[inputLines.Count - 1] = Array.ConvertAll(input.ToCharArray(), c => char.ToString(c)).ToList();

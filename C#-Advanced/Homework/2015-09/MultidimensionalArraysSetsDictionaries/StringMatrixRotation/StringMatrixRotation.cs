@@ -109,7 +109,6 @@ class StringMatrixRotation
                     }
                 }
                 break;
-        }
-        
+        }        
     }
 }

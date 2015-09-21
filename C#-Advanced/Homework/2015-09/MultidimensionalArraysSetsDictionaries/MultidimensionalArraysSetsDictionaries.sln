@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "10. PlusRemove", "PlusRemov
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "11. StringMatrixRotation", "StringMatrixRotation\11. StringMatrixRotation.csproj", "{40FA989D-7D1F-407A-B233-21EB39D51D1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "12. ToTheStars", "ToTheStars\12. ToTheStars.csproj", "{68713A2B-7C83-4662-A226-B5D883D5F056}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "13. ActivityTracker", "ActivityTracker\13. ActivityTracker.csproj", "{E1F2C420-45A5-4AF6-A014-A842F127563D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +85,14 @@ Global
 		{40FA989D-7D1F-407A-B233-21EB39D51D1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{40FA989D-7D1F-407A-B233-21EB39D51D1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{40FA989D-7D1F-407A-B233-21EB39D51D1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68713A2B-7C83-4662-A226-B5D883D5F056}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68713A2B-7C83-4662-A226-B5D883D5F056}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68713A2B-7C83-4662-A226-B5D883D5F056}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68713A2B-7C83-4662-A226-B5D883D5F056}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1F2C420-45A5-4AF6-A014-A842F127563D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1F2C420-45A5-4AF6-A014-A842F127563D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1F2C420-45A5-4AF6-A014-A842F127563D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1F2C420-45A5-4AF6-A014-A842F127563D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
