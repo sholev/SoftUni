@@ -20,8 +20,15 @@ class MatrixShuffling
         { 
             try
             {
-                Swap(ref inputMatrix, command[0], int.Parse(command[1]), int.Parse(command[2]), int.Parse(command[3]), int.Parse(command[4]));
-                PrintMatrix(inputMatrix);
+                if (command[0] == "swap" && command.Length == 5)
+                {
+                    Swap(ref inputMatrix, command[0], int.Parse(command[1]), int.Parse(command[2]), int.Parse(command[3]), int.Parse(command[4]));
+                    PrintMatrix(inputMatrix);
+                }
+                else
+                {
+                    throw new Exception();
+                }                
             }
             catch (Exception)
             {
