@@ -63,7 +63,7 @@ class UsefulSnippets
 
     // Reverse a string
     // http://stackoverflow.com/questions/228038/best-way-to-reverse-a-string
-    private static string safeReverseString(string input)
+    private static string reverseString(string input)
     {
         char[] forReverse = input.ToCharArray();
         Array.Reverse(forReverse);
