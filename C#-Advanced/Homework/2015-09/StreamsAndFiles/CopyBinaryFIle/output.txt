@@ -10,23 +10,19 @@ class CopyBinaryFIle
 
         List<byte[]> inputBytes = new List<byte[]>();
         List<int> inputByteLengths = new List<int>();
-        int bufferSize = 128;
-        byte[] buffer = new byte[bufferSize];
-        int readBytes = 0;
 
-        // Store the file bytes in inputBytes based on a buffer size.
         using (var source = new FileStream(fileInput, FileMode.Open))
         {
+            byte[] buffer = new byte[128];
+            int readBytes = 0;
             while ((readBytes = source.Read(buffer, 0, buffer.Length)) != 0)
             {
                 inputByteLengths.Add(readBytes);
                 inputBytes.Add(buffer);
-                buffer = new byte[bufferSize];
-                readBytes = 0;
+                buffer = new byte[128];
             }
         }
         
-        // Get the inputBytes and make them in a file again.
         using (var destination = new FileStream(fileOutput, FileMode.Create))
         {
             for (int i = 0; i < inputBytes.Count; i++)
