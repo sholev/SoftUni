@@ -41,7 +41,7 @@ namespace VladkosNotebook
                 {
                     Notebook[color] = new Dictionary<string, List<string>>();
                 }
-                else if ((inputSplit[1] == "name" || inputSplit[1] == "age"))
+                if ((inputSplit[1] == "name" || inputSplit[1] == "age"))
                 {
                     if (!Notebook[color].ContainsKey(winLossAgeName))
                     {
@@ -68,20 +68,36 @@ namespace VladkosNotebook
                         Notebook[color]["loss"] = new List<string>();
                         Notebook[color]["loss"].Add("1");
                     }
-                    else if (inputSplit[1] == "win")
+                    if (inputSplit[1] == "win")
                     {
+                        Notebook[color] = new Dictionary<string, List<string>>();
+                        Notebook[color]["opponents"] = new List<string>();
                         Notebook[color]["opponents"].Add(playerNameAgeOrOpponent);
+                        Notebook[color]["win"] = new List<string>();
                         Notebook[color]["win"].Add("1");
                     }
-                    else if (inputSplit[1] == "loss")
+                    if (inputSplit[1] == "loss")
                     {
+                        Notebook[color] = new Dictionary<string, List<string>>();
+                        Notebook[color]["opponents"] = new List<string>();
                         Notebook[color]["opponents"].Add(playerNameAgeOrOpponent);
+                        Notebook[color]["loss"] = new List<string>();
                         Notebook[color]["loss"].Add("1");
                     }
                 }                
             }
 
             // Print the result here.
+
+            foreach (var colorPage in Notebook)
+            {
+                Console.WriteLine($"Color: {colorPage.Key}");
+
+                foreach (var entry in colorPage.Value)
+                {
+                    Console.WriteLine($"-{entry.Key}: Test");
+                }
+            }
 
         }
     }
