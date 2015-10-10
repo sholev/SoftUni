@@ -8,27 +8,10 @@ namespace VladkosNotebook
 {
     class ConsoleApplication
     {
-        //class Page
-        //{
-        //    public string color;
-        //    public string name;
-        //    public string age;
-        //    public List<string> opponents;
-            
-        //    public int wins;
-        //    public int losses;
-
-        //    public double GetRank()
-        //    {
-        //        return (wins + 1) / (losses + 1);
-        //    }
-        //}
-
         static void Main()
         {
             string input = string.Empty;
-            var Notebook = new Dictionary<string, Dictionary<string, List<string>>>();
-            //List<Page> pages = new List<Page>();
+            var Notebook = new SortedDictionary<string, Dictionary<string, List<string>>>();
 
             while ((input = Console.ReadLine()) != "END")
             {
@@ -40,63 +23,81 @@ namespace VladkosNotebook
                 if (!Notebook.ContainsKey(color))
                 {
                     Notebook[color] = new Dictionary<string, List<string>>();
+                    Notebook[color]["age"] = new List<string>();
+                    Notebook[color]["name"] = new List<string>();                    
+                    Notebook[color]["opponents"] = new List<string>();
+                    Notebook[color]["win"] = new List<string>();
+                    Notebook[color]["win"].Add("1");
+                    Notebook[color]["loss"] = new List<string>();
+                    Notebook[color]["loss"].Add("1");
+
                 }
                 if ((inputSplit[1] == "name" || inputSplit[1] == "age"))
                 {
-                    if (!Notebook[color].ContainsKey(winLossAgeName))
-                    {
-                        Notebook[color] = new Dictionary<string, List<string>>();
-                        Notebook[color][winLossAgeName] = new List<string>();
-                    }
-
                     Notebook[color][winLossAgeName].Add(playerNameAgeOrOpponent);
                 }
 
                 if ((inputSplit[1] == "win" || inputSplit[1] == "loss"))
                 {
-                    if (!Notebook[color].ContainsKey("opponents"))
-                    {
-                        Notebook[color] = new Dictionary<string, List<string>>();
-                        Notebook[color]["opponents"] = new List<string>();
-                        Notebook[color]["opponents"].Add(playerNameAgeOrOpponent);
+                    Notebook[color]["opponents"].Add(playerNameAgeOrOpponent);
 
-                        Notebook[color] = new Dictionary<string, List<string>>();
-                        Notebook[color]["win"] = new List<string>();
-                        Notebook[color]["win"].Add("1");
-
-                        Notebook[color] = new Dictionary<string, List<string>>();
-                        Notebook[color]["loss"] = new List<string>();
-                        Notebook[color]["loss"].Add("1");
-                    }
                     if (inputSplit[1] == "win")
                     {
-                        Notebook[color] = new Dictionary<string, List<string>>();
-                        Notebook[color]["opponents"] = new List<string>();
-                        Notebook[color]["opponents"].Add(playerNameAgeOrOpponent);
-                        Notebook[color]["win"] = new List<string>();
                         Notebook[color]["win"].Add("1");
                     }
                     if (inputSplit[1] == "loss")
                     {
-                        Notebook[color] = new Dictionary<string, List<string>>();
-                        Notebook[color]["opponents"] = new List<string>();
-                        Notebook[color]["opponents"].Add(playerNameAgeOrOpponent);
-                        Notebook[color]["loss"] = new List<string>();
                         Notebook[color]["loss"].Add("1");
                     }
                 }                
             }
+            
 
-            // Print the result here.
+            double wins = 0;
+            double losses = 0;
+            int prints = 0;
 
             foreach (var colorPage in Notebook)
             {
+                if (colorPage.Value["name"].Count < 1 ||            // If there is no name or age,
+                    colorPage.Value["age"].Count < 1)               // 
+                {                                                   //
+                    continue;                                       // skip printing the page.
+                }
+                if (colorPage.Value["opponents"].Count < 1)
+                {
+                    colorPage.Value["opponents"].Add("(empty)");    // If no opponents, add (empty) to the list.
+                }
+
+                prints++;
                 Console.WriteLine($"Color: {colorPage.Key}");
 
                 foreach (var entry in colorPage.Value)
                 {
-                    Console.WriteLine($"-{entry.Key}: Test");
+                    if (entry.Key == "opponents")
+                    {
+                        entry.Value.Sort(StringComparer.Ordinal);
+                        Console.WriteLine($"-{entry.Key}: {string.Join(", ", entry.Value)}");
+                    }
+                    else if (entry.Key != "win" && entry.Key != "loss")
+                    {
+                        Console.WriteLine($"-{entry.Key}: {entry.Value[0]}");
+                    }
+                    else if (entry.Key == "win")
+                    {
+                        wins = entry.Value.Select(int.Parse).Sum();
+                    }
+                    else if (entry.Key == "loss")
+                    {
+                        losses = entry.Value.Select(int.Parse).Sum();
+                        Console.WriteLine($"-rank: {wins/losses:F}");
+                    }
                 }
+            }
+
+            if (prints == 0)
+            {
+                Console.WriteLine("No data recovered.");
             }
 
         }
