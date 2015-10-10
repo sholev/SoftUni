@@ -71,6 +71,12 @@ class UsefulSnippets
         return new string(forReverse);
     }
 
+    // Find palindromes in a string list and return them.
+    private static List<string> getPalindromes(List<string> inputWords)
+    {
+        return inputWords.Where(w => w.SequenceEqual(w.Reverse())).ToList();
+    }
+
     // Proper string reversal?
     // http://stackoverflow.com/questions/15029238/reverse-a-string-with-accent-chars
     private static string safeReverseString(string input)
