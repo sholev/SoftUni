@@ -1,6 +1,8 @@
 package org.softuni;
 
-public class AssignVariables {
+// In IntelliJ IDEA use Ctrl+Shift+F10 to run the current class.
+
+public class _03_AssignVariables {
 
     public static void main(String[] args) {
 

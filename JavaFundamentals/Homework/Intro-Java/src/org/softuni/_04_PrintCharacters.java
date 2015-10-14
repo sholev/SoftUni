@@ -1,6 +1,8 @@
 package org.softuni;
 
-public class PrintCharacters {
+// In IntelliJ IDEA use Ctrl+Shift+F10 to run the current class.
+
+public class _04_PrintCharacters {
 
     public static void main(String[] args) {
 
