@@ -1,0 +1,3 @@
+1,Georgi,Mamarchev,19,Sofia
+2,Sasha,Romero,17,Los Angelis
+4,Georgi,Ivanov,14,Novi Pazar
