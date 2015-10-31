@@ -13,10 +13,13 @@ public class DragonTrap {
 
         int matrixSize = Integer.parseInt(in.nextLine());
         char[][] inputMatrix = new char[matrixSize][];
-        char[][] resultMatrix = inputMatrix;
+        char[][] resultMatrix = new char[matrixSize][];
         for (int row = 0; row < matrixSize; row++) {
-            inputMatrix[row] = in.nextLine().toCharArray();
+            char[] temp = in.nextLine().toCharArray();
+            inputMatrix[row] = temp;
+            resultMatrix[row] = temp;
         }
+
         String commands = in.nextLine();
         while (!commands.toLowerCase().equals("end")) {
             int[] commandNumbers = Arrays.stream(commands.split("[\\s)(]+")).filter(s -> !s.equals("")).mapToInt(Integer::parseInt).toArray();
@@ -26,11 +29,11 @@ public class DragonTrap {
             int rotations = commandNumbers[3];
 
             if (rotations != 0) {
-                List<Character> validChars = getRotationChars(centerRow, centerCol, radius, inputMatrix);
+                List<Character> validChars = getRotationChars(centerRow, centerCol, radius, resultMatrix);
                 if (validChars.size() > 0) {
                     rotateList(validChars, rotations);
                     //System.out.println(validChars);
-                    resultMatrix = putRotationChars(centerRow, centerCol, radius, validChars, inputMatrix);
+                    resultMatrix = putRotationChars(centerRow, centerCol, radius, validChars, resultMatrix);
                 }
             }
 
