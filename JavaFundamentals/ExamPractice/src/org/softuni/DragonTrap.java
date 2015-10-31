@@ -1,7 +1,6 @@
 package org.softuni;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,11 +21,11 @@ public class DragonTrap {
 
         String commands = in.nextLine();
         while (!commands.toLowerCase().equals("end")) {
-            int[] commandNumbers = Arrays.stream(commands.split("[\\s)(]+")).filter(s -> !s.equals("")).mapToInt(Integer::parseInt).toArray();
-            int centerRow = commandNumbers[0];
-            int centerCol = commandNumbers[1];
-            int radius = commandNumbers[2];
-            int rotations = commandNumbers[3];
+            String[] commandNumbers = commands.split("[\\s)(]+");
+            int centerRow = Integer.parseInt(commandNumbers[1]);
+            int centerCol = Integer.parseInt(commandNumbers[2]);
+            int radius = Integer.parseInt(commandNumbers[3]);
+            int rotations = Integer.parseInt(commandNumbers[4]);
 
             if (rotations != 0) {
                 List<Character> validChars = getRotationChars(centerRow, centerCol, radius, resultMatrix);
@@ -63,22 +62,25 @@ public class DragonTrap {
         int flips = Math.abs(rotations) % validChars.size();
         Character temp;
         int lastElement = validChars.size() - 1;
-        // Clockwise
-        if (rotations < 0) {
-            for (int i = 0; i < flips; i++) {
-                temp = validChars.get(0);
-                validChars.remove(0);
-                validChars.add(temp);
+        if (flips != 0) {
+            // Clockwise
+            if (rotations < 0) {
+                for (int i = 0; i < flips; i++) {
+                    temp = validChars.get(0);
+                    validChars.remove(0);
+                    validChars.add(temp);
+                }
+            }
+            // Counterclockwise
+            else {
+                for (int i = 0; i < flips; i++) {
+                    temp = validChars.get(lastElement);
+                    validChars.remove(lastElement);
+                    validChars.add(0, temp);
+                }
             }
         }
-        // Counterclockwise
-        else if (rotations > 0) {
-            for (int i = 0; i < flips; i++) {
-                temp = validChars.get(lastElement);
-                validChars.remove(lastElement);
-                validChars.add(0, temp);
-            }
-        }
+
     }
 
     private static char[][] putRotationChars(int centerRow, int centerCol, int radius, List<Character> validChars, char[][] inputMatrix) {
