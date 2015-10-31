@@ -25,7 +25,6 @@ public class DragonAccounting {
             if (totalEmploymentDays > 0 && totalEmploymentDays % 365 == 0) {
                 salary = salary.multiply(BigDecimal.valueOf(1.006));
             }
-
             totalEmploymentDays++;
             monthWorkDays++;
         }
