@@ -1,5 +1,7 @@
 package org.softuni;
 
+// Java Fundamentals - 4 October 2015
+
 import java.util.*;
 
 public class DragonArmy {

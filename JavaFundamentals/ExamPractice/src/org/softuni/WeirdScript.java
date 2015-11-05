@@ -1,5 +1,7 @@
 package org.softuni;
 
+// Java Fundamentals Retake - 26 October 2015
+
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
