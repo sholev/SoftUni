@@ -27,8 +27,8 @@ public class ArraySlider {
 
             if (position + offset < 0) {
                 position = (numberArray.length - 1) + (position + offset) + 1;
-            } else if(numberArray.length - 1 < position + offset) {
-                position =  (position + offset) - (numberArray.length - 1) - 1;
+            } else if (numberArray.length - 1 < position + offset) {
+                position = (position + offset) - (numberArray.length - 1) - 1;
             } else {
                 position += offset;
             }
@@ -39,7 +39,7 @@ public class ArraySlider {
                     break;
                 case "–":
                 case "-":
-                    numberArray[position] = numberArray[position].subtract(BigInteger.valueOf(operand));;
+                    numberArray[position] = numberArray[position].subtract(BigInteger.valueOf(operand));
                     if (numberArray[position].compareTo(BigInteger.ZERO) < 0) {
                         numberArray[position] = BigInteger.ZERO;
                     }
