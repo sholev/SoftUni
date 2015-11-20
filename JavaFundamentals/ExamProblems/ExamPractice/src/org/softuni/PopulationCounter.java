@@ -12,7 +12,7 @@ public class PopulationCounter {
 
         Scanner in = new Scanner(System.in);
         Map<String, Long> countries = new LinkedHashMap<>();
-        LinkedHashMap<String, LinkedHashMap<String, Long>> cities = new LinkedHashMap<>();
+        Map<String, Map<String, Long>> cities = new LinkedHashMap<>();
         String input = in.nextLine();
         while (!input.equals("report")) {
             String[] parameters = input.split("[|]");
