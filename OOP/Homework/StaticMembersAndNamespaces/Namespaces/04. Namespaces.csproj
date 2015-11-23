@@ -43,12 +43,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Geometry.Geometry2D\Circle.cs" />
+    <Compile Include="Geometry.Geometry2D\DistanceCalculator2D.cs" />
+    <Compile Include="Geometry.Geometry2D\Ellipse.cs" />
+    <Compile Include="Geometry.Geometry2D\Figure2D.cs" />
+    <Compile Include="Geometry.Geometry2D\Point2D.cs" />
+    <Compile Include="Geometry.Geometry2D\Polygon.cs" />
+    <Compile Include="Geometry.Geometry2D\Rectangle.cs" />
+    <Compile Include="Geometry.Geometry2D\Square.cs" />
+    <Compile Include="Geometry.Geometry3D\DistanceCalculator3D.cs" />
+    <Compile Include="Geometry.Geometry3D\Path3D.cs" />
+    <Compile Include="Geometry.Geometry3D\Point3D.cs" />
+    <Compile Include="Geometry.Storage\GeometryBinaryStorage.cs" />
+    <Compile Include="Geometry.Storage\GeometrySVGStorage.cs" />
+    <Compile Include="Geometry.Storage\GeometryXMLStorage.cs" />
+    <Compile Include="Geometry.UI\Screen2D.cs" />
+    <Compile Include="Geometry.UI\Screen3D.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
