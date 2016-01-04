@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdvancedCSharpExam_11_10_2015
+namespace ArrayManipulator
 {
     class Program
     {
