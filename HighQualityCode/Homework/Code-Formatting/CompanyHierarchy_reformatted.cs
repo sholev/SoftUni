@@ -1,4 +1,4 @@
-﻿namespace CompanyHierarchy
+namespace CompanyHierarchy
 {
     using System;
     using System.Collections.Generic;
@@ -15,7 +15,7 @@
     public static class CompanyHierarchy
     {
         public static void Main(string[] args)
-        {            
+        {
             var people = new List<IEmployee>();
             var rng = new Random();
 
