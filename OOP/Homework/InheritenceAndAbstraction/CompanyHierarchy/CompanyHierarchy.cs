@@ -31,37 +31,37 @@
                 string surname;
                 RandomName(names, rng, out name, out surname);
 
-                Department department = (Department)rng.Next(0, 4);
-                decimal salary = (decimal)(rng.Next(1000, 4000) + rng.NextDouble());
+                Department randomDepartment = (Department)rng.Next(0, 4);
+                decimal randomSalary = (decimal)(rng.Next(1000, 4000) + rng.NextDouble());
 
                 int randomNumber = rng.Next(0, 13);
                 if (randomNumber % 2 == 0)
                 {
                     IProject[] randomProjects = GenerateRandomProjects(rng, projects);
 
-                    people.Add(new Developer(++idCounter, name, surname, department, salary, randomProjects));
+                    people.Add(new Developer(++idCounter, name, surname, randomDepartment, randomSalary, randomProjects));
                 }
                 else
                 {
                     ISale[] randomSales = GenerateRandomSales(rng, projects);
 
-                    people.Add(new SalesEmployee(++idCounter, name, surname, department, salary, randomSales));
+                    people.Add(new SalesEmployee(++idCounter, name, surname, randomDepartment, randomSalary, randomSales));
                 }
 
                 if (currentEmployee == employeesToGenerate - 1)
                 {
-                    foreach (Department managingDepartment in Enum.GetValues(typeof(Department)).Cast<Department>())
+                    foreach (Department department in Enum.GetValues(typeof(Department)).Cast<Department>())
                     {
                         RandomName(names, rng, out name, out surname);
 
                         List<IEmployee> employesInDepartment = people
                             .Where(person => !(person is Manager))
-                            .Where(person => person.Department == managingDepartment)
+                            .Where(person => person.Department == department)
                             .ToList();
 
-                        decimal managerSalary = (employesInDepartment.Count + 1) * salary;
+                        decimal managerSalary = (employesInDepartment.Count + 1) * randomSalary;
 
-                        people.Add(new Manager(++idCounter, name, surname, managingDepartment, managerSalary, employesInDepartment));
+                        people.Add(new Manager(++idCounter, name, surname, department, managerSalary, employesInDepartment));
                     }
                 }
             }
@@ -84,6 +84,7 @@
             surname = lineContent[1];
         }
 
+        // TODO: Figure out how to combine GenerateRandomSales and GenerateRandomProjects to a single method.
         private static Sale[] GenerateRandomSales(Random rng, IList<string> saleNames)
         {
             // get random sale and remove it from the list
