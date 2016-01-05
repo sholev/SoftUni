@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace CompanyHierarchy.Interfaces
+﻿namespace CompanyHierarchy.Interfaces
 {
-    interface IManager : IEmployee
+    using System.Collections.Generic;
+
+    public interface IManager : IEmployee
     {
         IEnumerable<IEmployee> Employees { get; set; }
     }

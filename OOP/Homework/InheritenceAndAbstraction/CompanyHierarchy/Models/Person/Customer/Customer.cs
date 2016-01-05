@@ -1,17 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using CompanyHierarchy.Interfaces;
-
-namespace CompanyHierarchy.Classes.Person.Customer
+﻿namespace CompanyHierarchy.Models.Person.Customer
 {
-    class Customer : Person, ICustomer
+    using System;
+
+    using global::CompanyHierarchy.Interfaces;
+
+    internal class Customer : Person, ICustomer
     {
-        decimal netPurchaseAmount;
+        private decimal netPurchaseAmount;
 
         public decimal NetPurchaseAmount
         {
-            get { return this.netPurchaseAmount; }
+            get
+            {
+                return this.netPurchaseAmount;
+            }
             set
             {
                 if (value < 0m)
@@ -30,7 +32,7 @@ namespace CompanyHierarchy.Classes.Person.Customer
 
         public override string ToString()
         {
-            return $"{base.ToString()}, Net purchase amount: {NetPurchaseAmount}";
+            return $"{base.ToString()}, Net purchase amount: {this.NetPurchaseAmount}";
         }
     }
 }

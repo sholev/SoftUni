@@ -1,6 +1,6 @@
 ﻿namespace CompanyHierarchy.Interfaces
 {
-    interface ICustomer : IPerson
+    public interface ICustomer : IPerson
     {
         decimal NetPurchaseAmount { get; set; }
     }

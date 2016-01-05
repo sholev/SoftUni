@@ -1,47 +1,49 @@
-﻿using System;
-using CompanyHierarchy.Interfaces;
-
-namespace CompanyHierarchy.Classes.Sale
+﻿namespace CompanyHierarchy.Models.Sale
 {
-    class Sale : ISale
+    using System;
+
+    using global::CompanyHierarchy.Interfaces;
+
+    internal class Sale : ISale
     {
         private string productName;
         private decimal price;
-        private DateTime date;
 
-        public DateTime Date
-        {
-            get { return date; }
-            set { date = value; }
-        }
+        public DateTime Date { get; set; }
 
         public decimal Price
         {
-            get { return price; }
+            get
+            {
+                return this.price;
+            }
             set
             {
                 if (value < 0m)
                 {
                     throw new ArgumentOutOfRangeException("Sale price cannot be negative");
                 }
-                price = value;
+                this.price = value;
             }
         }
 
         public string ProductName
         {
-            get { return productName; }
+            get
+            {
+                return this.productName;
+            }
             set
             {
-                if (String.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     throw new ArgumentException("Product name should not be null or empty");
                 }
-                if (String.IsNullOrWhiteSpace(value))
+                if (string.IsNullOrWhiteSpace(value))
                 {
                     throw new ArgumentException("Product name should not be null or whitespace");
                 }
-                productName = value;
+                this.productName = value;
             }
         }
 
@@ -54,7 +56,7 @@ namespace CompanyHierarchy.Classes.Sale
 
         public override string ToString()
         {
-            return $"Product sold: {ProductName,-15}, Date: {Date.Date}, Price: {Price}";
+            return $"Product sold: {this.ProductName,-15}, Date: {this.Date.Date}, Price: {this.Price}";
         }
     }
 }

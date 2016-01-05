@@ -1,9 +1,11 @@
-﻿using System;
-using CompanyHierarchy.Interfaces;
-
-namespace CompanyHierarchy.Classes.Person.Employee
+﻿namespace CompanyHierarchy.Models.Person.Employee
 {
-    class Employee : Person, IEmployee
+    using System;
+
+    using global::CompanyHierarchy.Enumerations;
+    using global::CompanyHierarchy.Interfaces;
+
+    internal class Employee : Person, IEmployee
     {
         private decimal salary;
 
@@ -11,7 +13,10 @@ namespace CompanyHierarchy.Classes.Person.Employee
 
         public decimal Salary
         {
-            get { return this.salary; }
+            get
+            {
+                return this.salary;
+            }
             set
             {
                 if (this.salary < 0M)
@@ -31,7 +36,7 @@ namespace CompanyHierarchy.Classes.Person.Employee
 
         public override string ToString()
         {
-            return $"{base.ToString()} Department: {Department,-15} Salary: {Salary:F2}";
+            return $"{base.ToString()} Department: {this.Department,-15} Salary: {this.Salary:F2}";
         }
 
     }

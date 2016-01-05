@@ -1,131 +1,130 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using CompanyHierarchy.Interfaces;
-using CompanyHierarchy.Classes.Person.Employee;
-using CompanyHierarchy.Classes.Person.Employee.RegularEmployee;
-using CompanyHierarchy.Classes.Project;
-using CompanyHierarchy.Classes.Sale;
-
-namespace CompanyHierarchy
+﻿namespace CompanyHierarchy
 {
-    class CompanyHierarchy
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+
+    using global::CompanyHierarchy.Enumerations;
+    using global::CompanyHierarchy.Interfaces;
+    using global::CompanyHierarchy.Models.Person.Employee.Manager;
+    using global::CompanyHierarchy.Models.Person.Employee.RegularEmployee;
+    using global::CompanyHierarchy.Models.Project;
+    using global::CompanyHierarchy.Models.Sale;
+
+    public static class CompanyHierarchy
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {            
             var people = new List<IEmployee>();
+            var rng = new Random();
+
             uint idCounter = 0;
-            Random RNG = new Random();
-            var names = File.ReadAllLines(@"..\..\namesPeople.txt").ToList();
-            var projects = File.ReadAllLines(@"..\..\namesProjects.txt").ToList();
 
-            int temp = RNG.Next(15, 25);
-            for (int i = 0; i < temp; i++)
+            List<string> names = File.ReadAllLines(@"..\..\namesPeople.txt").ToList();
+            List<string> projects = File.ReadAllLines(@"..\..\namesProjects.txt").ToList();
+
+            int employeesToGenerate = rng.Next(15, 25);
+            for (int currentEmployee = 0; currentEmployee < employeesToGenerate; currentEmployee++)
             {
-                // get random name and remove it from the list
-                string randomName = names[RNG.Next(0, names.Count)];
-                string[] lineContent = randomName.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                names.Remove(randomName);
+                string name;
+                string surname;
+                RandomName(names, rng, out name, out surname);
 
-                string name = lineContent[0];
-                string surname = lineContent[1];
-                
-                switch(RNG.Next(0 , 2))
+                Department department = (Department)rng.Next(0, 4);
+                decimal salary = (decimal)(rng.Next(1000, 4000) + rng.NextDouble());
+
+                int randomNumber = rng.Next(0, 13);
+                if (randomNumber % 2 == 0)
                 {
-                    case 0:
-                        people.Add(new Developer(
-                            ++idCounter,
-                            name,
-                            surname,
-                            (Department)RNG.Next(0, 4),
-                            (decimal)(RNG.Next(1000, 4000) + RNG.NextDouble()),
-                            GenerateRandomProjects(ref RNG, projects).ToArray()));
-                        break;
+                    IProject[] randomProjects = GenerateRandomProjects(rng, projects);
 
-                    case 1:
-                        people.Add(new SalesEmployee(
-                            ++idCounter,
-                            name,
-                            surname,
-                            (Department)RNG.Next(0, 4),
-                            (decimal)(RNG.Next(1000, 4000) + RNG.NextDouble()),
-                            GenerateRandomSales(ref RNG, projects).ToArray()));
-                        break;
+                    people.Add(new Developer(++idCounter, name, surname, department, salary, randomProjects));
+                }
+                else
+                {
+                    ISale[] randomSales = GenerateRandomSales(rng, projects);
 
-                    default:
-                        break;
+                    people.Add(new SalesEmployee(++idCounter, name, surname, department, salary, randomSales));
+                }
+
+                if (currentEmployee == employeesToGenerate - 1)
+                {
+                    foreach (Department managingDepartment in Enum.GetValues(typeof(Department)).Cast<Department>())
+                    {
+                        RandomName(names, rng, out name, out surname);
+
+                        List<IEmployee> employesInDepartment = people
+                            .Where(person => !(person is Manager))
+                            .Where(person => person.Department == managingDepartment)
+                            .ToList();
+
+                        decimal managerSalary = (employesInDepartment.Count + 1) * salary;
+
+                        people.Add(new Manager(++idCounter, name, surname, managingDepartment, managerSalary, employesInDepartment));
+                    }
                 }
             }
 
-            temp = RNG.Next(1, 3);
-            for (int i = 0; i < temp; i++)
-            {
-                string randomName = names[RNG.Next(0, names.Count)];
-                string[] lineContent = randomName.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-                names.Remove(randomName);
-
-                string name = lineContent[0];
-                string surname = lineContent[1];
-
-                people.Add(new Manager(
-                           ++idCounter,
-                           name,
-                           surname,
-                           (Department)RNG.Next(0, 4),
-                           (decimal)(RNG.Next(1000, 4000) + RNG.NextDouble()),
-                           people.Where(p => !(p is Manager))));
-            }
-
+            // Making sure the output fits appropriately in the console window.
             Console.SetWindowSize(120, 30);
-            foreach (var person in people)
+            foreach (IEmployee person in people)
             {
                 Console.WriteLine(person);
             }
-            
         }
 
-        private static List<Sale> GenerateRandomSales(ref Random RNG, List<string> saleNames)
+        private static void RandomName(List<string> names, Random rng, out string name, out string surname)
         {
-            // get random project and remove it from the list
-            string saleName = saleNames[RNG.Next(0, saleNames.Count)];
+            string randomName = names[rng.Next(0, names.Count)];
+            string[] lineContent = randomName.Split(" ".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+            names.Remove(randomName);
+
+            name = lineContent[0];
+            surname = lineContent[1];
+        }
+
+        private static Sale[] GenerateRandomSales(Random rng, IList<string> saleNames)
+        {
+            // get random sale and remove it from the list
+            string saleName = saleNames[rng.Next(0, saleNames.Count)];
             saleNames.Remove(saleName);
 
             var sales = new List<Sale>();
-            for (int i = 0; i < RNG.Next(1, 6); i++)
+            for (int i = 0; i < rng.Next(1, 6); i++)
             {
-                sales.Add(new Sale(
-                    saleName,
-                    GetRandomDate(new DateTime(), DateTime.Now, ref RNG),
-                    (decimal)(RNG.Next(1000, 10000) + RNG.NextDouble())));
+                DateTime randomDate = GetRandomDate(new DateTime(), DateTime.Now, rng);
+                decimal randomPrice = (decimal)(rng.Next(1000, 10000) + rng.NextDouble());
+
+                sales.Add(new Sale(saleName, randomDate, randomPrice));
             }
 
-            return sales;
+            return sales.ToArray();
         }
 
-        private static List<Project> GenerateRandomProjects(ref Random RNG, List<string> projectNames)
+        private static Project[] GenerateRandomProjects(Random rng, IList<string> projectNames)
         {
             // get random project and remove it from the list
-            string projectName = projectNames[RNG.Next(0, projectNames.Count)];
+            string projectName = projectNames[rng.Next(0, projectNames.Count)];
             projectNames.Remove(projectName);
 
             var projects = new List<Project>();
-            for (int i = 0; i < RNG.Next(1, 6); i++)
+            for (int i = 0; i < rng.Next(1, 6); i++)
             {
-                projects.Add(new Project(
-                    projectName,
-                    GetRandomDate(new DateTime(), DateTime.Now, ref RNG),
-                    (State)RNG.Next(0, 2)));
+                DateTime randomDate = GetRandomDate(new DateTime(), DateTime.Now, rng);
+                State randomState = (State)rng.Next(0, 2);
+
+                projects.Add(new Project(projectName, randomDate, randomState));
             }
 
-            return projects;
+            return projects.ToArray();
         }
 
-        private static DateTime GetRandomDate(DateTime from, DateTime to, ref Random RNG)
+        private static DateTime GetRandomDate(DateTime from, DateTime to, Random rng)
         {
-            var range = to - from;
-            var randTimeSpan = new TimeSpan((long)(RNG.NextDouble() * range.Ticks));
-            return from + randTimeSpan;
+            TimeSpan range = to - from;
+            TimeSpan randomTimeSpan = new TimeSpan((long)(rng.NextDouble() * range.Ticks));
+            return from + randomTimeSpan;
         }
     }
 }

@@ -43,15 +43,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\Person\Employee\Employee.cs" />
-    <Compile Include="Classes\Person\Person.cs" />
-    <Compile Include="Classes\Person\Customer\Customer.cs" />
-    <Compile Include="Classes\Person\Employee.Manager\Manager.cs" />
-    <Compile Include="Classes\Person\Employee.RegularEmployee\Developer.cs" />
-    <Compile Include="Classes\Person\Employee.RegularEmployee\SalesEmployee.cs" />
-    <Compile Include="Classes\Project\Project.cs" />
-    <Compile Include="Classes\Sale\Sale.cs" />
+    <Compile Include="Models\Person\Employee\Employee.cs" />
+    <Compile Include="Models\Person\Person.cs" />
+    <Compile Include="Models\Person\Customer\Customer.cs" />
+    <Compile Include="Models\Person\Employee.Manager\Manager.cs" />
+    <Compile Include="Models\Person\Employee.RegularEmployee\Developer.cs" />
+    <Compile Include="Models\Person\Employee.RegularEmployee\SalesEmployee.cs" />
+    <Compile Include="Models\Project\Project.cs" />
+    <Compile Include="Models\Sale\Sale.cs" />
     <Compile Include="CompanyHierarchy.cs" />
+    <Compile Include="Enumerations\Department.cs" />
+    <Compile Include="Enumerations\State.cs" />
     <Compile Include="Interfaces\ICustomer.cs" />
     <Compile Include="Interfaces\IDeveloper.cs" />
     <Compile Include="Interfaces\IEmployee.cs" />

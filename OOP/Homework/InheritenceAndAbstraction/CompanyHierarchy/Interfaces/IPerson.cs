@@ -1,9 +1,11 @@
 ﻿namespace CompanyHierarchy.Interfaces
 {
-    interface IPerson
+    public interface IPerson
     {
-        uint ID { get; set; }
+        uint Id { get; set; }
+
         string Name { get; set; }
+
         string Surname { get; set; }
     }
 }

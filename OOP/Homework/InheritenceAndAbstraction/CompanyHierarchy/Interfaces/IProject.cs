@@ -1,17 +1,15 @@
-﻿using System;
-
-namespace CompanyHierarchy.Interfaces
+﻿namespace CompanyHierarchy.Interfaces
 {
-    enum State
-    {
-        OPEN,
-        CLOSED
-    }
+    using System;
 
-    interface IProject
+    using global::CompanyHierarchy.Enumerations;
+
+    public interface IProject
     {
         string Name { get; set; }
+
         DateTime StartDate { get; set; }
+
         State State { get; set; }
     }
 }

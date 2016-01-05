@@ -1,16 +1,11 @@
 ﻿namespace CompanyHierarchy.Interfaces
 {
-    enum Department
-    {
-        PRODUCTION,
-        ACCOUNTING,
-        SALES,
-        MARKETING
-    }
+    using global::CompanyHierarchy.Enumerations;
 
-    interface IEmployee : IPerson
+    public interface IEmployee : IPerson
     {
         Department Department { get; set; }
+
         decimal Salary { get; set; }
     }
 
