@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="FileUtils.cs" />
     <Compile Include="GeometryUtils.cs" />
+    <Compile Include="IFileUtils.cs" />
     <Compile Include="IGeometryUtils.cs" />
     <Compile Include="Point2D.cs" />
     <Compile Include="Point3D.cs" />

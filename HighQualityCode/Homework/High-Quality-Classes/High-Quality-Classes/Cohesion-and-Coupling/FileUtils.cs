@@ -2,9 +2,9 @@
 {
     using System;
 
-    public class FileUtils
+    public class FileUtils : IFileUtils
     {
-        public static string GetFileExtension(string fileName)
+        public string GetFileExtension(string fileName)
         {
             int indexOfLastDot = fileName.LastIndexOf(".", StringComparison.Ordinal);
             if (indexOfLastDot == -1)
@@ -16,7 +16,7 @@
             return extension;
         }
 
-        public static string GetFileNameWithoutExtension(string fileName)
+        public string GetFileNameWithoutExtension(string fileName)
         {
             int indexOfLastDot = fileName.LastIndexOf(".", StringComparison.Ordinal);
             if (indexOfLastDot == -1)
