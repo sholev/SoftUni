@@ -3,7 +3,7 @@ namespace InheritanceAndPolymorphism
     using System.Collections.Generic;
     using System.Text;
 
-    public class Course
+    public abstract class Course
     {
         protected Course(string name)
         {

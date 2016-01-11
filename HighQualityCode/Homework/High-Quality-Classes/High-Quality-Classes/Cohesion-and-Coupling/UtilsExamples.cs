@@ -7,6 +7,7 @@
         public static void Main()
         {
             IGeometryUtils geometryUtils = new GeometryUtils();
+            IFileUtils fileUtils = new FileUtils();
 
             string[] fileNames = { "example", "example.pdf", "example.new.pdf" };
 
@@ -14,7 +15,7 @@
             {
                 try
                 {
-                    Console.WriteLine(FileUtils.GetFileExtension(fileName));
+                    Console.WriteLine(fileUtils.GetFileExtension(fileName));
                 }
                 catch (ArgumentException e)
                 {
@@ -26,7 +27,7 @@
             {
                 try
                 {
-                    Console.WriteLine(FileUtils.GetFileNameWithoutExtension(fileName));
+                    Console.WriteLine(fileUtils.GetFileNameWithoutExtension(fileName));
                 }
                 catch (ArgumentException e)
                 {
