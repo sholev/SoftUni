@@ -3,13 +3,14 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Reflection;
 
     public class Student
     {
         public Student(string firstName, string lastName, IList<Exam> exams = null)
         {
-            this.ValidateList(firstName.ToList(), nameof(firstName));
-            this.ValidateList(lastName.ToList(), nameof(lastName));
+            this.ValidateObjectLength(firstName, nameof(firstName));
+            this.ValidateObjectLength(lastName, nameof(lastName));
 
             this.FirstName = firstName;
             this.LastName = lastName;
@@ -24,7 +25,7 @@
 
         public IList<ExamResult> CheckExams()
         {
-            this.ValidateList(this.Exams, nameof(this.Exams));
+            this.ValidateObjectLength(this.Exams, nameof(this.Exams));
 
             IList<ExamResult> results = new List<ExamResult>();
             for (int i = 0; i < this.Exams.Count; i++)
@@ -37,7 +38,7 @@
 
         public double CalcAverageExamResultInPercents()
         {
-            this.ValidateList(this.Exams, nameof(this.Exams));
+            this.ValidateObjectLength(this.Exams, nameof(this.Exams));
 
             double[] examScore = new double[this.Exams.Count];
             IList<ExamResult> examResults = this.CheckExams();
@@ -51,13 +52,29 @@
             return examScore.Average();
         }
 
-        private void ValidateList<T>(ICollection<T> list, string parameterName)
+        private void ValidateObjectLength(dynamic obj, string parameterName, int minLength = 1)
         {
-            if (list == null)
+            if (obj == null)
             {
                 throw new ArgumentNullException(parameterName, $"{parameterName} is not initialized.");
             }
-            else if (list.Count == 0)
+
+            int length;
+            PropertyInfo[] properties = obj.GetType().GetProperties();
+            if (properties.Any(p => p.Name.Equals("Length")))
+            {
+                length = obj.Length;
+            }
+            else if (properties.Any(p => p.Name.Equals("Count")))
+            {
+                length = obj.Count;
+            }
+            else
+            {
+                throw new ArgumentException($"{parameterName} is of type with length or count.", parameterName);
+            }
+
+            if (length < minLength)
             {
                 throw new ArgumentException($"{parameterName} is empty.", parameterName);
             }

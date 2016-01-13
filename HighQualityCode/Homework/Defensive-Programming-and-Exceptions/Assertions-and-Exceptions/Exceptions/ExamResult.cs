@@ -8,7 +8,7 @@
         {
             if (grade < 0)
             {
-                throw new ArgumentOutOfRangeException(nameof(grade), $"{nameof(grade)}cannot be negative.");
+                throw new ArgumentOutOfRangeException(nameof(grade), $"{nameof(grade)} cannot be negative.");
             }
 
             if (minGrade < 0)

@@ -9,7 +9,7 @@
             if (score < 0 || score > 100)
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(score), $"{nameof(score)} should not be negative.");
+                    nameof(score), $"{nameof(score)} is not in in the range of (0 < n < 100).");
             }
 
             this.Score = score;

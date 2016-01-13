@@ -70,7 +70,7 @@
             Console.WriteLine(ExtractEnding("I love C#", 2));
             Console.WriteLine(ExtractEnding("Nakov", 4));
             Console.WriteLine(ExtractEnding("beer", 4));
-            Console.WriteLine(ExtractEnding("Hi", 100));
+            //Console.WriteLine(ExtractEnding("Hi", 100));
 
             CheckPrime(23);
             CheckPrime(33);
