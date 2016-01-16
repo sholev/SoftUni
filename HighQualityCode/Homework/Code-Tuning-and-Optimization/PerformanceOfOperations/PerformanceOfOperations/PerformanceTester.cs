@@ -29,7 +29,7 @@
             {
                 var averageMilliseconds = keyValuePair.Value.Average();
                 Console.WriteLine(
-                    $"{keyValuePair.Key,20} Performed {numberOfTests} * {numberOfTests} tests, average time: {averageMilliseconds:F10} ms");
+                    $"{keyValuePair.Key,20} Performed {numberOfTests * numberOfTests} tests, average time: {averageMilliseconds:F10} ms");
             }
             Console.ReadLine();
         }
@@ -80,7 +80,7 @@
                 {
                     stopwatch.Start();
                     operand = operand - operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -92,7 +92,7 @@
                 {
                     stopwatch.Start();
                     ++operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -104,7 +104,7 @@
                 {
                     stopwatch.Start();
                     operand++;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -116,7 +116,7 @@
                 {
                     stopwatch.Start();
                     operand += operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -128,7 +128,7 @@
                 {
                     stopwatch.Start();
                     operand = operand * operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -140,7 +140,7 @@
                 {
                     stopwatch.Start();
                     operand = operand / operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -173,7 +173,7 @@
                 {
                     stopwatch.Start();
                     operand = operand - operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -185,7 +185,7 @@
                 {
                     stopwatch.Start();
                     ++operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -197,7 +197,7 @@
                 {
                     stopwatch.Start();
                     operand++;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -209,7 +209,7 @@
                 {
                     stopwatch.Start();
                     operand += operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -221,7 +221,7 @@
                 {
                     stopwatch.Start();
                     operand = operand * operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -233,7 +233,7 @@
                 {
                     stopwatch.Start();
                     operand = operand / operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -266,7 +266,7 @@
                 {
                     stopwatch.Start();
                     operand = operand - operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -278,7 +278,7 @@
                 {
                     stopwatch.Start();
                     ++operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -290,7 +290,7 @@
                 {
                     stopwatch.Start();
                     operand++;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -302,7 +302,7 @@
                 {
                     stopwatch.Start();
                     operand += operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -314,7 +314,7 @@
                 {
                     stopwatch.Start();
                     operand = operand * operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -326,7 +326,7 @@
                 {
                     stopwatch.Start();
                     operand = operand / operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -359,7 +359,7 @@
                 {
                     stopwatch.Start();
                     operand = operand - operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -371,7 +371,7 @@
                 {
                     stopwatch.Start();
                     ++operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -383,7 +383,7 @@
                 {
                     stopwatch.Start();
                     operand++;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -395,7 +395,7 @@
                 {
                     stopwatch.Start();
                     operand += operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -407,7 +407,7 @@
                 {
                     stopwatch.Start();
                     operand = operand * operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
@@ -419,7 +419,7 @@
                 {
                     stopwatch.Start();
                     operand = operand / operand;
-                    result = stopwatch.Elapsed;
+                    result += stopwatch.Elapsed;
                     stopwatch.Reset();
 
                     operand = one;
