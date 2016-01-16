@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.IO;
     using System.Linq;
 
     public static class PerformanceTester
@@ -10,54 +11,206 @@
         public static void Main(string[] args)
         {
             int numberOfTests = 1000;
-            string[] tests =
+            
+            string[] operations =
                 {
-                    "int + int", "int - int", "++int", "int++", "int * int", "int / int",
-                    "long + long", "long - long", "++long", "long++", "long * long", "long / long",
-                    "double + double", "double - double", "++double", "double++", "double * double", "double / double",
-                    "decimal + decimal", "decimal - decimal", "++decimal", "decimal++", "decimal * decimal", "decimal / decimal"
+                    "int + int", "int - int", "++int", "int++", "int += 1", "int * int", "int / int",
+                    "long + long", "long - long", "++long", "long++","long += 1", "long * long", "long / long",
+                    "double + double", "double - double", "++double", "double++", "double += 1", "double * double", "double / double",
+                    "decimal + decimal", "decimal - decimal", "++decimal", "decimal++", "decimal += 1", "decimal * decimal", "decimal / decimal"
                 };
-            Dictionary<string, double[]> testResults = tests.ToDictionary(test => test, test => new double[numberOfTests]);
+            Dictionary<string, double[]> operationsTestResults = operations.ToDictionary(
+                test => test,
+                test => new double[numberOfTests]);
 
-            Console.WriteLine("Starting analysis...");
-            foreach (KeyValuePair<string, double[]> keyValuePair in testResults)
+            Console.WriteLine("Starting operation analysis...");
+            foreach (KeyValuePair<string, double[]> operationTestResult in operationsTestResults)
             {
-                TestOperation(keyValuePair, numberOfTests);
+                PopulateOperationTest(operationTestResult, numberOfTests);
+            }
+            
+            string[] methods =
+                {
+                    "Math.Sqrt(double)", "Math.Log(double)", "Math.Sin(double)",
+                    "Math.Sqrt(decimal)", "Math.Log(decimal)", "Math.Sin(decimal)",
+                };
+            Dictionary<string, double[]> methodsTestResults = methods.ToDictionary(
+                method => method,
+                method => new double[numberOfTests]);
+
+            Console.WriteLine("Starting method analysis...");
+            foreach (KeyValuePair<string, double[]> methodsTestResult in methodsTestResults)
+            {
+                PopulateMethodTest(methodsTestResult, numberOfTests);
             }
 
-            foreach (KeyValuePair<string, double[]> keyValuePair in testResults)
+            Console.WriteLine($"Analysis done, performed {numberOfTests * numberOfTests} tests for each case:");
+            var combinedResults = operationsTestResults
+                .Concat(methodsTestResults)
+                .ToDictionary(pair => pair.Key, pair => pair.Value);
+
+            foreach (KeyValuePair<string, double[]> combinedResult in combinedResults)
             {
-                var averageMilliseconds = keyValuePair.Value.Average();
+                var averageMilliseconds = combinedResult.Value.Average();
                 Console.WriteLine(
-                    $"{keyValuePair.Key,20} Performed {numberOfTests * numberOfTests} tests, average time: {averageMilliseconds:F10} ms");
+                    $"{combinedResult.Key,20} average time: {averageMilliseconds:F10} ms");
             }
-            Console.ReadLine();
+
+            //WriteAnalysisTextTable(operationsTestResults, methodsTestResults, numberOfTests);
         }
 
-        private static void TestOperation(KeyValuePair<string, double[]> keyValuePair, int numberOfTests)
+        private static void WriteAnalysisTextTable(
+            IEnumerable<KeyValuePair<string, double[]>> operationsTestResults,
+            IEnumerable<KeyValuePair<string, double[]>> methodsTestResults,
+            int numberOfTests)
         {
-            for (int i = 0; i < keyValuePair.Value.Length; i++)
+            throw new NotImplementedException();
+            //Currently don't have time for doing this, it isn't mandatory but still. ;(
+
+            using (StreamWriter file = new StreamWriter("..\\..\\OperationResults.txt"))
             {
-                if (keyValuePair.Key.Contains("int"))
+                file.WriteLine(new string('_', 5 * 13 + 5));
+                file.WriteLine($"| {$"n = {numberOfTests}",-12}| {"int",-12}| {"long",-12}| {"double",-12}| {"decimal",-12}|");
+
+                foreach (KeyValuePair<string, double[]> operationsTestResult in operationsTestResults)
                 {
-                    keyValuePair.Value[i] = MakeOperation(1, keyValuePair.Key, numberOfTests);
+                    string[] operationText = operationsTestResult.Key.Split(
+                        " ".ToCharArray(),
+                        StringSplitOptions.RemoveEmptyEntries);
+
+                    //string operation = operationText[0];
+                    //file.Write($"| {operation},-12");
+
+                    foreach (double result in operationsTestResult.Value)
+                    {
+                        
+                    }
                 }
-                else if (keyValuePair.Key.Contains("long"))
+
+                file.WriteLine("test");
+            }
+        }
+
+        private static void PopulateMethodTest(KeyValuePair<string, double[]> methodsTestResult, int numberOfTests)
+        {
+
+            for (int i = 0; i < methodsTestResult.Value.Length; i++)
+            {
+                if (methodsTestResult.Key.Contains("double"))
                 {
-                    keyValuePair.Value[i] = MakeOperation(1L, keyValuePair.Key, numberOfTests);
+                    methodsTestResult.Value[i] = TestMethod(1D, methodsTestResult.Key, numberOfTests);
                 }
-                else if (keyValuePair.Key.Contains("double"))
+                else if (methodsTestResult.Key.Contains("decimal"))
                 {
-                    keyValuePair.Value[i] = MakeOperation(1D, keyValuePair.Key, numberOfTests);
-                }
-                else if (keyValuePair.Key.Contains("decimal"))
-                {
-                    keyValuePair.Value[i] = MakeOperation(1M, keyValuePair.Key, numberOfTests);
+                    methodsTestResult.Value[i] = TestMethod(1M, methodsTestResult.Key, numberOfTests);
                 }
             }
         }
 
-        private static double MakeOperation(int operand, string operation, int numberOfTests)
+        private static double TestMethod(double methodParameter, string method, int numberOfTests)
+        {
+
+            Stopwatch stopwatch = new Stopwatch();
+            TimeSpan result = new TimeSpan();
+
+            if (method.Contains("Sqrt"))
+            {
+                for (int i = 0; i < numberOfTests; i++)
+                {
+                    stopwatch.Start();
+                    Math.Sqrt(methodParameter);
+                    result += stopwatch.Elapsed;
+                    stopwatch.Reset();
+                }
+            }
+            else if (method.Contains("Log"))
+            {
+                for (int i = 0; i < numberOfTests; i++)
+                {
+                    stopwatch.Start();
+                    Math.Log(methodParameter);
+                    result += stopwatch.Elapsed;
+                    stopwatch.Reset();
+                }
+            }
+            else if (method.Contains("Sin"))
+            {
+                for (int i = 0; i < numberOfTests; i++)
+                {
+                    stopwatch.Start();
+                    Math.Sin(methodParameter);
+                    result += stopwatch.Elapsed;
+                    stopwatch.Reset();
+                }
+            }
+          
+            return result.TotalMilliseconds / numberOfTests;
+        }
+
+        private static double TestMethod(decimal methodParameter, string method, int numberOfTests)
+        {
+
+            Stopwatch stopwatch = new Stopwatch();
+            TimeSpan result = new TimeSpan();
+
+            if (method.Contains("Sqrt"))
+            {
+                for (int i = 0; i < numberOfTests; i++)
+                {
+                    stopwatch.Start();
+                    Math.Sqrt((double)methodParameter);
+                    result += stopwatch.Elapsed;
+                    stopwatch.Reset();
+                }
+            }
+            else if (method.Contains("Log"))
+            {
+                for (int i = 0; i < numberOfTests; i++)
+                {
+                    stopwatch.Start();
+                    Math.Log((double)methodParameter);
+                    result += stopwatch.Elapsed;
+                    stopwatch.Reset();
+                }
+            }
+            else if (method.Contains("Sin"))
+            {
+                for (int i = 0; i < numberOfTests; i++)
+                {
+                    stopwatch.Start();
+                    Math.Sin((double)methodParameter);
+                    result += stopwatch.Elapsed;
+                    stopwatch.Reset();
+                }
+            }
+
+            return result.TotalMilliseconds / numberOfTests;
+        }
+
+        private static void PopulateOperationTest(KeyValuePair<string, double[]> operationTestResult, int numberOfTests)
+        {
+            for (int i = 0; i < operationTestResult.Value.Length; i++)
+            {
+                if (operationTestResult.Key.Contains("int"))
+                {
+                    operationTestResult.Value[i] = TestOperation(1, operationTestResult.Key, numberOfTests);
+                }
+                else if (operationTestResult.Key.Contains("long"))
+                {
+                    operationTestResult.Value[i] = TestOperation(1L, operationTestResult.Key, numberOfTests);
+                }
+                else if (operationTestResult.Key.Contains("double"))
+                {
+                    operationTestResult.Value[i] = TestOperation(1D, operationTestResult.Key, numberOfTests);
+                }
+                else if (operationTestResult.Key.Contains("decimal"))
+                {
+                    operationTestResult.Value[i] = TestOperation(1M, operationTestResult.Key, numberOfTests);
+                }
+            }
+        }
+
+        private static double TestOperation(int operand, string operation, int numberOfTests)
         {
             Stopwatch stopwatch = new Stopwatch();
             TimeSpan result = new TimeSpan();
@@ -150,7 +303,7 @@
             return result.TotalMilliseconds / numberOfTests;
         }
 
-        private static double MakeOperation(long operand, string operation, int numberOfTests)
+        private static double TestOperation(long operand, string operation, int numberOfTests)
         {
             Stopwatch stopwatch = new Stopwatch();
             TimeSpan result = new TimeSpan();
@@ -243,7 +396,7 @@
             return result.TotalMilliseconds / numberOfTests;
         }
 
-        private static double MakeOperation(double operand, string operation, int numberOfTests)
+        private static double TestOperation(double operand, string operation, int numberOfTests)
         {
             Stopwatch stopwatch = new Stopwatch();
             TimeSpan result = new TimeSpan();
@@ -336,7 +489,7 @@
             return result.TotalMilliseconds / numberOfTests;
         }
 
-        private static double MakeOperation(decimal operand, string operation, int numberOfTests)
+        private static double TestOperation(decimal operand, string operation, int numberOfTests)
         {
             Stopwatch stopwatch = new Stopwatch();
             TimeSpan result = new TimeSpan();
