@@ -1,0 +1,5 @@
+21/01/2016 17:53:56 - Info - Everything seems fine
+21/01/2016 17:53:56 - Warn - Warning: ping is too high - disconnect imminent
+21/01/2016 17:53:56 - Error - Error parsing request
+21/01/2016 17:53:56 - Critical - No connection string found in App.config
+21/01/2016 17:53:56 - Fatal - mscorlib.dll does not respond

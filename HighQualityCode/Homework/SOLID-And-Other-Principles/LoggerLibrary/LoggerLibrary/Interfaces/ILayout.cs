@@ -6,6 +6,6 @@
 
     public interface ILayout
     {
-        string FormatMessage(string message, SeverityLevel level, DateTime? time = null);
+        string FormatMessage(string message, SeverityLevel severity, DateTime? time = null);
     }
 }

@@ -14,13 +14,13 @@
             this.Layout = layout;
         }
 
-        private ILayout Layout
+        protected ILayout Layout
         {
             get
             {
                 return this.layout;
             }
-            set
+            private set
             {
                 if (value == null)
                 {
@@ -32,6 +32,13 @@
 
                 this.layout = value;
             }
+        }
+
+        protected string FormattedMessage { get; set; }
+
+        protected void FormatByLayout(string message, SeverityLevel severity)
+        {
+            this.FormattedMessage = this.Layout.FormatMessage(message, severity);
         }
 
         public abstract void Append(string message, SeverityLevel severity);
