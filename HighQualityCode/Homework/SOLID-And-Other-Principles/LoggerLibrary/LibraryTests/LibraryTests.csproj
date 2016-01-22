@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="TestProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="XmlLayout.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

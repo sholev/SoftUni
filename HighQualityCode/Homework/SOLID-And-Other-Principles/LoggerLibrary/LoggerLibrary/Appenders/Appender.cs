@@ -9,9 +9,10 @@
     {
         private ILayout layout;
 
-        protected Appender(ILayout layout)
+        protected Appender(ILayout layout, SeverityLevel? reportAppendThreshold = null)
         {
             this.Layout = layout;
+            this.ReportAppendThreshold = reportAppendThreshold;
         }
 
         protected ILayout Layout
@@ -34,7 +35,14 @@
             }
         }
 
+        public SeverityLevel? ReportAppendThreshold { get; set; }
+
         protected string FormattedMessage { get; set; }
+
+        protected bool ShouldAppend(SeverityLevel severity)
+        {
+            return this.ReportAppendThreshold == null || this.ReportAppendThreshold >= severity;
+        }
 
         protected void FormatByLayout(string message, SeverityLevel severity)
         {

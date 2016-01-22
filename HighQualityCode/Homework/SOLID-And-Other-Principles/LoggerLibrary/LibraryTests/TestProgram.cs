@@ -1,6 +1,7 @@
 ﻿namespace LibraryTests
 {
     using LoggerLibrary.Appenders;
+    using LoggerLibrary.Enums;
     using LoggerLibrary.Layouts;
     using LoggerLibrary.Loggers;
 
@@ -9,9 +10,9 @@
         public static void Main(string[] args)
         {
             var simpleLayout = new SimpleLayout();
-            var consoleAppender = new ConsoleAppender(simpleLayout);
-            //consoleAppender.ReportLevel = SeverityLevel.Error;
-            var fileAppender = new FileAppender(simpleLayout, "..\\..\\..\\FileAppenderOutput.txt");
+            var xmlLayout = new XmlLayout();
+            var consoleAppender = new ConsoleAppender(simpleLayout, SeverityLevel.Error);
+            var fileAppender = new FileAppender(xmlLayout, "..\\..\\..\\FileAppenderOutput.txt");
 
             var logger = new Logger(consoleAppender, fileAppender);
 

@@ -7,16 +7,19 @@
 
     public class ConsoleAppender : Appender
     {
-        public ConsoleAppender(ILayout layout) 
-            : base(layout)
+        public ConsoleAppender(ILayout layout, SeverityLevel? reportAppendThreshold = null) 
+            : base(layout, reportAppendThreshold)
         {
         }
 
         public override void Append(string message, SeverityLevel severity)
         {
-            this.FormatByLayout(message, severity);
+            if (this.ShouldAppend(severity))
+            {
+                this.FormatByLayout(message, severity);
 
-            Console.WriteLine(this.FormattedMessage);
+                Console.WriteLine(this.FormattedMessage);
+            }
         }
     }
 }

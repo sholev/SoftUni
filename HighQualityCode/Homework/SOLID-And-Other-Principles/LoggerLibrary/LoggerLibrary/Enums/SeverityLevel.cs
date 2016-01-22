@@ -2,10 +2,10 @@
 {
     public enum SeverityLevel
     {
-        Fatal,
-        Critical,
-        Error,
-        Warn,
-        Info
+        Fatal = 0,
+        Critical = 1,
+        Error = 2,
+        Warn = 3,
+        Info = 4
     }
 }

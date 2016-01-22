@@ -10,8 +10,8 @@
     {
         private string filePath;
 
-        public FileAppender(ILayout layout, string filePath)
-            : base(layout)
+        public FileAppender(ILayout layout, string filePath, SeverityLevel? reportAppendThreshold = null)
+            : base(layout, reportAppendThreshold)
         {
             this.FilePath = filePath;
         }
@@ -26,7 +26,7 @@
             set
             {
                 int lastSlashIndex = value.LastIndexOf('\\');
-                string path = string.Join(string.Empty, value.Take(lastSlashIndex).ToArray());
+                string path = string.Join(string.Empty, value.Take(lastSlashIndex));
 
                 if (!Directory.Exists(path))
                 {
@@ -39,11 +39,14 @@
 
         public override void Append(string message, SeverityLevel severity)
         {
-            this.FormatByLayout(message, severity);
-
-            using (StreamWriter writer = new StreamWriter(this.FilePath, true))
+            if (this.ShouldAppend(severity))
             {
-                writer.WriteLineAsync(this.FormattedMessage);
+                this.FormatByLayout(message, severity);
+
+                using (var writer = new StreamWriter(this.FilePath, true))
+                {
+                    writer.WriteLineAsync(this.FormattedMessage);
+                }
             }
         }
     }
