@@ -26,8 +26,14 @@ public class Form extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		response.getWriter().append("<form>");
+		response.getWriter().append("ID: <input type=\"number\" name=\"id\">");
+		response.getWriter().append("Topic: <input type=\"text\" name=\"topic\">");
+		response.getWriter().append("Date: <input type=\"date\" name=\"date\">");
+		response.getWriter().append("<br><br>");
+		response.getWriter().append("<input type=\"button\" value=\"Submit\">");
+		response.getWriter().append("<input type=\"button\" value=\"Cancel\">");
+		response.getWriter().append("</form>");
 	}
 
 	/**

@@ -51,10 +51,10 @@ public class Table extends HttpServlet {
 						.append("<td>").append(entry.getValue()).append("</td>");
 					response.getWriter().append("</tr>");	
 				} catch (IOException e) {
-					// Not sure if I'm dumb, but why the f do I need
-					// to catch this if the method already throws?
+					// Not sure if I'm dumb, but why the hell does it force
+					// me to catch this if the method already throws?
 				}
-		});		
+		});
 		response.getWriter().append("</table>");
 	}
 
