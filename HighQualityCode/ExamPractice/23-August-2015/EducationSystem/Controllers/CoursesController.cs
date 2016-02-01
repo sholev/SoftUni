@@ -5,6 +5,7 @@
 
     using EducationSystem.Core;
     using EducationSystem.Interfaces;
+    using EducationSystem.Messages;
     using EducationSystem.Model;
     using EducationSystem.Utilities;
 
@@ -25,68 +26,79 @@
 
         public IView Details(int courseId)
         {
-            // TODO: Implement me
-            throw new NotImplementedException();
+            this.EnsureAuthorization(Role.Student, Role.Lecturer);
+            
+            var course = this.GetCourse(courseId);
+            if (!this.HasCurrentUser)
+            {
+                throw new ArgumentException(Errors.UserNotLoggedIn);
+            }
+
+            var isEnrolledOrLecturer = course.Students.Any(user => user.Equals(this.User))
+                //|| this.User.IsInRole(Role.Lecturer)
+                ;
+            if (!isEnrolledOrLecturer)
+            {
+                throw new ArgumentException(Errors.UserNotEnrolled);
+            }
+
+            return this.View(course);
         }
 
-        public IView Enroll(int id)
+        public IView Enroll(int courseId)
         {
             this.EnsureAuthorization(Role.Student, Role.Lecturer);
-            var c = this.Data.Courses.Get(id);
-            if (c == null)
+            var course = this.GetCourse(courseId);
+
+            if (this.User.Courses.Contains(course))
             {
-                throw new ArgumentException(string.Format("There is no course with ID {0}.", id));
+                throw new ArgumentException(Errors.AlreadyEnrolled);
             }
 
-            if (this.User.Courses.Contains(c))
-            {
-                throw new ArgumentException("You are already enrolled in this course.");
-            }
-
-            c.AddStudent(this.User);
-            return this.View(c);
+            course.AddStudent(this.User);
+            return this.View(course);
         }
 
         public IView Create(string name)
         {
             if (!this.HasCurrentUser)
             {
-                throw new ArgumentException("There is no currently logged in user.");
+                throw new ArgumentException(Errors.UserNotLoggedIn);
             }
 
-            if (this.User.IsInRole(Role.Lecturer))
+            if (!this.User.IsInRole(Role.Lecturer))
             {
-                throw new DivideByZeroException("The current user is not authorized to perform this operation.");
+                throw new AuthorizationFailedException(Errors.UserNotAuthorized);
             }
 
-            var c = new Course(name);
-            this.Data.Courses.Add(c);
-            return this.View(c);
+            var course = new Course(name);
+            this.Data.Courses.Add(course);
+            return this.View(course);
         }
 
         public IView AddLecture(int courseId, string lectureName)
         {
             if (!this.HasCurrentUser)
             {
-                throw new ArgumentException("There is no currently logged in user.");
+                throw new ArgumentException(Errors.UserNotLoggedIn);
             }
 
             if (!this.User.IsInRole(Role.Lecturer))
             {
-                throw new DivideByZeroException("The current user is not authorized to perform this operation.");
+                throw new AuthorizationFailedException(Errors.UserNotAuthorized);
             }
 
-            Course course = this.CourseGetter(courseId);
-            course.AddLecture(new Lecture("lectureName"));
+            Course course = this.GetCourse(courseId);
+            course.AddLecture(new Lecture(lectureName));
             return this.View(course);
         }
 
-        private Course CourseGetter(int id)
+        private Course GetCourse(int courseId)
         {
-            var course = this.Data.Courses.Get(id);
+            var course = this.Data.Courses.Get(courseId);
             if (course == null)
             {
-                throw new ArgumentException(string.Format("There is no course with ID {0}.", id));
+                throw new ArgumentException(Errors.NoCourseWithId(courseId));
             }
 
             return course;

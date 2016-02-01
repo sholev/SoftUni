@@ -1,12 +1,12 @@
-﻿namespace EducationSystem.Views.Courses
+namespace EducationSystem.Views.Courses
 {
     using System.Text;
 
     using EducationSystem.Model;
 
-    public class Crate : View
+    public class AddLecture : View
     {
-        public Crate(Course course)
+        public AddLecture(Course course)
             : base(course)
         {
         }
@@ -14,7 +14,7 @@
         protected override void BuildViewResult(StringBuilder viewResult)
         {
             var course = this.Model as Course;
-            viewResult.AppendFormat("Course {0} created successfully.", course.Name).AppendLine();
+            viewResult.AppendFormat("Lecture successfully added to course {0}.", course.Name);
         }
     }
 }

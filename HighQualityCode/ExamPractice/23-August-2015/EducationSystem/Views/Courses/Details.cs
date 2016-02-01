@@ -19,12 +19,12 @@ namespace EducationSystem.Views.Courses
             viewResult.AppendLine(course.Name);
             if (!course.Lectures.Any())
             {
-                viewResult.AppendLine("No lectures");
+                viewResult.Append("No lectures");
             }
             else
             {
-                var lectureNames = course.Lectures.Select(l => "- " + l.Name);
-                viewResult.AppendLine(string.Join(Environment.NewLine, lectureNames));
+                var lectureNames = course.Lectures.Select(lecture => "- " + lecture.Name);
+                viewResult.Append(string.Join(Environment.NewLine, lectureNames));
             }
         }
     }

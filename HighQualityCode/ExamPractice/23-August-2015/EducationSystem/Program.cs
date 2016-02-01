@@ -1,12 +1,13 @@
 ﻿namespace EducationSystem
 {
     using EducationSystem.Core;
+    using EducationSystem.Interfaces;
 
     public class Program
     {
         public static void Main()
         {
-            var engine = new UniversityEngine();
+            IEngine engine = new UniversityEngine();
             engine.Run();
         }
     }

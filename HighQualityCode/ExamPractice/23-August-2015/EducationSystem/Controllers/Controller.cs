@@ -4,9 +4,9 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
-
-    using EducationSystem.Core;
+    
     using EducationSystem.Interfaces;
+    using EducationSystem.Messages;
     using EducationSystem.Model;
     using EducationSystem.Utilities;
 
@@ -40,12 +40,12 @@
         {
             if (!this.HasCurrentUser)
             {
-                throw new ArgumentException("There is no currently logged in user.");
+                throw new ArgumentException(Errors.UserNotLoggedIn);
             }
             
             if (!roles.Any(role => this.User.IsInRole(role)))
             {
-                throw new DivideByZeroException("The current user is not authorized to perform this operation.");
+                throw new DivideByZeroException(Errors.UserNotAuthorized);
             }
         }
     }

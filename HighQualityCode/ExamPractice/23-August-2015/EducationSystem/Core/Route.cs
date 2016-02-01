@@ -5,6 +5,7 @@
     using System.Net;
 
     using EducationSystem.Interfaces;
+    using EducationSystem.Messages;
 
     public class Route : IRoute
     {
@@ -27,7 +28,7 @@
 
             if (parameters.Length < 2)
             {
-                throw new InvalidOperationException("The provided route is invalid.");
+                throw new InvalidOperationException(Errors.RouteInvalid);
             }
 
             this.ControllerName = parameters[0] + "Controller";

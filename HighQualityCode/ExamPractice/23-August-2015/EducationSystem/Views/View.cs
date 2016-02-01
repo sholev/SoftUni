@@ -11,7 +11,7 @@
             this.Model = model;
         }
 
-        public object Model { get; private set; }
+        public object Model { get; }
 
         public string Display()
         {

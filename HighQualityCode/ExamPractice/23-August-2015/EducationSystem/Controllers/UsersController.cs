@@ -4,6 +4,7 @@
 
     using EducationSystem.Core;
     using EducationSystem.Interfaces;
+    using EducationSystem.Messages;
     using EducationSystem.Model;
     using EducationSystem.Utilities;
 
@@ -19,7 +20,7 @@
         {
             if (password != confirmPassword)
             {
-                throw new ArgumentException("The provided passwords do not match.");
+                throw new ArgumentException(Errors.UserPasswordsNotMatching);
             }
 
             this.EnsureNoLoggedInUser();
@@ -27,7 +28,7 @@
             var existingUser = this.Data.Users.GetByUsername(username);
             if (existingUser != null)
             {
-                throw new ArgumentException(string.Format("A user with username {0} already exists.", username));
+                throw new ArgumentException(Errors.UserNameTaken(username));
             }
 
             Role userRole = (Role)Enum.Parse(typeof(Role), role, true);
@@ -43,12 +44,12 @@
             var existingUser = this.Data.Users.GetByUsername(username);
             if (existingUser == null)
             {
-                throw new ArgumentException(string.Format("A user with username {0} does not exist.", username));
+                throw new ArgumentException(Errors.UserDoesNotExist(username));
             }
 
             if (existingUser.PasswordHash != HashUtilities.HashPassword(password))
             {
-                throw new ArgumentException("The provided password is wrong.");
+                throw new ArgumentException(Errors.UserPasswordIsWrong);
             }
 
             this.User = existingUser;
@@ -59,12 +60,12 @@
         {
             if (!this.HasCurrentUser)
             {
-                throw new ArgumentException("There is no currently logged in user.");
+                throw new ArgumentException(Errors.UserNotLoggedIn);
             }
 
             if (!this.User.IsInRole(Role.Lecturer) && !this.User.IsInRole(Role.Student))
             {
-                throw new DivideByZeroException("The current user is not authorized to perform this operation.");
+                throw new AuthorizationFailedException(Errors.UserNotAuthorized);
             }
 
             var user = this.User;
@@ -76,7 +77,7 @@
         {
             if (this.HasCurrentUser)
             {
-                throw new ArgumentException("There is already a logged in user.");
+                throw new ArgumentException(Errors.UserAlreadyLoggedIn);
             }
         }
     }

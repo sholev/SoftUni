@@ -3,9 +3,8 @@
     using System;
     using System.Collections.Generic;
 
-    using EducationSystem.Core;
+    using EducationSystem.Messages;
     using EducationSystem.Utilities;
-    using EducationSystem.Views;
 
     public class User
     {
@@ -15,6 +14,11 @@
 
         public User(string username, string password, Role role)
         {
+            if (string.IsNullOrEmpty(password) || password.Length < 6)
+            {
+                throw new ArgumentException(Errors.StringLength("password", 6));
+            }
+
             this.UserName = username;
             this.PasswordHash = HashUtilities.HashPassword(password);
             this.Role = role;
@@ -32,30 +36,14 @@
             {
                 if (string.IsNullOrEmpty(value) || value.Length < 5)
                 {
-                    throw new ArgumentException(Messages.GetLengthMessage("username", 5));
+                    throw new ArgumentException(Errors.StringLength("username", 5));
                 }
 
                 this.userName = value;
             }
         }
 
-        public string PasswordHash
-        {
-            get
-            {
-                return this.passwordHash;
-            }
-
-            private set
-            {
-                if (string.IsNullOrEmpty(value) || value.Length < 6)
-                {
-                    throw new ArgumentException(Messages.GetLengthMessage("password", 6));
-                }
-
-                this.passwordHash = value;
-            }
-        }
+        public string PasswordHash { get; }
 
         public Role Role { get; private set; }
 

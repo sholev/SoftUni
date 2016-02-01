@@ -22,5 +22,12 @@
 
             return null;
         }
+
+        public override void Add(User user)
+        {
+            this.usersByUsername.Add(user.UserName, user);
+
+            base.Add(user);
+        }
     }
 }

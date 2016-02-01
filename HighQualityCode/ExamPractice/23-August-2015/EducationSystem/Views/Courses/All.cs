@@ -1,5 +1,6 @@
 namespace EducationSystem.Views.Courses
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
@@ -19,15 +20,14 @@ namespace EducationSystem.Views.Courses
 
             if (!courses.Any())
             {
-                viewResult.AppendLine("No courses.");
+                viewResult.Append("No courses.");
             }
             else
             {
                 viewResult.AppendLine("All courses:");
-                foreach (var course in courses)
-                {
-                    viewResult.AppendFormat("{0} ({1} students)", course.Name, course.Students.Count).AppendLine();
-                }
+                var outputCoursees = courses.Select(
+                    course => $"{course.Name} ({course.Students.Count} students)");
+                viewResult.Append(string.Join(Environment.NewLine, outputCoursees));
             }
         }
     }

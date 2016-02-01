@@ -2,13 +2,15 @@ namespace EducationSystem.Model
 {
     using System;
 
+    using EducationSystem.Messages;
+
     public class Lecture
     {
         private string name;
 
         public Lecture(string name)
         {
-            this.Name = this.Name;
+            this.Name = name;
         }
 
         public string Name
@@ -22,7 +24,7 @@ namespace EducationSystem.Model
             {
                 if (value == null || value.Length < 3)
                 {
-                    throw new ArgumentException("The lecture name must be at least 3 symbols long.");
+                    throw new ArgumentException(Errors.StringLength("lecture name", 3));
                 }
 
                 this.name = value;

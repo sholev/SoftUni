@@ -14,7 +14,7 @@ namespace EducationSystem.Views.Users
         protected override void BuildViewResult(StringBuilder viewResult)
         {
             var user = this.Model as User;
-            viewResult.AppendFormat("User {0} logged in successfully.", user.UserName).AppendLine();
+            viewResult.AppendFormat("User {0} logged in successfully.", user.UserName);
         }
     }
 }

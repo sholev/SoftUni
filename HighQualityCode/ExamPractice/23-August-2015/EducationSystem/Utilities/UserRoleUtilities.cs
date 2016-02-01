@@ -1,6 +1,5 @@
 ﻿namespace EducationSystem.Utilities
 {
-    using EducationSystem.Core;
     using EducationSystem.Model;
 
     public static class UserRoleUtilities

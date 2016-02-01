@@ -1,14 +1,14 @@
-﻿namespace EducationSystem.Core
+﻿using EducationSystem.Controllers;
+using EducationSystem.Data;
+using EducationSystem.Interfaces;
+using EducationSystem.Model;
+
+using System;
+using System.Linq;
+using System.Reflection;
+
+namespace EducationSystem.Core
 {
-    using System;
-    using System.Linq;
-    using System.Reflection;
-
-    using EducationSystem.Controllers;
-    using EducationSystem.Data;
-    using EducationSystem.Interfaces;
-    using EducationSystem.Model;
-
     public class UniversityEngine : IEngine
     {
         public void Run()
@@ -25,7 +25,7 @@
                     break;
                 }
 
-                var route = new Route(input);
+                IRoute route = new Route(input);
                 var controllerType = Assembly.GetExecutingAssembly().GetTypes()
                     .FirstOrDefault(type => type.Name == route.ControllerName);
 
@@ -41,8 +41,8 @@
                 }
                 catch (Exception ex)
                 {
-                    string output = ex.InnerException.Message;
-                    Console.WriteLine(output);
+                    string errorMessage = ex.InnerException.Message;
+                    Console.WriteLine(errorMessage);
                 }
             }
         }

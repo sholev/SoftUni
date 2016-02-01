@@ -1,4 +1,4 @@
-namespace EducationSystem.Core
+namespace EducationSystem.Model
 {
     public enum Role
     {

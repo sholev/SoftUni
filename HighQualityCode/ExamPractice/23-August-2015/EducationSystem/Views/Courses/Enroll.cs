@@ -1,12 +1,12 @@
-namespace EducationSystem.Views.Courses
+﻿namespace EducationSystem.Views.Courses
 {
     using System.Text;
 
     using EducationSystem.Model;
 
-    public class AddLectures : View
+    public class Enroll : View
     {
-        public AddLectures(Course course)
+        public Enroll(Course course)
             : base(course)
         {
         }
@@ -14,7 +14,7 @@ namespace EducationSystem.Views.Courses
         protected override void BuildViewResult(StringBuilder viewResult)
         {
             var course = this.Model as Course;
-            viewResult.AppendFormat("Lecture successfully added to course {0}.", course.Name).AppendLine();
+            viewResult.AppendFormat("Student successfully enrolled in course {0}.", course.Name);
         }
     }
 }

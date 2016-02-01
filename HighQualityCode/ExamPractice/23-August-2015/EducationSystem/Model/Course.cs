@@ -3,8 +3,7 @@ namespace EducationSystem.Model
     using System;
     using System.Collections.Generic;
 
-    using EducationSystem.Core;
-    using EducationSystem.Views;
+    using EducationSystem.Messages;
 
     public class Course
     {
@@ -13,6 +12,7 @@ namespace EducationSystem.Model
         public Course(string name)
         {
             this.Name = name;
+            this.Students = new List<User>();
             this.Lectures = new List<Lecture>();
         }
 
@@ -27,7 +27,7 @@ namespace EducationSystem.Model
             {
                 if (string.IsNullOrEmpty(value) || value.Length < 5)
                 {
-                    throw new ArgumentException(Messages.GetLengthMessage("course name", 5));
+                    throw new ArgumentException(Errors.StringLength("course name", 5));
                 }
 
                 this.name = value;
@@ -36,7 +36,7 @@ namespace EducationSystem.Model
 
         public IList<Lecture> Lectures { get; }
 
-        public IList<User> Students { get; set; }
+        public IList<User> Students { get; }
 
         public void AddLecture(Lecture lecture)
         {
