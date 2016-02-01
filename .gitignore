@@ -295,3 +295,7 @@ local.properties
 *.7z
 *.zip
 *.rar
+
+#Additional
+Servers/
+.recommenders
