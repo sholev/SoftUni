@@ -4,7 +4,8 @@
     using System.Diagnostics;
     using System.Linq;
     using System.Reflection;
-    
+
+    using EducationSystem.Core;
     using EducationSystem.Interfaces;
     using EducationSystem.Messages;
     using EducationSystem.Model;
@@ -23,12 +24,13 @@
         protected IView View(object model)
         {
             string fullNamespace = this.GetType().Namespace;
+
             int firstSeparatorIndex = fullNamespace.IndexOf(Separator);
+
             string baseNamespace = fullNamespace.Substring(0, firstSeparatorIndex);
-
-            string controllerName = this.GetType().Name.Replace("Controller", String.Empty);
-
+            string controllerName = this.GetType().Name.Replace("Controller", string.Empty);
             string actionName = new StackTrace().GetFrame(1).GetMethod().Name;
+
             string fullPath = $"{baseNamespace}{Separator}{"Views"}{Separator}{controllerName}{Separator}{actionName}";
 
             Type viewType = Assembly.GetExecutingAssembly().GetType(fullPath);
@@ -45,7 +47,7 @@
             
             if (!roles.Any(role => this.User.IsInRole(role)))
             {
-                throw new DivideByZeroException(Errors.UserNotAuthorized);
+                throw new AuthorizationFailedException(Errors.UserNotAuthorized);
             }
         }
     }

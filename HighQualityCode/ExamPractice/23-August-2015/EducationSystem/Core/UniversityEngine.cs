@@ -9,15 +9,30 @@ using System.Reflection;
 
 namespace EducationSystem.Core
 {
+    using System.Collections.Generic;
+
     public class UniversityEngine : IEngine
     {
         public void Run()
         {
             UniversityRepository database = new UniversityRepository();
             User user = null;
+            Dictionary<string, Type> cachedTypes = null;
 
             while (true)
             {
+                if (cachedTypes == null)
+                {
+                    cachedTypes = new Dictionary<string, Type>();
+                    var uniqueTypesByName =
+                        Assembly.GetExecutingAssembly()
+                            .GetTypes()
+                            .GroupBy(type => type.Name)
+                            .Select(type => type.First());
+
+                    cachedTypes = uniqueTypesByName.ToDictionary(type => type.Name, type => type);
+                }
+
                 string input = Console.ReadLine();
                 
                 if (input == null)
@@ -26,8 +41,9 @@ namespace EducationSystem.Core
                 }
 
                 IRoute route = new Route(input);
-                var controllerType = Assembly.GetExecutingAssembly().GetTypes()
-                    .FirstOrDefault(type => type.Name == route.ControllerName);
+                //var controllerType = Assembly.GetExecutingAssembly().GetTypes()
+                //    .FirstOrDefault(type => type.Name == route.ControllerName);
+                var controllerType = cachedTypes[route.ControllerName];
 
                 var controller = Activator.CreateInstance(controllerType, database, user) as Controller;
                 var action = controllerType?.GetMethod(route.ActionName);

@@ -10,7 +10,7 @@
     {
         private string userName;
 
-        private string passwordHash;
+        ////private string passwordHash;
 
         public User(string username, string password, Role role)
         {

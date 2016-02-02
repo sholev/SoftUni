@@ -34,9 +34,7 @@
                 throw new ArgumentException(Errors.UserNotLoggedIn);
             }
 
-            var isEnrolledOrLecturer = course.Students.Any(user => user.Equals(this.User))
-                //|| this.User.IsInRole(Role.Lecturer)
-                ;
+            var isEnrolledOrLecturer = course.Students.Any(user => user.Equals(this.User));
             if (!isEnrolledOrLecturer)
             {
                 throw new ArgumentException(Errors.UserNotEnrolled);

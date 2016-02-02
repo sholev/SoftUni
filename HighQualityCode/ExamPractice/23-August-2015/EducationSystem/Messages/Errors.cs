@@ -23,8 +23,8 @@
         public static string UserPasswordIsWrong
             => "The provided password is wrong.";
 
-        public static string RouteInvalid =>
-            "The provided route is invalid.";
+        public static string RouteInvalid
+            => "The provided route is invalid.";
 
         public static string UserDoesNotExist(string username) 
             => $"A user with username {username} does not exist.";
