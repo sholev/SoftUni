@@ -23,13 +23,12 @@ namespace EducationSystem.Core
             {
                 if (cachedTypes == null)
                 {
-                    cachedTypes = new Dictionary<string, Type>();
                     var uniqueTypesByName =
                         Assembly.GetExecutingAssembly()
                             .GetTypes()
                             .GroupBy(type => type.Name)
                             .Select(type => type.First());
-
+                    
                     cachedTypes = uniqueTypesByName.ToDictionary(type => type.Name, type => type);
                 }
 
@@ -41,12 +40,12 @@ namespace EducationSystem.Core
                 }
 
                 IRoute route = new Route(input);
-                //var controllerType = Assembly.GetExecutingAssembly().GetTypes()
-                //    .FirstOrDefault(type => type.Name == route.ControllerName);
+                ////var controllerType = Assembly.GetExecutingAssembly().GetTypes()
+                ////    .FirstOrDefault(type => type.Name == route.ControllerName);
                 var controllerType = cachedTypes[route.ControllerName];
 
                 var controller = Activator.CreateInstance(controllerType, database, user) as Controller;
-                var action = controllerType?.GetMethod(route.ActionName);
+                var action = controllerType.GetMethod(route.ActionName);
                 object[] parameters = MapParameters(route, action);
 
                 try
