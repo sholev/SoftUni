@@ -4,7 +4,7 @@
     using System.Runtime.Serialization;
 
     [Serializable]
-    internal class AuthorizationFailedException : Exception
+    public class AuthorizationFailedException : Exception
     {
         public AuthorizationFailedException()
         {
