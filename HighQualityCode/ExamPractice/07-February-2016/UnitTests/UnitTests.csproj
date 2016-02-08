@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A16C6A6A-A460-4266-981B-22E5452EDDE7}</ProjectGuid>
+    <ProjectGuid>{565D165D-F286-4784-9815-11AA6E643B8B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnitTestsEducationSystem</RootNamespace>
-    <AssemblyName>UnitTestsEducationSystem</AssemblyName>
+    <RootNamespace>UnitTests</RootNamespace>
+    <AssemblyName>UnitTests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -45,25 +45,18 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
-          <Private>False</Private>
-        </Reference>
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
       </ItemGroup>
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="ControllerTests.cs" />
-    <Compile Include="TestHelpers\TestController.cs" />
-    <Compile Include="TestHelpers\TestView.cs" />
     <Compile Include="RepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UsersControllerTests.cs" />
-    <Compile Include="ViewTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EducationSystem\EducationSystem.csproj">
-      <Project>{C70CD24F-A17F-4665-A816-6FE3D7117CC0}</Project>
-      <Name>EducationSystem</Name>
+    <ProjectReference Include="..\AC-TestingSystem\AC-TestingSystem.csproj">
+      <Project>{6F364073-495F-4503-93ED-DBE74E6BF918}</Project>
+      <Name>AC-TestingSystem</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

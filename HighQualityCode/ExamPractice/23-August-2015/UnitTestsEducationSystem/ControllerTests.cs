@@ -10,38 +10,38 @@ namespace UnitTestsEducationSystem
 
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-    using MockController = UnitTestsEducationSystem.MockHelpers.MockController;
+    using UnitTestsEducationSystem.TestHelpers;
 
     [TestClass]
     public class ControllerTests
     {
-        private User mockUserNull;
-        private User mockUser;
-        private MockController mockController;
-        private MockController mockControllerNullUser;
+        private User testUserNull;
+        private User testUser;
+        private TestController testController;
+        private TestController testControllerNullUser;
 
         [TestInitialize]
         public void InitializeTestController()
         {
-            this.mockUserNull = null;
-            this.mockControllerNullUser = new MockController(this.mockUserNull);
+            this.testUserNull = null;
+            this.testControllerNullUser = new TestController(this.testUserNull);
 
-            this.mockUser = new User("Mocky Mockington", "TisASecret", Role.Student);
-            this.mockController = new MockController(this.mockUser);
+            this.testUser = new User("Mocky Mockington", "TisASecret", Role.Student);
+            this.testController = new TestController(this.testUser);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void MockedControllerNullUser_EnsureAuthorization_ThrowsException()
+        public void TestControllerNullUser_EnsureAuthorization_ThrowsException()
         {
-            this.mockControllerNullUser.ExposedEnsureAuthorization(Role.Student, Role.Lecturer);
+            this.testControllerNullUser.ExposedEnsureAuthorization(Role.Student, Role.Lecturer);
         }
 
         [TestMethod]
         [ExpectedException(typeof(AuthorizationFailedException))]
-        public void MockedController_EnsureAuthorization_ThrowsException()
+        public void TestController_EnsureAuthorization_ThrowsException()
         {
-            this.mockController.ExposedEnsureAuthorization(Role.Lecturer);
+            this.testController.ExposedEnsureAuthorization(Role.Lecturer);
         }
     }
 }
