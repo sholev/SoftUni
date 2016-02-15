@@ -9,51 +9,52 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import bg.softuni.ejb.model.BankingAccount;
+import bg.softuni.ejb.model.BankingAccounts;
 
 @WebServlet("/Submit")
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 637133710L;
 
 	@EJB
-	private BankingAccount bankingAccount;
+	private BankingAccounts bankingAccount;
 	
     public Controller() {
         super();
     }
-    
+
+ // Couldn't get this to work, that is why I'm using a filter as a Controller.
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		String output = null;
-		String userId = (String)request.getAttribute("userId");
-		String user = request.getParameter("userId");
-		if (userId == null && user != ""){			
-			request.setAttribute("userId", user);
-			userId = user;
-		}
-		
-		if (userId != null && !userId.contains(" ")) {
-			String action = request.getParameter("action");
-			String amount = request.getParameter("amount");
-			
-			if (action != null && action.equals("deposit")){
-				output = this.bankingAccount.Deposit(userId, amount);
-			} else if (action != null && action.equals("withdraw")){
-				output = this.bankingAccount.Withdraw(userId, amount);
-			} else {
-				output = "Deposit or withdrawal wasn't selected.";
-			}
-			
-			String balance = bankingAccount.getAccountBallance(userId);	
-			request.setAttribute("balance", balance);
-		} else {
-			output = "Enter valid id:";
-		}
-		
-		request.setAttribute("output", output);
-		
-		response.sendRedirect("/EnterpriseJavaBeans/BankingPage.jsp");
+//		String output = null;
+//		String userId = (String)request.getAttribute("userId");
+//		String user = request.getParameter("userId");
+//		if (userId == null && user != ""){			
+//			request.setAttribute("userId", user);
+//			userId = user;
+//		}
+//		
+//		if (userId != null && !userId.contains(" ")) {
+//			String action = request.getParameter("action");
+//			String amount = request.getParameter("amount");
+//			
+//			if (action != null && action.equals("deposit")){
+//				output = this.bankingAccount.Deposit(userId, amount);
+//			} else if (action != null && action.equals("withdraw")){
+//				output = this.bankingAccount.Withdraw(userId, amount);
+//			} else {
+//				output = "Deposit or withdrawal wasn't selected.";
+//			}
+//			
+//			String balance = bankingAccount.getAccountBallance(userId);	
+//			request.setAttribute("balance", balance);
+//		} else {
+//			output = "Enter valid id:";
+//		}
+//		
+//		request.setAttribute("output", output);
+//		
+//		response.sendRedirect("/EnterpriseJavaBeans/BankingPage.jsp");
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) 

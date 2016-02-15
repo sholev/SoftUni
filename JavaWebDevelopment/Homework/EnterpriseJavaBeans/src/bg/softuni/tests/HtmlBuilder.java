@@ -5,6 +5,7 @@ public class HtmlBuilder {
 
 	private StringBuilder page;
 	
+	// Started with this, but it got messy. Using /WebContent/BankingPage.jsp instead.
 	public StringBuilder makeBankingPage(){
 		
 		// Messing around with html, didn't turn out good at all... T_T
