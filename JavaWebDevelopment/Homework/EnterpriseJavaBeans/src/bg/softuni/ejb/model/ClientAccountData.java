@@ -29,16 +29,14 @@ public class ClientAccountData implements AccountData {
 	}
 	
 	@Override
-	public void deposit(BigDecimal amount)
-	{
+	public void deposit(BigDecimal amount){
 		this.checkForWithdrawalLimitReset();
 		
 		this.totalBalance = this.totalBalance.add(amount);		
 	}
 	
 	@Override
-	public void withdraw(BigDecimal amount)
-	{
+	public void withdraw(BigDecimal amount){
 		this.checkForWithdrawalLimitReset();
 		
 		this.dailyWithdrawal = this.dailyWithdrawal.add(amount);	
@@ -52,8 +50,7 @@ public class ClientAccountData implements AccountData {
 		return this.dailyWithdrawal.add(requestedWithdrawal).compareTo(dailyLimit) == 1;
 	}
 	
-	private void checkForWithdrawalLimitReset()
-	{
+	private void checkForWithdrawalLimitReset(){
 		String today = LocalDateTime.now().getDayOfWeek().toString();
 		if (!this.weekday.equals(today)){
 			this.dailyWithdrawal = BigDecimal.ZERO;

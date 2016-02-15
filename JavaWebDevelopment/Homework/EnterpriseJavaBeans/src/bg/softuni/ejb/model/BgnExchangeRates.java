@@ -36,7 +36,7 @@ public class BgnExchangeRates implements CurrencyExchange{
 	}
 	
 	@Override
-	public BigDecimal getExchangeRate(LocalDateTime date, String currency) {
+	public BigDecimal getExchangeRate(LocalDateTime date, String currency){
 		
 		String weekday = date.getDayOfWeek().toString();
 		

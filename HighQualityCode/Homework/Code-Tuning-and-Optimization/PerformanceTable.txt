@@ -1,7 +1,7 @@
 
 	Performance of operations:
 
-| n = 1000000  |       int       |      long       |     double      |     decimal     |
+| n = 1        |       int       |      long       |     double      |     decimal     |
 |--------------|-----------------|-----------------|-----------------|-----------------|
 | +            | 0.0000146680 ms | 0.0000150232 ms | 0.0000144960 ms | 0.0000277552 ms |
 | -            | 0.0000134597 ms | 0.0000133152 ms | 0.0000136374 ms | 0.0000277058 ms |
@@ -15,7 +15,7 @@
 
 	Performance of Math methods:
 
-| n = 1000000 |     double      |     decimal     |
+| n = 1       |     double      |     decimal     |
 |-------------|-----------------|-----------------|
 | Math.Sqrt() | 0.0000157072 ms | 0.0000327898 ms |
 | Math.Log()  | 0.0000278884 ms | 0.0000450714 ms |
@@ -63,7 +63,7 @@
 
 
 
-n = 1000000	int	long	double	decimal
+n = 1	int	long	double	decimal
 +	0.0000146680 ms	0.0000150232 ms	0.0000144960 ms	0.0000277552 ms
 -	0.0000134597 ms	0.0000133152 ms	0.0000136374 ms	0.0000277058 ms
 ++ (prefix)	0.0000129257 ms	0.0000140753 ms	0.0000127851 ms	0.0000357043 ms
@@ -73,7 +73,7 @@ n = 1000000	int	long	double	decimal
 /	0.0000167250 ms	0.0000182325 ms	0.0000175731 ms	0.0000386322 ms
 
 
-n = 1000000	double	decimal
+n = 1	double	decimal
 Math.Sqrt()	0.0000157072 ms	0.0000327898 ms
 Math.Log()	0.0000278884 ms	0.0000450714 ms
 Math.Sin()	0.0000380967 ms	0.0000560571 ms

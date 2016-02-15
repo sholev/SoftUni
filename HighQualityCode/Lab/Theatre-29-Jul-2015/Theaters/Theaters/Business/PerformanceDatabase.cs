@@ -36,7 +36,7 @@
         {
             if (!this.performances.ContainsKey(theaterName))
             {
-                throw new TheaterNotFoundException("Theater does not exist");
+                throw new TheaterNotFoundException("Theatre does not exist");
             }
 
             var performance = this.performances[theaterName];

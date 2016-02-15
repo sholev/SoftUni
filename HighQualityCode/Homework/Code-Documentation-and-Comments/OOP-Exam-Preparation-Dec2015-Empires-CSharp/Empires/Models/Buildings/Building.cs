@@ -2,10 +2,10 @@
 {
     using System;
 
-    using Contracts;
-    using Enums;
-    using EventArgs;
-    using EventHandlers;
+    using Empires.Contracts;
+    using Empires.Enums;
+    using Empires.Models.EventArgs;
+    using Empires.Models.EventHandlers;
 
     public abstract class Building : IBuilding
     {
@@ -14,13 +14,14 @@
         private int cyclesCount = 0;
 
         // Encapsulated fields, moved event handlers to separate file
-        private readonly string unitType;
-        private int unitCycleLength;
-        private readonly ResourceType resourceType;
-        private int resourceCycleLength;
-        private int resourceQuantity;
         private readonly IUnitFactory unitFactory;
         private readonly IResourceFactory resourceFactory;
+        private readonly string unitType;
+        private readonly ResourceType resourceType;
+
+        private int unitCycleLength;
+        private int resourceCycleLength;
+        private int resourceQuantity;
 
         protected Building(
             string unitType,
@@ -132,6 +133,7 @@
         public override string ToString()
         {
             int turnsUntilUnit = this.unitCycleLength - (this.cyclesCount - ProductionDelay) % this.unitCycleLength;
+
             int turnsUntilResource = this.resourceCycleLength - (this.cyclesCount - ProductionDelay) % this.resourceCycleLength;
 
             var result = string.Format(
