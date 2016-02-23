@@ -10,18 +10,18 @@ public class ClientAccount implements AccountData {
 	
 	private BigDecimal totalBalance;
 	private BigDecimal dailyWithdrawal;
-	private String weekday;
+	private String lastWithdrawalDay;
 	
 	public ClientAccount(){
 		this.totalBalance = BigDecimal.ZERO;
 		this.dailyWithdrawal = BigDecimal.ZERO;
-		this.weekday = LocalDateTime.now().getDayOfWeek().toString();
+		this.lastWithdrawalDay = LocalDateTime.now().getDayOfWeek().toString();
 	}
 	
 	public ClientAccount(BigDecimal initialDeposit){
 		this.totalBalance = initialDeposit;
 		this.dailyWithdrawal = BigDecimal.ZERO;
-		this.weekday = LocalDateTime.now().getDayOfWeek().toString();
+		this.lastWithdrawalDay = LocalDateTime.now().getDayOfWeek().toString();
 	}
 	
 	@Override
@@ -53,8 +53,9 @@ public class ClientAccount implements AccountData {
 	
 	private void checkForWithdrawalLimitReset(){
 		String today = LocalDateTime.now().getDayOfWeek().toString();
-		if (!this.weekday.equals(today)){
+		if (!this.lastWithdrawalDay.equals(today)){
 			this.dailyWithdrawal = BigDecimal.ZERO;
+			this.lastWithdrawalDay = today;
 		}
-	}	
+	}
 }

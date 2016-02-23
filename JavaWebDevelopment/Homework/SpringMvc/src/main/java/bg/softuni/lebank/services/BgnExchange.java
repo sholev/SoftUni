@@ -1,4 +1,4 @@
-package bg.softuni.lebank.entities;
+package bg.softuni.lebank.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -6,8 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import org.springframework.stereotype.Service;
+
 import bg.softuni.lebank.interfaces.CurrencyExchange;
 
+@Service
 public class BgnExchange implements CurrencyExchange{
 
 	private Map<String, Map<String, BigDecimal>> exchangeRates;

@@ -1,20 +1,24 @@
-package bg.softuni.lebank.entities;
+package bg.softuni.lebank.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
+import bg.softuni.lebank.entities.ClientAccount;
 import bg.softuni.lebank.interfaces.AccountData;
-import bg.softuni.lebank.interfaces.AccountRepository;
+import bg.softuni.lebank.interfaces.AccountsRepository;
 import bg.softuni.lebank.interfaces.CurrencyExchange;
 
-public class AccountsRepository implements AccountRepository{
+@Service
+public class ClientsRepository implements AccountsRepository{
 
 	private Map<String, AccountData> accounts;
 	private String accountCurrency;
 	
-	public AccountsRepository(){
+	public ClientsRepository(){
 		this.accountCurrency = "bgn";
 		this.accounts = new HashMap<String, AccountData>();
 	}

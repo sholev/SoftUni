@@ -1,6 +1,6 @@
 package bg.softuni.lebank.interfaces;
 
-public interface AccountRepository {
+public interface AccountsRepository {
 	
 	String getAccountCurrency();
 	
