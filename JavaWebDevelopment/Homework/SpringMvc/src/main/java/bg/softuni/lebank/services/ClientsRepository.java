@@ -1,12 +1,12 @@
 package bg.softuni.lebank.services;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import bg.softuni.lebank.constants.OutputMessages;
 import bg.softuni.lebank.entities.ClientAccount;
 import bg.softuni.lebank.interfaces.AccountData;
 import bg.softuni.lebank.interfaces.AccountsRepository;
@@ -39,13 +39,13 @@ public class ClientsRepository implements AccountsRepository {
 		BigDecimal depositAmount = new BigDecimal(amount);
 		BigDecimal exchangedAmount = null;
 		String output;
-		if (depositAmount.compareTo(BigDecimal.ZERO) != 1){
-			output = "Invalid deposit amount. It should be greater than zero.";
+		if (depositAmount.compareTo(BigDecimal.ZERO) != 1) {
+			output = OutputMessages.INVALID_DEPOSIT_NEGATIVE_OR_ZERO;
 		} else {
 			if (!this.accounts.containsKey(owner)){
 				this.accounts.put(owner, new ClientAccount(depositAmount, currency));
 				
-				output = "Successully created an account and deposited " 
+				output = OutputMessages.SUCCESSFUL_DEPOSIT_AND_REGISTER
 						+ depositAmount.setScale(2, BigDecimal.ROUND_DOWN).toString()
 						+ " "
 						+ currency.toUpperCase();
@@ -54,7 +54,7 @@ public class ClientsRepository implements AccountsRepository {
 				exchangedAmount = rate.exchangeCurrency(depositAmount, currency, accountCurrency);
 				this.accounts.get(owner).deposit(exchangedAmount);
 				
-				output = "Successully deposited: " 
+				output = OutputMessages.SUCCESSFUL_DEPOSIT
 						+ exchangedAmount.setScale(2, BigDecimal.ROUND_DOWN).toString()
 						+ " "
 						+ accountCurrency.toUpperCase();
@@ -72,17 +72,17 @@ public class ClientsRepository implements AccountsRepository {
 		BigDecimal exchangedAmmount = rate.exchangeCurrency(withdrawalAmount, currency, accountCurrency);		
 		String output;		
 		if (exchangedAmmount.compareTo(BigDecimal.ZERO) != 1){
-			output = "Invalid withdrawal amount. It should be greater than zero.";
+			output = OutputMessages.INVALID_WITHDRAWAL_AMOUNT;
 		} else if(!this.accounts.containsKey(owner)){
-			output = "Invalid user. The user does not have an account, deposit in order to create one.";			
+			output = OutputMessages.INVALID_CLIENT_ID;			
 		} else if(exchangedAmmount.compareTo(this.accounts.get(owner).getBalance()) == 1){
-			output = "Invalid withdrawal amount. It should not be greater than the account ballance.";
+			output = OutputMessages.INVALID_WITHDRAWAL_GREATER_THAN_BALLANCE;
 		} else if(this.accounts.get(owner).dailyLimitReached(exchangedAmmount)){
-			output = "Invalid withdrawal amount. It's above the maximum daily withdrawal amount.";
+			output = OutputMessages.INVALID_WITHDRAWAL_ABOVE_DAILY_LIMIT;
 		} else {
 			this.accounts.get(owner).withdraw(exchangedAmmount);
 			
-			output = "Successully withdrawn: " 
+			output = OutputMessages.SUCCESSFUL_WITHDRAW
 					+ exchangedAmmount.setScale(2, BigDecimal.ROUND_DOWN).toString() 
 					+ " "
 					+ accountCurrency.toUpperCase();

@@ -16,7 +16,8 @@ public class BgnExchange implements CurrencyExchange {
 
 	private Map<String, Map<String, BigDecimal>> exchangeRates;
 	
-	public BgnExchange() {		
+	public BgnExchange() {
+
 		this.exchangeRates = new HashMap<String, Map<String, BigDecimal>>();
 		Random rng = new Random();
 		String[] weekdays = {

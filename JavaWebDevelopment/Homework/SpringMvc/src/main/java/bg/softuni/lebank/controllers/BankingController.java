@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import bg.softuni.lebank.constants.OutputMessages;
 import bg.softuni.lebank.entities.InputData;
 import bg.softuni.lebank.interfaces.AccountsRepository;
 import bg.softuni.lebank.interfaces.CurrencyExchange;
@@ -58,13 +59,13 @@ public class BankingController {
 			} else if (action != null && action.equals("withdraw")){
 				output = this.clientsRepository.withdraw(user, amount, currency, bgnExchange);
 			} else {
-				output = "Deposit or withdrawal wasn't selected.";
+				output = OutputMessages.OPERATION_NOT_SELECTED;
 			}
 			
 			String balance = clientsRepository.getAccountBallance(user);	
 			model.addAttribute("currentBallance", "Client balance: " + balance);
 		} else {
-			output = "Enter valid id, no whitespace allowed:";
+			output = OutputMessages.VALID_ID_REQUIRED;
 		}
 		
 		model.addAttribute("output", output);

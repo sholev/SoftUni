@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 
 import bg.softuni.lebank.interfaces.AccountData;
 
-
 public class ClientAccount implements AccountData {
 	
 	private BigDecimal totalBalance;
@@ -13,7 +12,7 @@ public class ClientAccount implements AccountData {
 	private String lastWithdrawalDay;
 	private String accountCurrency;
 	
-	public ClientAccount(BigDecimal initialDeposit, String accountCurrency){
+	public ClientAccount(BigDecimal initialDeposit, String accountCurrency) {
 		this.totalBalance = initialDeposit;
 		this.dailyWithdrawal = BigDecimal.ZERO;
 		this.accountCurrency = accountCurrency;
@@ -26,19 +25,19 @@ public class ClientAccount implements AccountData {
 	}
 	
 	@Override
-	public BigDecimal getBalance(){
+	public BigDecimal getBalance() {
 		return this.totalBalance;
 	}
 	
 	@Override
-	public void deposit(BigDecimal amount){
+	public void deposit(BigDecimal amount) {
 		this.checkForWithdrawalLimitReset();
 		
 		this.totalBalance = this.totalBalance.add(amount);		
 	}
 	
 	@Override
-	public void withdraw(BigDecimal amount){
+	public void withdraw(BigDecimal amount) {
 		this.checkForWithdrawalLimitReset();
 		
 		this.dailyWithdrawal = this.dailyWithdrawal.add(amount);	
@@ -46,13 +45,13 @@ public class ClientAccount implements AccountData {
 	}
 	
 	@Override
-	public Boolean dailyLimitReached(BigDecimal requestedWithdrawal){
+	public Boolean dailyLimitReached(BigDecimal requestedWithdrawal) {
 		BigDecimal dailyLimit = this.totalBalance.divide(new BigDecimal("2"));
 		
 		return this.dailyWithdrawal.add(requestedWithdrawal).compareTo(dailyLimit) == 1;
 	}
 	
-	private void checkForWithdrawalLimitReset(){
+	private void checkForWithdrawalLimitReset() {
 		String today = LocalDateTime.now().getDayOfWeek().toString();
 		if (!this.lastWithdrawalDay.equals(today)){
 			this.dailyWithdrawal = BigDecimal.ZERO;
