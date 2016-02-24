@@ -11,9 +11,8 @@
 		
 			${output} <br>
 			Client ID: 
-			<input type="text" name="clientId" value="<%=request.getAttribute("clientId") == null ? "" : request.getAttribute("clientId")%>">
-			<%=request.getAttribute("currentBallance") == null ? "" : "<br>Client balance: " + request.getAttribute("currentBallance")%>
-			<br>		
+			<input type="text" name="clientId" value="${clientId}"> <br>
+			${currentBallance} <br>		
 			Operation: 
 			<input type="radio" name="selectedOperation" value="deposit">Deposit
 			<input type="radio" name="selectedOperation" value="withdraw">Withdraw

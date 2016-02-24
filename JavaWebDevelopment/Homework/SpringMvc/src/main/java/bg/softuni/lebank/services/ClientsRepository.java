@@ -45,7 +45,7 @@ public class ClientsRepository implements AccountsRepository {
 			if (!this.accounts.containsKey(owner)){
 				this.accounts.put(owner, new ClientAccount(depositAmount, currency));
 				
-				output = "Successully created an account and deposited: " 
+				output = "Successully created an account and deposited " 
 						+ depositAmount.setScale(2, BigDecimal.ROUND_DOWN).toString()
 						+ " "
 						+ currency.toUpperCase();

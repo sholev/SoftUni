@@ -38,8 +38,8 @@ public class BgnExchange implements CurrencyExchange {
 		
 		String weekday = LocalDateTime.now().getDayOfWeek().toString().toUpperCase();		
 		BigDecimal bgnCurrency = amount.multiply(this.exchangeRates.get(weekday).get(inCurrency));
-		// Not sure what sort of rounding should be used in banking.
-		// I'm guessing that the losses should be for the client of the bank. :D
+		// Not sure what sort of rounding should be used.  I'm guessing that the
+		// losses should be for the client of the bank and not the bank. :D
 		BigDecimal outputCurrency = bgnCurrency.divide(this.exchangeRates.get(weekday).get(outCurrency), 7, RoundingMode.DOWN);
 				
 		return outputCurrency;

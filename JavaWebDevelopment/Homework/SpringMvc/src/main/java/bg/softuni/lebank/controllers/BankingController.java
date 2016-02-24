@@ -44,10 +44,11 @@ public class BankingController {
 
 		String output = null;
 		String user = input.getClientId();
+		user = user == null ? "" : user;
 		
 		model.addAttribute("clientId", user);
 		
-		if (user != null && !user.contains(" ") && !user.equals("")) {
+		if (!user.equals("") && !user.contains(" ")) {
 			String action = input.getSelectedOperation();
 			String amount = input.getOperationAmount();
 			String currency = input.getSelectedCurrency();
@@ -61,7 +62,7 @@ public class BankingController {
 			}
 			
 			String balance = clientsRepository.getAccountBallance(user);	
-			model.addAttribute("currentBallance", balance);
+			model.addAttribute("currentBallance", "Client balance: " + balance);
 		} else {
 			output = "Enter valid id, no whitespace allowed:";
 		}
