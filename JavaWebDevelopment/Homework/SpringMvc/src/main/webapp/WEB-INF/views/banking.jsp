@@ -9,10 +9,10 @@
 	<body>
 		<form action="/lebank/" method="POST">
 		
-			<%=request.getAttribute("output") == null ? "" : request.getAttribute("output") + "<br>"%>
+			${output} <br>
 			Client ID: 
 			<input type="text" name="clientId" value="<%=request.getAttribute("clientId") == null ? "" : request.getAttribute("clientId")%>">
-			<%=request.getAttribute("currentBallance") == null ? "" : "<br>Client balance: " + request.getAttribute("currentBallance") + " BGN"%>
+			<%=request.getAttribute("currentBallance") == null ? "" : "<br>Client balance: " + request.getAttribute("currentBallance")%>
 			<br>		
 			Operation: 
 			<input type="radio" name="selectedOperation" value="deposit">Deposit
@@ -20,10 +20,10 @@
 			<br>
 			Amount: <input type="number" name="operationAmount" value="0">
 			<select name="selectedCurrency">
-				<option value="usd">USD</option>
-				<option value="eur">EUR</option>
-				<option value="gbp">GPB</option>
-				<option value="bgn">BGN</option>
+				<option value="USD">USD</option>
+				<option value="EUR">EUR</option>
+				<option value="GBP">GBP</option>
+				<option value="BGN">BGN</option>
 			</select>
 			<input type="submit" value="Submit">	
 		</form>

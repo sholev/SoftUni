@@ -11,17 +11,18 @@ public class ClientAccount implements AccountData {
 	private BigDecimal totalBalance;
 	private BigDecimal dailyWithdrawal;
 	private String lastWithdrawalDay;
+	private String accountCurrency;
 	
-	public ClientAccount(){
-		this.totalBalance = BigDecimal.ZERO;
+	public ClientAccount(BigDecimal initialDeposit, String accountCurrency){
+		this.totalBalance = initialDeposit;
 		this.dailyWithdrawal = BigDecimal.ZERO;
+		this.accountCurrency = accountCurrency;
 		this.lastWithdrawalDay = LocalDateTime.now().getDayOfWeek().toString();
 	}
 	
-	public ClientAccount(BigDecimal initialDeposit){
-		this.totalBalance = initialDeposit;
-		this.dailyWithdrawal = BigDecimal.ZERO;
-		this.lastWithdrawalDay = LocalDateTime.now().getDayOfWeek().toString();
+	@Override
+	public String getAccountCurrency() {
+		return this.accountCurrency.toUpperCase();
 	}
 	
 	@Override

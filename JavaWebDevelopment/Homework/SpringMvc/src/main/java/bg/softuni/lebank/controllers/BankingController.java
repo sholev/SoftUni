@@ -21,7 +21,7 @@ public class BankingController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(BankingController.class);	
 	private static final String version = "Version: 0.4";
-	private static final String project = "Project: Spring Banking Page";
+	private static final String project = "Project: Spring MVC Banking Page";
 	
 	@Autowired
 	private AccountsRepository clientsRepository;
