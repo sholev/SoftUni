@@ -7,19 +7,19 @@
 		<title>Spring banking page</title>
 	</head>
 	<body>
-		<form action="/postBanking" method="POST">
+		<form action="/lebank/" method="POST">
 		
 			<%=request.getAttribute("output") == null ? "" : request.getAttribute("output") + "<br>"%>
 			Client ID: 
-			<input type="text" name="userId" value="<%=request.getAttribute("userId") == null ? "" : request.getAttribute("userId")%>">
-			<%=request.getAttribute("balance") == null ? "" : "<br>Client balance: " + request.getAttribute("balance") + " BGN"%>
+			<input type="text" name="clientId" value="<%=request.getAttribute("clientId") == null ? "" : request.getAttribute("clientId")%>">
+			<%=request.getAttribute("currentBallance") == null ? "" : "<br>Client balance: " + request.getAttribute("currentBallance") + " BGN"%>
 			<br>		
 			Operation: 
-			<input type="radio" name="action" value="deposit">Deposit
-			<input type="radio" name="action" value="withdraw">Withdraw
+			<input type="radio" name="selectedOperation" value="deposit">Deposit
+			<input type="radio" name="selectedOperation" value="withdraw">Withdraw
 			<br>
-			Amount: <input type="number" name="amount" value="0">
-			<select name="currency">
+			Amount: <input type="number" name="operationAmount" value="0">
+			<select name="selectedCurrency">
 				<option value="usd">USD</option>
 				<option value="eur">EUR</option>
 				<option value="gbp">GPB</option>

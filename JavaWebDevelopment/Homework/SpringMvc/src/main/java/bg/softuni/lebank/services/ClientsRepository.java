@@ -77,7 +77,7 @@ public class ClientsRepository implements AccountsRepository{
 		} else if(withdrawalAmount.compareTo(this.accounts.get(owner).getBalance()) == 1){
 			output = "Invalid withdrawal amount. It should not be greater than the account ballance.";
 		} else if(this.accounts.get(owner).dailyLimitReached(withdrawalAmount)){
-			output = "Invalid withdrawal amount. You've reached the maximum daily withdrawal amount.";
+			output = "Invalid withdrawal amount. It's above the maximum daily withdrawal amount.";
 		} else {
 			this.accounts.get(owner).withdraw(withdrawalAmount);
 			

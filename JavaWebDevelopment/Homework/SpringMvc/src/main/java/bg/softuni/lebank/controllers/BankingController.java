@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import bg.softuni.lebank.entities.InputData;
 import bg.softuni.lebank.interfaces.AccountsRepository;
@@ -21,7 +20,7 @@ import bg.softuni.lebank.interfaces.CurrencyExchange;
 public class BankingController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(BankingController.class);	
-	private static final String version = "Version: 0.3";
+	private static final String version = "Version: 0.4";
 	private static final String project = "Project: Spring Banking Page";
 	
 	@Autowired
@@ -30,9 +29,9 @@ public class BankingController {
 	@Autowired
 	private CurrencyExchange bgnExchange;
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String getBanking(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
+	@RequestMapping(value = "/")
+	public String banking(Locale locale, Model model, @ModelAttribute(value = "SpringWeb") InputData input) {
+		logger.info("The client locale is {}.", locale);
 		
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
@@ -42,37 +41,27 @@ public class BankingController {
 		model.addAttribute("serverTime", formattedDate );
 		model.addAttribute("project", project);
 		model.addAttribute("version", version);
-						
-		return "banking";
-	}
-	
-	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public String postBanking(Model model, @ModelAttribute(value = "SpringWeb") InputData input) {
-		
+
 		String output = null;
-		String userId = input.getClientId();
-		String inputUser = input.getClientId();
+		String user = input.getClientId();
 		
-		if (userId == null && inputUser != ""){			
-			model.addAttribute("userId", inputUser);
-			userId = inputUser;
-		}
+		model.addAttribute("clientId", user);
 		
-		if (userId != null && !userId.contains(" ")) {
+		if (user != null && !user.contains(" ") && !user.equals("")) {
 			String action = input.getSelectedOperation();
 			String amount = input.getOperationAmount();
 			String currency = input.getSelectedCurrency();
 			
 			if (action != null && action.equals("deposit")){
-				output = this.clientsRepository.deposit(userId, amount, currency, bgnExchange);
+				output = this.clientsRepository.deposit(user, amount, currency, bgnExchange);
 			} else if (action != null && action.equals("withdraw")){
-				output = this.clientsRepository.withdraw(userId, amount, currency, bgnExchange);
+				output = this.clientsRepository.withdraw(user, amount, currency, bgnExchange);
 			} else {
 				output = "Deposit or withdrawal wasn't selected.";
 			}
 			
-			String balance = clientsRepository.getAccountBallance(userId);	
-			model.addAttribute("balance", balance);
+			String balance = clientsRepository.getAccountBallance(user);	
+			model.addAttribute("currentBallance", balance);
 		} else {
 			output = "Enter valid id, no whitespace allowed:";
 		}
