@@ -10,7 +10,7 @@ public class RocketEngine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += this.transform.forward * (Time.deltaTime * this.speed);
+        this.transform.position += this.transform.forward * (Time.deltaTime * this.speed);
 
         this.timeOut -= Time.deltaTime;
         if (this.timeOut <= 0f)

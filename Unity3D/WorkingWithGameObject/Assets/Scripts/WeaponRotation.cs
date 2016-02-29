@@ -1,15 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class WeaponRotation : MonoBehaviour {
-
-
+public class WeaponRotation : MonoBehaviour
+{
     Camera mainCamera;
-
     
     public GameObject Rocket;
 
     public GameObject leftPostion;
+
     public GameObject rightPosition;
 
     Vector3 posToFace = new Vector3(0.28f, 1.89f, 10.72f);

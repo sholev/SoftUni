@@ -15,11 +15,17 @@ public class Enemy : MonoBehaviour
 
     public GameObject target;
 
+    private GameObject leftRocket;
+
+    private GameObject rightRocket;
+
     private float shotTime;
 
     public void Start()
     {
         this.shotTime = this.shootCooldown;
+        this.leftRocket = new GameObject();
+        this.rightRocket = new GameObject();
     }
     
     public void Update()
@@ -36,15 +42,15 @@ public class Enemy : MonoBehaviour
             this.shotTime = this.shootCooldown;
             if (Vector3.Distance(this.transform.position, this.target.transform.position) < this.shootDistance)
             {
-                GameObject newRocket = Instantiate(this.rocket);
-                newRocket.transform.position = this.rockedPositionLeft.transform.position;
-                newRocket.transform.LookAt(this.target.transform);
-                newRocket.AddComponent<RocketEngine>();
+                this.leftRocket = Instantiate(this.rocket);
+                this.leftRocket.transform.position = this.rockedPositionLeft.transform.position;
+                this.leftRocket.transform.LookAt(this.target.transform);
+                this.leftRocket.AddComponent<RocketEngine>();
 
-                newRocket = Instantiate(this.rocket);
-                newRocket.transform.position = this.rockedPositionRight.transform.position;
-                newRocket.transform.LookAt(this.target.transform);
-                newRocket.AddComponent<RocketEngine>();
+                this.rightRocket = Instantiate(this.rocket);
+                this.rightRocket.transform.position = this.rockedPositionRight.transform.position;
+                this.rightRocket.transform.LookAt(this.target.transform);
+                this.rightRocket.AddComponent<RocketEngine>();
             }
         }
         
