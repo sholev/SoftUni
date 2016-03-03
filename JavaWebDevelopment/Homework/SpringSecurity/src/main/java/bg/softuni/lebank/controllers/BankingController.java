@@ -70,6 +70,6 @@ public class BankingController {
 		
 		model.addAttribute("output", output);
 		
-		return "banking";
+		return "registry";
 	}
 }

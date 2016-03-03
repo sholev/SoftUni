@@ -1,6 +1,12 @@
 package bg.softuni.lebank.constants;
 
 public class OutputMessages {
+
+	public static final String INVALID_LOGIN_INFO =
+			"Invalid username, try again:";
+	
+	public static final String ENTER_LOGIN_INFO =
+			"Enter valid username and password:";
 	
 	public static final String OPERATION_NOT_SELECTED = 
 			"Deposit or withdrawal wasn't selected.";
