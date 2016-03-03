@@ -25,4 +25,5 @@
 	
 	<context:component-scan base-package="bg.softuni.lebank"/>
 	
+	<beans:import resource="security.xml"/>
 </beans:beans>

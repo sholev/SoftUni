@@ -30,7 +30,7 @@ public class BankingController {
 	@Autowired
 	private CurrencyExchange bgnExchange;
 	
-	@RequestMapping(value = "/")
+	@RequestMapping(value = {"/", "/registry"})
 	public String banking(Locale locale, Model model, @ModelAttribute(value = "SpringWeb") InputData input) {
 		logger.info("The client locale is {}.", locale);
 		
