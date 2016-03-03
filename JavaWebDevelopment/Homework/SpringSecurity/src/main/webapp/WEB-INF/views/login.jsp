@@ -12,14 +12,14 @@
 			<table>
 				<tr>
 					<td>Username:</td>
-					<td><input type="text" name="username" value="${username}"></td>
+					<td><input type="text" name="username" id="username"></td>
 				</tr>
 				<tr>
 					<td>Password:</td>
-					<td><input type="password" name="password" value="${password}"></td>
+					<td><input type="password" name="password" id="password" ></td>
 				</tr>
 			</table>
-			<input type="submit" value="Submit">
+			<input type="submit" name="submit" value="Login">
 		</form>
 	</body>
 </html>
