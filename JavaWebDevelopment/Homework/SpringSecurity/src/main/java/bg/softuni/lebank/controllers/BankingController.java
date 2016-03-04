@@ -1,75 +1,60 @@
 package bg.softuni.lebank.controllers;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.Locale;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import bg.softuni.lebank.constants.OutputMessages;
-import bg.softuni.lebank.entities.InputData;
+import bg.softuni.lebank.entities.DisplayData;
 import bg.softuni.lebank.interfaces.AccountsRepository;
-import bg.softuni.lebank.interfaces.CurrencyExchange;
+import bg.softuni.lebank.interfaces.UserAccounts;
 
 @Controller
 public class BankingController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(BankingController.class);	
-	private static final String version = "Version: 0.4";
-	private static final String project = "Project: Spring MVC Banking Page";
+	@Autowired
+	private UserAccounts userAccounts;
 	
 	@Autowired
-	private AccountsRepository clientsRepository;
-	
-	@Autowired
-	private CurrencyExchange bgnExchange;
+	private AccountsRepository accountsRepository;
 	
 	@RequestMapping(value = {"/", "/registry"})
-	public String banking(Locale locale, Model model, @ModelAttribute(value = "SpringWeb") InputData input) {
-		logger.info("The client locale is {}.", locale);
+	public String registry(Model model) {
 		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+		String output = "Your banking information:";
 		
-		String formattedDate = dateFormat.format(date);
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();			
+		model.addAttribute("accountUsername", username);	
 		
-		model.addAttribute("serverTime", formattedDate );
-		model.addAttribute("project", project);
-		model.addAttribute("version", version);
-
-		String output = null;
-		String user = input.getClientId();
-		user = user == null ? "" : user;
-		
-		model.addAttribute("clientId", user);
-		
-		if (!user.equals("") && !user.contains(" ")) {
-			String action = input.getSelectedOperation();
-			String amount = input.getOperationAmount();
-			String currency = input.getSelectedCurrency();
-			
-			if (action != null && action.equals("deposit")){
-				output = this.clientsRepository.deposit(user, amount, currency, bgnExchange);
-			} else if (action != null && action.equals("withdraw")){
-				output = this.clientsRepository.withdraw(user, amount, currency, bgnExchange);
-			} else {
-				output = OutputMessages.OPERATION_NOT_SELECTED;
-			}
-			
-			String balance = clientsRepository.getAccountBallance(user);	
-			model.addAttribute("currentBallance", "Client balance: " + balance);
-		} else {
-			output = OutputMessages.VALID_ID_REQUIRED;
+		// TODO: Facade this.
+		String[] accountIds = this.userAccounts.getIds(username);		
+		String[] ballancePerId = this.accountsRepository.getMultipleAccountsBallance(accountIds);		
+		String[] currencyPerId = this.accountsRepository.getMultipleAccountsCurrency(accountIds);
+		DisplayData[] displayData = new DisplayData[accountIds.length];		
+		for	(int i = 0; i < displayData.length; i++) {
+			displayData[i] = new DisplayData(accountIds[i], ballancePerId[i], currencyPerId[i]);
 		}
-		
+		if (displayData.length == 1 && displayData[0].getAccountId().equals(""))
+		{
+			displayData[0].setAccountBallance("");
+			output = "No banking accounts available.";
+		}
+		model.addAttribute("displayData", displayData);
+
 		model.addAttribute("output", output);
-		
 		return "registry";
+	}
+	
+	@RequestMapping(value = "/operation")
+	public String operation(Model model) {	
+		
+		return "operation";
+	}
+	
+	@RequestMapping(value = "/newAccount")
+	public String newAccount(Model model) {	
+		
+		return "newAccount";
 	}
 }

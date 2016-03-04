@@ -1,10 +1,16 @@
 package bg.softuni.lebank.interfaces;
 
 public interface AccountsRepository {
+
+	String getAccountCurrency(String accountId);
 	
-	String getAccountBallance(String owner);
+	String[] getMultipleAccountsCurrency(String[] accountIds);	
 	
-	String deposit(String owner, String amount, String currency, CurrencyExchange rate);
+	String getAccountBalance(String accountId);
 	
-	String withdraw(String owner, String amount,  String currency, CurrencyExchange rate);	
+	String[] getMultipleAccountsBallance(String[] accountIds);	
+	
+	String deposit(String accountId, String amount, String currency, CurrencyExchange rate);
+	
+	String withdraw(String accountId, String amount,  String currency, CurrencyExchange rate);
 }

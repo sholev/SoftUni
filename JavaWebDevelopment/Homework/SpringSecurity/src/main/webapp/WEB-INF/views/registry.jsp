@@ -10,25 +10,30 @@
 		<form method="POST">
 			${output} <br>
 			<table>
-				<tr>
-					<td>Username: </td>
-					<td>${username}</td>
-				</tr>
-				<tr>
-					<td>Account Number: </td>
-					<td>${accountNumber}</td>
-				</tr>
-				<tr>
-					<td>Account Ballance: </td>
-					<td>${accountBallance}</td>
-				</tr>
-				<tr>
-					<td>Account Currency: </td>
-					<td>${accountCurrency}</td>
-				</tr>			
+				<thead>
+					<tr>
+						<td>Username: </td>
+						<td>${accountUsername}<td>
+					</tr>
+					<tr>
+						<td>Account</td>
+						<td>Balance</td>
+						<td>Currency</td>
+					</tr>
+				</thead>
+				<tbody>
+					<c:forEach var="data" items="${displayData}">
+						<tr>
+							<td>${data.accountId}</td>					
+							<td>${data.accountBallance}</td>
+							<td>${data.accountCurrency}</td>
+						</tr>
+					</c:forEach>
+				</tbody>
 			</table>
 			<input type="submit" value="New Account" formaction="/lebank/newAccount">
 			<input type="submit" value="Operation" formaction="/lebank/operation">
+			<input type="submit" value="Logout" formaction="/lebank/logout">
 		</form>
 	</body>
 </html>

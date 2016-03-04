@@ -22,6 +22,7 @@ public class LoginController {
 			output = OutputMessages.ENTER_LOGIN_INFO;
 		}
 		model.addAttribute("output", output);
+		
 		return "login";
 	}
 }

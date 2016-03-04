@@ -20,16 +20,15 @@ public class UserService implements UserDetailsService {
 		String md5Password = "7815696ecbf1c96e6894b779456d330e";
 		this.presetUsers = new HashMap<>();
 		this.presetUsers.put(
-				"normalUser",
-				new User("normalUser", md5Password, mockthority("ROLE_USER")));
+				"user",
+				new User("user", md5Password, mockthority("ROLE_USER")));
 		this.presetUsers.put(
-				"bankEmployee",
-				new User("bankEmployee", md5Password, mockthority("ROLE_USER", "ROLE_EMPLOYEE")));
+				"employee",
+				new User("employee", md5Password, mockthority("ROLE_USER", "ROLE_EMPLOYEE")));
 	}
 	
 	@Override
-	public UserDetails loadUserByUsername(String username)
-			throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		if (this.presetUsers.containsKey(username)) {
 			return presetUsers.get(username);
 		}
