@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import bg.softuni.lebank.constants.OutputMessages;
@@ -17,10 +18,13 @@ import bg.softuni.lebank.interfaces.CurrencyExchange;
 @Service
 public class AccountDataRepository implements AccountsRepository {
 
+	private CurrencyExchange rate;
+	
 	private Map<String, AccountData> accounts;
 	
-	public AccountDataRepository() {
-		
+	@Autowired
+	public AccountDataRepository(CurrencyExchange rate) {
+		this.rate = rate;
 		this.accounts = new HashMap<String, AccountData>();
 	}
 	
@@ -50,7 +54,7 @@ public class AccountDataRepository implements AccountsRepository {
 		String balance = "Empty";
 		if (this.accounts.containsKey(accointId)){
 			balance = this.accounts.get(accointId).getBalance().setScale(2, BigDecimal.ROUND_DOWN).toString();
-			balance = balance + " " + this.accounts.get(accointId).getAccountCurrency();
+			//balance = balance + " " + this.accounts.get(accointId).getAccountCurrency();
 		}
 		return balance;
 	}
@@ -66,7 +70,7 @@ public class AccountDataRepository implements AccountsRepository {
 	}
 	
 	@Override
-	public String deposit(String accountId, String amount, String currency, CurrencyExchange rate) {
+	public String deposit(String accountId, String amount, String currency) {
 		
 		BigDecimal depositAmount = new BigDecimal(amount);
 		BigDecimal exchangedAmount = null;
@@ -83,7 +87,7 @@ public class AccountDataRepository implements AccountsRepository {
 						+ currency.toUpperCase();
 			} else {
 				String accountCurrency = this.accounts.get(accountId).getAccountCurrency();
-				exchangedAmount = rate.exchangeCurrency(depositAmount, currency, accountCurrency);
+				exchangedAmount = this.rate.exchangeCurrency(depositAmount, currency, accountCurrency);
 				this.accounts.get(accountId).deposit(exchangedAmount);
 				
 				output = OutputMessages.SUCCESSFUL_DEPOSIT
@@ -97,11 +101,11 @@ public class AccountDataRepository implements AccountsRepository {
 	}
 
 	@Override
-	public String withdraw(String accountId, String amount, String currency, CurrencyExchange rate) {
+	public String withdraw(String accountId, String amount, String currency) {
 		
 		String accountCurrency = this.accounts.get(accountId).getAccountCurrency();
 		BigDecimal withdrawalAmount = new BigDecimal(amount);
-		BigDecimal exchangedAmmount = rate.exchangeCurrency(withdrawalAmount, currency, accountCurrency);		
+		BigDecimal exchangedAmmount = this.rate.exchangeCurrency(withdrawalAmount, currency, accountCurrency);		
 		String output;		
 		if (exchangedAmmount.compareTo(BigDecimal.ZERO) != 1){
 			output = OutputMessages.INVALID_WITHDRAWAL_AMOUNT;

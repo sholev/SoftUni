@@ -9,28 +9,26 @@
 	<body>
 		<form method="POST">
 			${output} <br>
-			<table>
-				<thead>
-					<tr>
-						<td>Username: </td>
-						<td>${accountUsername}<td>
-					</tr>
-					<tr>
-						<td>Account</td>
-						<td>Balance</td>
-						<td>Currency</td>
-					</tr>
-				</thead>
-				<tbody>
-					<c:forEach var="data" items="${displayData}">
+			<c:if test="${not empty displayData}">
+				<table>
+					<thead>
 						<tr>
-							<td>${data.accountId}</td>					
-							<td>${data.accountBallance}</td>
-							<td>${data.accountCurrency}</td>
+							<td>Account</td>
+							<td>Balance</td>
+							<td>Currency</td>
 						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
+					</thead>				
+					<tbody>
+						<c:forEach var="data" items="${displayData}">
+							<tr>
+								<td>${data.accountId}</td>					
+								<td>${data.accountBallance}</td>
+								<td>${data.accountCurrency}</td>
+							</tr>
+						</c:forEach>
+					</tbody>				
+				</table>
+			</c:if>
 			<input type="submit" value="New Account" formaction="/lebank/newAccount">
 			<input type="submit" value="Operation" formaction="/lebank/operation">
 			<input type="submit" value="Logout" formaction="/lebank/logout">

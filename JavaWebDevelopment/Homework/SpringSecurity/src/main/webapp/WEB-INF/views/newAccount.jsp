@@ -7,30 +7,33 @@
 		<title>Account Creation</title>
 	</head>
 	<body>
-		<form action="/lebank/createAccount" method="POST">
-			${output} <br>
+		<form action="/lebank/newAccount" method="POST">
+			<p> ${output} </p>
 			<table>
-				<tr>
-					<td>Account Number: </td>
-					<td><input type="text" name="accountNumber" value="${accountNumber}"></td>
-				</tr>
-				<tr>
-					<td>Initial Ballance: </td>
-					<td><input type="number" name="accountBallance" value="${accountBallance}"></td>
-				</tr>
-				<tr>
-					<td>Account Currency: </td>
-					<td>
-						<select name="selectedCurrency">
-							<option value="USD">USD</option>
-							<option value="EUR">EUR</option>
-							<option value="GBP">GBP</option>
-							<option value="BGN">BGN</option>
-						</select>
-					</td>
-				</tr>			
+				<thead>
+					<tr>
+						<td>N</td>
+						<td>Initial Balance</td>					
+						<td>Currency</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>${accountNumber}</td>
+						<td><input type="number" name="initialBallance" value="${initialBallance}"></td>
+						<td>
+							<select name="initialCurrency">
+								<option value="USD">USD</option>
+								<option value="EUR">EUR</option>
+								<option value="GBP">GBP</option>
+								<option value="BGN">BGN</option>
+							</select>
+						</td>
+					</tr>	
+				</tbody>		
 			</table>
 			<input type="submit" value="Submit">
+			<input type="submit" value="Back" formaction="/lebank/">
 		</form>
 	</body>
 </html>

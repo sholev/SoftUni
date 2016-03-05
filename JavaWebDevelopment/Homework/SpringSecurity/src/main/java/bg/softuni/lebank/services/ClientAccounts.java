@@ -25,7 +25,7 @@ public class ClientAccounts implements UserAccounts {
 		}
 		
 		if (this.clientAccounts.get(clientUsername).contains(accountId)) {
-			return clientUsername + " already contains account with id " + accountId;
+			return clientUsername + " already contains account with id: " + accountId;
 		}
 		
 		this.clientAccounts.get(clientUsername).add(accountId);
@@ -37,7 +37,7 @@ public class ClientAccounts implements UserAccounts {
 	
 	@Override
 	public String[] getIds(String clientUsername) {
-		String[] output = { "" };		
+		String[] output = null;		
 		if (this.clientAccounts.containsKey(clientUsername)) {
 			Set<String> ids = this.clientAccounts.get(clientUsername);
 			output = ids.toArray(new String[ids.size()]);

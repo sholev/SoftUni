@@ -38,6 +38,7 @@
 				</tr>			
 			</table>
 			<input type="submit" value="Submit">
+			<input type="submit" value="Back" formaction="/lebank/">
 		</form>
 	</body>
 </html>
