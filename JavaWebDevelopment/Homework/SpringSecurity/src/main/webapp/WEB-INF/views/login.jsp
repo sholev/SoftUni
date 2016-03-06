@@ -8,7 +8,8 @@
 	</head>
 	<body>
 		<form action="/lebank/login" method="POST">
-			${output} <br>
+			<p> Test usernames: <b>user</b>, <b>employee</b>. Test password: <b>asd</b></p>
+			<p> ${output} </p>
 			<table>
 				<tr>
 					<td>Username:</td>

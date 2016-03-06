@@ -8,11 +8,8 @@ public class OutputMessages {
 	public static final String ENTER_LOGIN_INFO =
 			"Enter valid username and password:";
 	
-	public static final String OPERATION_NOT_SELECTED = 
-			"Deposit or withdrawal wasn't selected.";
-	
-	public static final String VALID_ID_REQUIRED = 
-			"Enter valid id, no whitespace allowed:";
+	public static final String INVALID_OPERATION = 
+			"Make sure to select deposit or withdrawal and input a valid amount.";
 	
 	public static final String INVALID_WITHDRAWAL_AMOUNT = 
 			"Invalid withdrawal amount. It should be greater than zero.";
@@ -32,9 +29,24 @@ public class OutputMessages {
 	public static final String SUCCESSFUL_WITHDRAW = 
 			"Successully withdrawn: ";
 	
-	public static final String SUCCESSFUL_DEPOSIT = 			
+	public static final String SUCCESSFUL_DEPOSIT = 
 			"Successully deposited: ";
 	
 	public static final String SUCCESSFUL_DEPOSIT_AND_REGISTER = 
 			"Successully created an account and deposited " ;
+
+	public static final String RGISTRY_INFORMATION = 
+			"Banking information:";
+
+	public static final String NO_ACCOUNTS_TO_DISPLAY = 
+			"No banking accounts available to display.";
+
+	public static final String NO_ACCOUNTS_TO_OPERATE = 
+			"No banking accounts to operate. Create one first.";
+
+	public static final String ENTER_NEW_ACCOUNT_INFO = 
+			"Enter information for the new account.";
+
+	public static final String INVALID_INITIAL_BALLANCE = 
+			"Initial ballance should not be empty.";
 }

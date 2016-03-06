@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -7,7 +8,8 @@
 		<title>Account Creation</title>
 	</head>
 	<body>
-		<form action="/lebank/newAccount" method="POST">
+		<form>
+			<p> Logged in as <b><sec:authentication property="principal.username" /></b>.</p>
 			<p> ${output} </p>
 			<table>
 				<thead>
@@ -32,8 +34,8 @@
 					</tr>	
 				</tbody>		
 			</table>
-			<input type="submit" value="Submit">
-			<input type="submit" value="Back" formaction="/lebank/">
+			<input type="submit" value="Submit" formaction="/lebank/newAccount" method="POST">
+			<input type="submit" value="Back" formaction="/lebank/" method="GET">
 		</form>
 	</body>
 </html>

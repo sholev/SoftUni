@@ -6,30 +6,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import bg.softuni.lebank.constants.OutputMessages;
 import bg.softuni.lebank.entities.DisplayData;
 import bg.softuni.lebank.entities.NewAccountInput;
+import bg.softuni.lebank.entities.OperationInput;
 import bg.softuni.lebank.interfaces.AccountsRepository;
 import bg.softuni.lebank.interfaces.UserAccounts;
 
 @Controller
 public class BankingController {
-	
-	// TODO: Separate POST and GET request in different methods.
-	
+		
 	@Autowired
 	private UserAccounts userAccounts;
 	
 	@Autowired
 	private AccountsRepository accountsRepository;
 	
-	@RequestMapping(value = {"/", "/registry"})
+	@RequestMapping(value = {"/", "/registry"}, method = RequestMethod.GET)
 	public String registry(Model model) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();	
-		String boldUsername = "<b>" + username + "</b>";
-		//model.addAttribute("accountUsername", username);	
-		String output = "Banking information for client \"" + boldUsername + "\":";
+		String output = OutputMessages.RGISTRY_INFORMATION;
 		
 		// TODO: Facade this.
 		String[] accountIds = this.userAccounts.getIds(username);	
@@ -40,9 +38,9 @@ public class BankingController {
 			displayData = new DisplayData[accountIds.length];		
 			for	(int i = 0; i < displayData.length; i++) {
 				displayData[i] = new DisplayData(accountIds[i], ballancePerId[i], currencyPerId[i]);
-			}			
+			}
 		} else {
-				output = "Client \"" + boldUsername + "\" has no banking accounts available.";
+				output = OutputMessages.NO_ACCOUNTS_TO_DISPLAY;
 		}
 		
 		model.addAttribute("displayData", displayData);
@@ -52,14 +50,42 @@ public class BankingController {
 	}
 	
 	@RequestMapping(value = "/operation")
-	public String operation(Model model) {
-				
+	public String operation(Model model, @ModelAttribute(value = "SpringWeb") OperationInput input) {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();	
+		String[] accountIds = this.userAccounts.getIds(username);	
+		model.addAttribute("accountIds", accountIds);
+		String output = "Enter operation information:";
+		
+		if (accountIds == null) {
+			output = OutputMessages.NO_ACCOUNTS_TO_OPERATE;
+		} else {
+			String amount = input.getOperationAmmount();
+			String accountId = input.getSelectedAccountId();
+			String operation = input.getSelectedOperation();
+			String currency = input.getSelectedCurrency();
+			
+			Boolean amountIsValidNumber = amount != null && amount.matches("-?\\d+(\\.\\d+)?");
+			Boolean amountIsEmptyString = amount != null && amount.equals("");
+			if (operation != null && operation.equals("deposit") && amountIsValidNumber){
+				output = this.accountsRepository.deposit(accountId, amount, currency);
+			} else if (operation != null && operation.equals("withdraw") && amountIsValidNumber){
+				output = this.accountsRepository.withdraw(accountId, amount, currency);
+			} else if (amountIsEmptyString){
+				output = OutputMessages.INVALID_OPERATION;
+			}	
+		}
+
+		model.addAttribute("output", output);		
+		if (output.toLowerCase().contains("success")) {
+			return this.registry(model);
+		}
+		
 		return "operation";
 	}
 	
 	@RequestMapping(value = "/newAccount")
 	public String newAccount(Model model, @ModelAttribute(value = "SpringWeb") NewAccountInput input) {
-		String output = "Enter information for the new account.";
+		String output = OutputMessages.ENTER_NEW_ACCOUNT_INFO;
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		
 		String[] accountIds = this.userAccounts.getIds(username);
@@ -70,7 +96,7 @@ public class BankingController {
 		String initialCurrency = input.getInitialCurrency();
 		String accountKey = username + "-" + accountNumber;
 		if (initialBallance == "") {
-			output = "Initial ballance should not be empty.";
+			output = OutputMessages.INVALID_INITIAL_BALLANCE;
 		} else if (initialBallance != null) {
 			output = this.accountsRepository.deposit(accountKey, initialBallance, initialCurrency);
 			this.userAccounts.add(username, accountKey);	 
