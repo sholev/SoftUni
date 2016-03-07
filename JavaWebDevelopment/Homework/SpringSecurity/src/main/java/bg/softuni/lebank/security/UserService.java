@@ -1,47 +1,27 @@
 package bg.softuni.lebank.security;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import bg.softuni.lebank.interfaces.TestUsers;
+
 public class UserService implements UserDetailsService {
 
-	Map<String, User> presetUsers;
-	
-	public UserService() {
-		// The password is "asd";
-		String md5Password = "7815696ecbf1c96e6894b779456d330e";
-		this.presetUsers = new HashMap<>();
-		this.presetUsers.put(
-				"user",
-				new User("user", md5Password, mockthority("ROLE_USER")));
-		this.presetUsers.put(
-				"employee",
-				new User("employee", md5Password, mockthority("ROLE_USER", "ROLE_EMPLOYEE")));
-	}
+	@Autowired
+	TestUsers testUsers;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		if (this.presetUsers.containsKey(username)) {
-			return presetUsers.get(username);
+		Map<String, User> users = this.testUsers.getUsers();
+		
+		if (users.containsKey(username)) {
+			return users.get(username);
 		}
 		
 		return null;
-	}
-	
-	private List<GrantedAuthority> mockthority(String... roles) {
-		List<GrantedAuthority> authorities = new ArrayList<>();
-		for (String role : roles) {
-			authorities.add(new SimpleGrantedAuthority(role));
-		}
-		
-		return authorities;
 	}
 }

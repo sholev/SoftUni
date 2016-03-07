@@ -31,7 +31,9 @@
 					</tbody>				
 				</table>
 			</c:if>
-			<input type="submit" value="New Account" formaction="/lebank/newAccount">
+			<sec:authorize access="hasRole('ROLE_BANK_EMPLOYEE')">
+				<input type="submit" value="New Account" formaction="/lebank/newAccount">
+			</sec:authorize>
 			<input type="submit" value="Operation" formaction="/lebank/operation">
 			<input type="submit" value="Logout" formaction="/lebank/logout">
 		</form>

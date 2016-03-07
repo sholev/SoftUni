@@ -1,5 +1,6 @@
 package bg.softuni.lebank.services;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
+import bg.softuni.lebank.constants.OutputMessages;
 import bg.softuni.lebank.interfaces.UserAccounts;
 
 @Service
@@ -25,18 +27,16 @@ public class ClientAccounts implements UserAccounts {
 		}
 		
 		if (this.clientAccounts.get(clientUsername).contains(accountId)) {
-			return clientUsername + " already contains account with id: " + accountId;
+			return OutputMessages.INVALID_ACCOUNT_ALREADY_EXISTS(clientUsername, accountId);
 		}
 		
 		this.clientAccounts.get(clientUsername).add(accountId);
 		
-		return "Sccessfuly added new accound for client username.";
+		return OutputMessages.SUCCESSFULL_ACCOUNT_ADDITION;
 	}
 	
-	// TODO: remove method.
-	
 	@Override
-	public String[] getIds(String clientUsername) {
+	public String[] getUserIds(String clientUsername) {
 		String[] output = null;		
 		if (this.clientAccounts.containsKey(clientUsername)) {
 			Set<String> ids = this.clientAccounts.get(clientUsername);
@@ -47,14 +47,16 @@ public class ClientAccounts implements UserAccounts {
 	}
 	
 	@Override
-	public String getId(String clientUsername, int index) {
-		return this.getIds(clientUsername)[index];
-	}
-	
-	@Override
-	public String getLastId(String clientUsername) {
-		String[] ids = this.getIds(clientUsername);
-		int lastIndex = ids.length - 1;
-		return ids[lastIndex];
+	public String[] getAllIds() {
+		String[] output = null;		
+		if (!this.clientAccounts.isEmpty()) {
+			Set<String> ids = new HashSet<String>();
+			for (Set<String> idSet : this.clientAccounts.values()) {
+				ids.addAll(idSet);
+			}
+			output = ids.toArray(new String[ids.size()]);
+		}
+		
+		return output;
 	}
 }

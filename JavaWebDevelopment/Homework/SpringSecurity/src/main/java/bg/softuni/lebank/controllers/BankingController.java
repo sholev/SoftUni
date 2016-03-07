@@ -1,6 +1,9 @@
 package bg.softuni.lebank.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,7 @@ import bg.softuni.lebank.entities.DisplayData;
 import bg.softuni.lebank.entities.NewAccountInput;
 import bg.softuni.lebank.entities.OperationInput;
 import bg.softuni.lebank.interfaces.AccountsRepository;
+import bg.softuni.lebank.interfaces.TestUsers;
 import bg.softuni.lebank.interfaces.UserAccounts;
 
 @Controller
@@ -24,13 +28,21 @@ public class BankingController {
 	@Autowired
 	private AccountsRepository accountsRepository;
 	
+	@Autowired
+	TestUsers testUsers;
+	
 	@RequestMapping(value = {"/", "/registry"}, method = RequestMethod.GET)
 	public String registry(Model model) {
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();	
+		String username = this.getUsername();
 		String output = OutputMessages.RGISTRY_INFORMATION;
 		
-		// TODO: Facade this.
-		String[] accountIds = this.userAccounts.getIds(username);	
+		String[] accountIds;
+		if (hasRole("ROLE_BANK_EMPLOYEE")) {
+			accountIds = this.userAccounts.getAllIds();
+		} else {
+			accountIds = this.userAccounts.getUserIds(username);	
+		}
+		
 		DisplayData[] displayData = null;
 		if (accountIds != null) {
 			String[] ballancePerId = this.accountsRepository.getMultipleAccountsBallance(accountIds);		
@@ -51,8 +63,8 @@ public class BankingController {
 	
 	@RequestMapping(value = "/operation")
 	public String operation(Model model, @ModelAttribute(value = "SpringWeb") OperationInput input) {
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();	
-		String[] accountIds = this.userAccounts.getIds(username);	
+		String username = this.getUsername();
+		String[] accountIds = this.userAccounts.getUserIds(username);	
 		model.addAttribute("accountIds", accountIds);
 		String output = "Enter operation information:";
 		
@@ -86,20 +98,23 @@ public class BankingController {
 	@RequestMapping(value = "/newAccount")
 	public String newAccount(Model model, @ModelAttribute(value = "SpringWeb") NewAccountInput input) {
 		String output = OutputMessages.ENTER_NEW_ACCOUNT_INFO;
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		
-		String[] accountIds = this.userAccounts.getIds(username);
+				
+		String[] possibleUsers = this.testUsers.getUsernames();
+		model.addAttribute("possibleUsers", possibleUsers);
+
+		String selectedUser = input.getSelectedUser();
+		String[] accountIds = this.userAccounts.getUserIds(selectedUser);
 		int accountNumber = accountIds == null ? 1 : accountIds.length + 1;
 		model.addAttribute("accountNumber", accountNumber);
 		
 		String initialBallance = input.getInitialBallance();
 		String initialCurrency = input.getInitialCurrency();
-		String accountKey = username + "-" + accountNumber;
+		String accountKey = selectedUser + "-" + accountNumber;
 		if (initialBallance == "") {
 			output = OutputMessages.INVALID_INITIAL_BALLANCE;
 		} else if (initialBallance != null) {
 			output = this.accountsRepository.deposit(accountKey, initialBallance, initialCurrency);
-			this.userAccounts.add(username, accountKey);	 
+			this.userAccounts.add(selectedUser, accountKey);	 
 		}
 		
 		model.addAttribute("output", output);
@@ -109,4 +124,38 @@ public class BankingController {
 		
 		return "newAccount";
 	}
+	
+	private String getUsername() {		
+		SecurityContext context = SecurityContextHolder.getContext();
+        if (context == null) {
+            return null;        	
+        }
+
+        Authentication authentication = context.getAuthentication();
+        if (authentication == null) {
+            return null;
+        }
+        
+        return authentication.getName();
+	}
+	
+	private boolean hasRole(String role) {
+        SecurityContext context = SecurityContextHolder.getContext();
+        if (context == null) {
+            return false;        	
+        }
+
+        Authentication authentication = context.getAuthentication();
+        if (authentication == null) {
+            return false;
+        }
+
+        for (GrantedAuthority auth : authentication.getAuthorities()) {
+            if (role.equals(auth.getAuthority())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

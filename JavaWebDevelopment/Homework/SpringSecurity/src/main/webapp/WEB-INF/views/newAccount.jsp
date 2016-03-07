@@ -14,14 +14,20 @@
 			<table>
 				<thead>
 					<tr>
-						<td>N</td>
+						<td>Select user</td>
 						<td>Initial Balance</td>					
 						<td>Currency</td>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td>${accountNumber}</td>
+						<td>
+							<select name="selectedUser">
+							<c:forEach var="user" items="${possibleUsers}">
+								<option value="${user}">${user}</option>
+							</c:forEach>
+							</select>
+						</td>
 						<td><input type="number" name="initialBallance" value="${initialBallance}"></td>
 						<td>
 							<select name="initialCurrency">
