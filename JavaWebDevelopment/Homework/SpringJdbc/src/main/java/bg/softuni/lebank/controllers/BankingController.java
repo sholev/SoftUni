@@ -16,7 +16,7 @@ import bg.softuni.lebank.entities.DisplayData;
 import bg.softuni.lebank.entities.NewAccountInput;
 import bg.softuni.lebank.entities.OperationInput;
 import bg.softuni.lebank.interfaces.AccountsRepository;
-import bg.softuni.lebank.interfaces.TestUsers;
+import bg.softuni.lebank.interfaces.Users;
 import bg.softuni.lebank.interfaces.UserAccounts;
 
 @Controller
@@ -29,7 +29,7 @@ public class BankingController {
 	private AccountsRepository accountsRepository;
 	
 	@Autowired
-	TestUsers testUsers;
+	Users testUsers;
 	
 	@RequestMapping(value = {"/", "/registry"}, method = RequestMethod.GET)
 	public String registry(Model model) {

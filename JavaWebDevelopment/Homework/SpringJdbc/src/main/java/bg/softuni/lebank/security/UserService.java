@@ -7,16 +7,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import bg.softuni.lebank.interfaces.TestUsers;
+import bg.softuni.lebank.interfaces.Users;
 
 public class UserService implements UserDetailsService {
 
 	@Autowired
-	TestUsers testUsers;
+	Users users;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Map<String, User> users = this.testUsers.getUsers();
+		Map<String, User> users = this.users.getUsers();
 		
 		if (users.containsKey(username)) {
 			return users.get(username);
