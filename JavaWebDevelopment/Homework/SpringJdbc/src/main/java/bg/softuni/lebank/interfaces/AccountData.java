@@ -8,9 +8,9 @@ public interface AccountData {
 	
 	BigDecimal getBalance();
 
-	void deposit(BigDecimal amount);
+	String deposit(BigDecimal amount);
 
-	void withdraw(BigDecimal amount);
+	String withdraw(BigDecimal amount);
 
 	Boolean dailyLimitReached(BigDecimal requestedWithdrawal);
 }

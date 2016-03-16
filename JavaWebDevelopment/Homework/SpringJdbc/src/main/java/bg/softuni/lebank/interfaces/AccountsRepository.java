@@ -10,7 +10,7 @@ public interface AccountsRepository {
 	
 	String[] getMultipleAccountsBallance(String[] accountIds);	
 	
-	String deposit(String accountId, String amount, String currency);
+	String deposit(String accountId, String amount, String currency, String currentUser);
 	
-	String withdraw(String accountId, String amount,  String currency);
+	String withdraw(String accountId, String amount, String currency, String currentUser);
 }

@@ -30,18 +30,20 @@ public class ClientAccount implements AccountData {
 	}
 	
 	@Override
-	public void deposit(BigDecimal amount) {
+	public String deposit(BigDecimal amount) {
 		this.checkForWithdrawalLimitReset();
 		
-		this.totalBalance = this.totalBalance.add(amount);		
+		this.totalBalance = this.totalBalance.add(amount);
+		return this.totalBalance.toString();
 	}
 	
 	@Override
-	public void withdraw(BigDecimal amount) {
+	public String withdraw(BigDecimal amount) {
 		this.checkForWithdrawalLimitReset();
 		
 		this.dailyWithdrawal = this.dailyWithdrawal.add(amount);	
-		this.totalBalance = this.totalBalance.subtract(amount);		
+		this.totalBalance = this.totalBalance.subtract(amount);
+		return this.totalBalance.toString();
 	}
 	
 	@Override

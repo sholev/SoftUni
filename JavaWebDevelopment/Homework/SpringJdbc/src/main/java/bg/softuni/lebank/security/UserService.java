@@ -7,12 +7,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import bg.softuni.lebank.interfaces.Users;
+import bg.softuni.lebank.interfaces.UsersStorage;
 
 public class UserService implements UserDetailsService {
 
 	@Autowired
-	Users users;
+	UsersStorage users;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

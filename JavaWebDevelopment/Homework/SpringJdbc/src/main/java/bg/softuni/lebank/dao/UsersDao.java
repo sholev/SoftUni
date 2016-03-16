@@ -1,7 +1,6 @@
 package bg.softuni.lebank.dao;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,22 +14,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
 
-import bg.softuni.lebank.constants.DbParams;
-import bg.softuni.lebank.interfaces.Users;
+import bg.softuni.lebank.interfaces.UsersStorage;
 import bg.softuni.lebank.security.User;
 
 @Repository
-public class UsersDao implements Users {
+public class UsersDao implements UsersStorage {
 
 	Map<String, User> Users;
-	
-	static {
-		try {
-			Class.forName(DbParams.DB_DRIVER);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
 	
 	@Override
 	public Map<String, User> getUsers() {
@@ -52,14 +42,15 @@ public class UsersDao implements Users {
 		return usernames;
 	}
 	
-	private void populateUsers() {		
+	private Boolean populateUsers() {		
 		if (this.Users == null) {
 			this.Users = new HashMap<String, User>();
 		}
 		
 		try (
-				Connection connection = DriverManager.getConnection(DbParams.URL, DbParams.USERNAME, DbParams.PASSWORD);
+				Connection connection = DbConnection.getConnection();
 				Statement statement = connection.createStatement();) {
+			
 			String sql = "SELECT * FROM users";
 			
 			ResultSet result = statement.executeQuery(sql);
@@ -75,12 +66,15 @@ public class UsersDao implements Users {
 					this.Users.replace(username, user);
 				} else {
 					this.Users.put(username, user);
-				}				
+				}
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
+		
+		return true;
 	}
 	
 	private List<GrantedAuthority> makeAuthorities(String... roles) {

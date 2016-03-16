@@ -4,10 +4,10 @@ import java.util.Map;
 
 import bg.softuni.lebank.security.User;
 
-public interface Users {
+public interface UsersStorage {
 
 	Map<String, User> getUsers();
 
 	String[] getUsernames();
-
+	
 }

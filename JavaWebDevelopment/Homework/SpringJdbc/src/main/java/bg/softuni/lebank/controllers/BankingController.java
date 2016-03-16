@@ -16,20 +16,20 @@ import bg.softuni.lebank.entities.DisplayData;
 import bg.softuni.lebank.entities.NewAccountInput;
 import bg.softuni.lebank.entities.OperationInput;
 import bg.softuni.lebank.interfaces.AccountsRepository;
-import bg.softuni.lebank.interfaces.Users;
-import bg.softuni.lebank.interfaces.UserAccounts;
+import bg.softuni.lebank.interfaces.AccountsStorage;
+import bg.softuni.lebank.interfaces.UsersStorage;
 
 @Controller
 public class BankingController {
-		
-	@Autowired
-	private UserAccounts userAccounts;
 	
 	@Autowired
 	private AccountsRepository accountsRepository;
 	
 	@Autowired
-	Users testUsers;
+	private UsersStorage dbUsers;
+	
+	@Autowired
+	private AccountsStorage dbAccounts;
 	
 	@RequestMapping(value = {"/", "/registry"}, method = RequestMethod.GET)
 	public String registry(Model model) {
@@ -38,19 +38,14 @@ public class BankingController {
 		
 		String[] accountIds;
 		if (hasRole("ROLE_BANK_EMPLOYEE")) {
-			accountIds = this.userAccounts.getAllIds();
+			accountIds = this.dbAccounts.getAllIds();
 		} else {
-			accountIds = this.userAccounts.getUserIds(username);	
+			accountIds = this.dbAccounts.getUserIds(username);	
 		}
 		
 		DisplayData[] displayData = null;
 		if (accountIds != null) {
-			String[] ballancePerId = this.accountsRepository.getMultipleAccountsBallance(accountIds);		
-			String[] currencyPerId = this.accountsRepository.getMultipleAccountsCurrency(accountIds);
-			displayData = new DisplayData[accountIds.length];		
-			for	(int i = 0; i < displayData.length; i++) {
-				displayData[i] = new DisplayData(accountIds[i], ballancePerId[i], currencyPerId[i]);
-			}
+			displayData = this.dbAccounts.getAccountDisplayData(accountIds);
 		} else {
 				output = OutputMessages.NO_ACCOUNTS_TO_DISPLAY;
 		}
@@ -64,7 +59,7 @@ public class BankingController {
 	@RequestMapping(value = "/operation")
 	public String operation(Model model, @ModelAttribute(value = "SpringWeb") OperationInput input) {
 		String username = this.getUsername();
-		String[] accountIds = this.userAccounts.getUserIds(username);	
+		String[] accountIds = this.dbAccounts.getUserIds(username);	
 		model.addAttribute("accountIds", accountIds);
 		String output = "Enter operation information:";
 		
@@ -79,9 +74,9 @@ public class BankingController {
 			Boolean amountIsValidNumber = amount != null && amount.matches("-?\\d+(\\.\\d+)?");
 			Boolean amountIsEmptyString = amount != null && amount.equals("");
 			if (operation != null && operation.equals("deposit") && amountIsValidNumber){
-				output = this.accountsRepository.deposit(accountId, amount, currency);
+				output = this.accountsRepository.deposit(accountId, amount, currency, username);
 			} else if (operation != null && operation.equals("withdraw") && amountIsValidNumber){
-				output = this.accountsRepository.withdraw(accountId, amount, currency);
+				output = this.accountsRepository.withdraw(accountId, amount, currency, username);
 			} else if (amountIsEmptyString){
 				output = OutputMessages.INVALID_OPERATION;
 			}	
@@ -99,11 +94,11 @@ public class BankingController {
 	public String newAccount(Model model, @ModelAttribute(value = "SpringWeb") NewAccountInput input) {
 		String output = OutputMessages.ENTER_NEW_ACCOUNT_INFO;
 				
-		String[] possibleUsers = this.testUsers.getUsernames();
+		String[] possibleUsers = this.dbUsers.getUsernames();
 		model.addAttribute("possibleUsers", possibleUsers);
 
 		String selectedUser = input.getSelectedUser();
-		String[] accountIds = this.userAccounts.getUserIds(selectedUser);
+		String[] accountIds = this.dbAccounts.getUserIds(selectedUser);
 		int accountNumber = accountIds == null ? 1 : accountIds.length + 1;
 		model.addAttribute("accountNumber", accountNumber);
 		
@@ -113,14 +108,16 @@ public class BankingController {
 		if (initialBallance == "") {
 			output = OutputMessages.INVALID_INITIAL_BALLANCE;
 		} else if (initialBallance != null) {
-			output = this.accountsRepository.deposit(accountKey, initialBallance, initialCurrency);
-			this.userAccounts.add(selectedUser, accountKey);	 
+			String username = this.getUsername();
+			output = this.accountsRepository.deposit(accountKey, initialBallance, initialCurrency, username);
 		}
 		
-		model.addAttribute("output", output);
 		if (output.contains(OutputMessages.SUCCESSFUL_DEPOSIT_AND_REGISTER)) {
+			this.dbAccounts.addAccount(accountKey, accountNumber, selectedUser, initialBallance, initialCurrency, this.getUsername());
 			return this.registry(model);
 		}
+
+		model.addAttribute("output", output);
 		
 		return "newAccount";
 	}

@@ -2,7 +2,6 @@ package bg.softuni.lebank.services;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +12,9 @@ import bg.softuni.lebank.constants.OutputMessages;
 import bg.softuni.lebank.entities.ClientAccount;
 import bg.softuni.lebank.interfaces.AccountData;
 import bg.softuni.lebank.interfaces.AccountsRepository;
+import bg.softuni.lebank.interfaces.AccountsStorage;
 import bg.softuni.lebank.interfaces.CurrencyExchange;
+import bg.softuni.lebank.interfaces.OperationsStorage;
 
 @Service
 public class AccountDataRepository implements AccountsRepository {
@@ -21,11 +22,17 @@ public class AccountDataRepository implements AccountsRepository {
 	private CurrencyExchange rate;
 	
 	private Map<String, AccountData> accounts;
+
+	private AccountsStorage dbAccounts;
+	
+	private OperationsStorage dbOperations;
 	
 	@Autowired
-	public AccountDataRepository(CurrencyExchange rate) {
+	public AccountDataRepository(CurrencyExchange rate, AccountsStorage dbAccounts, OperationsStorage dbOperations) {
 		this.rate = rate;
-		this.accounts = new HashMap<String, AccountData>();
+		this.accounts = dbAccounts.getAccounts();
+		this.dbAccounts = dbAccounts;
+		this.dbOperations = dbOperations;
 	}
 	
 	@Override
@@ -70,17 +77,19 @@ public class AccountDataRepository implements AccountsRepository {
 	}
 	
 	@Override
-	public String deposit(String accountId, String amount, String currency) {
+	public String deposit(String accountId, String amount, String currency, String currentUser) {
 		
 		BigDecimal depositAmount = new BigDecimal(amount);
 		BigDecimal exchangedAmount = null;
-		String output;
+		long accountNo = Long.parseLong(accountId.split("-")[1]);
+		String output;		
 		if (depositAmount.compareTo(BigDecimal.ZERO) != 1) {
 			output = OutputMessages.INVALID_DEPOSIT_NEGATIVE_OR_ZERO;
 		} else {
 			if (!this.accounts.containsKey(accountId)){
 				this.accounts.put(accountId, new ClientAccount(depositAmount, currency));
 				
+				this.dbOperations.addOperation(accountId, accountNo, "deposit", amount, currency, currentUser);
 				output = OutputMessages.SUCCESSFUL_DEPOSIT_AND_REGISTER
 						+ depositAmount.setScale(2, BigDecimal.ROUND_DOWN).toString()
 						+ " "
@@ -88,12 +97,14 @@ public class AccountDataRepository implements AccountsRepository {
 			} else {
 				String accountCurrency = this.accounts.get(accountId).getAccountCurrency();
 				exchangedAmount = this.rate.exchangeCurrency(depositAmount, currency, accountCurrency);
-				this.accounts.get(accountId).deposit(exchangedAmount);
-				
+				String amountAfterOperation = this.accounts.get(accountId).deposit(exchangedAmount);
+
+				this.dbAccounts.updateAccount(accountId, amountAfterOperation);
+				this.dbOperations.addOperation(accountId, accountNo, "deposit", amount, currency, currentUser);
 				output = OutputMessages.SUCCESSFUL_DEPOSIT
 						+ exchangedAmount.setScale(2, BigDecimal.ROUND_DOWN).toString()
 						+ " "
-						+ accountCurrency.toUpperCase();
+						+ accountCurrency.toUpperCase();				
 			}
 		}
 		
@@ -101,7 +112,7 @@ public class AccountDataRepository implements AccountsRepository {
 	}
 
 	@Override
-	public String withdraw(String accountId, String amount, String currency) {
+	public String withdraw(String accountId, String amount, String currency, String currentUser) {
 		
 		String accountCurrency = this.accounts.get(accountId).getAccountCurrency();
 		BigDecimal withdrawalAmount = new BigDecimal(amount);
@@ -116,8 +127,11 @@ public class AccountDataRepository implements AccountsRepository {
 		} else if(this.accounts.get(accountId).dailyLimitReached(exchangedAmmount)){
 			output = OutputMessages.INVALID_WITHDRAWAL_ABOVE_DAILY_LIMIT;
 		} else {
-			this.accounts.get(accountId).withdraw(exchangedAmmount);
+			String amountAfterOperation = this.accounts.get(accountId).withdraw(exchangedAmmount);
 			
+			this.dbAccounts.updateAccount(accountId, amountAfterOperation);
+			long accountNo = Long.parseLong(accountId.split("-")[1]);
+			this.dbOperations.addOperation(accountId, accountNo, "withdrawal", amount, currency, currentUser);
 			output = OutputMessages.SUCCESSFUL_WITHDRAW
 					+ exchangedAmmount.setScale(2, BigDecimal.ROUND_DOWN).toString() 
 					+ " "
