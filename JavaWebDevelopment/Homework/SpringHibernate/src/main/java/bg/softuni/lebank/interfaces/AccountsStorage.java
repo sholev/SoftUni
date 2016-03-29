@@ -2,7 +2,7 @@ package bg.softuni.lebank.interfaces;
 
 import java.util.Map;
 
-import bg.softuni.lebank.entities.DisplayData;
+import bg.softuni.lebank.dto.DisplayData;
 
 public interface AccountsStorage {
 

@@ -1,14 +1,56 @@
 package bg.softuni.lebank.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "OPERATIONS")
 public class OperationInput {
+
+	@Column(name = "ACCOUNT_NO")
+	private long accountNumber;
 	
+	@Id
+	@Column(name = "ID")
 	private String selectedAccountId;
 	
+	@Column(name = "OPERATION")
 	private String selectedOperation;
 	
+	@Column(name = "AMOUNT")
 	private String operationAmmount;
 	
+	@Column(name = "CURRENCY")
 	private String selectedCurrency;
+	
+	@Column(name = "PERFORMED_BY")
+	private String performedBy;
+
+	public OperationInput() {	
+		
+	}
+	
+	public OperationInput(
+			long accountNumber,
+			String selectedAccountId,
+			String selectedOperation,
+			String operationAmmount,
+			String selectedCurrency,
+			String performedBy) {
+		
+		this.setAccountNumber(accountNumber);
+		this.setSelectedAccountId(selectedAccountId);
+		this.setSelectedOperation(selectedOperation);
+		this.setOperationAmmount(operationAmmount);
+		this.setSelectedCurrency(selectedCurrency);
+		this.setPerformedBy(performedBy);
+	}
+
+	public long getAccountNumber() {
+		return accountNumber;
+	}
 
 	public String getSelectedAccountId() {
 		return selectedAccountId;
@@ -26,6 +68,14 @@ public class OperationInput {
 		return selectedCurrency;
 	}
 
+	public String getPerformedBy() {
+		return performedBy;
+	}
+
+	public void setAccountNumber(long accoungNumber) {
+		this.accountNumber = accoungNumber;
+	}	
+
 	public void setSelectedAccountId(String selectedAccountId) {
 		this.selectedAccountId = selectedAccountId;
 	}
@@ -40,5 +90,9 @@ public class OperationInput {
 
 	public void setSelectedCurrency(String selectedCurrency) {
 		this.selectedCurrency = selectedCurrency;
-	}	
+	}
+
+	public void setPerformedBy(String performedBy) {
+		this.performedBy = performedBy;
+	}
 }

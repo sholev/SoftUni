@@ -14,8 +14,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
+import bg.softuni.lebank.dto.DisplayData;
 import bg.softuni.lebank.entities.ClientAccount;
-import bg.softuni.lebank.entities.DisplayData;
 import bg.softuni.lebank.interfaces.AccountData;
 import bg.softuni.lebank.interfaces.AccountsStorage;
 

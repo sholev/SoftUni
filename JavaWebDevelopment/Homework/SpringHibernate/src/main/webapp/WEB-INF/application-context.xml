@@ -27,9 +27,9 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="bg.softuni.lebank.controllers" />
-	
+<!-- 	<context:component-scan base-package="bg.softuni.lebank.controllers" />	 -->
 	<context:component-scan base-package="bg.softuni.lebank"/>
+	<context:annotation-config/>
 	
 	<beans:import resource="security.xml"/>
 	
@@ -60,13 +60,33 @@
 		<beans:property name="jpaDialect" ref="jpaDialect" />			
 	</beans:bean>
 	
-	<!-- Transaction Manager -->
-	<beans:bean id="transactionManager"
-		class="org.springframework.orm.jpa.JpaTransactionManager">
-		<beans:property name="entityManagerFactory" ref="entityManagerFactory" />
+	<!-- Hibernate session factory -->
+	<beans:bean id="sessionFactory"	class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+
 		<beans:property name="dataSource" ref="dataSource" />
-		<beans:property name="jpaDialect" ref="jpaDialect" />
+
+		<beans:property name="hibernateProperties">
+			<beans:props>
+				<beans:prop key="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</beans:prop>
+				<beans:prop key="hibernate.show_sql">true</beans:prop>
+			</beans:props>
+		</beans:property>
+
+		<beans:property name="packagesToScan" value="bg.softuni.lebank.entities" />
 	</beans:bean>
+	
+	<beans:bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<beans:property name="sessionFactory" ref="sessionFactory"></beans:property>
+	</beans:bean>
+	
+	<!-- Transaction Manager -->
+<!-- 	<beans:bean id="transactionManager" -->
+<!-- 		class="org.springframework.orm.jpa.JpaTransactionManager"> -->
+<!-- 		<beans:property name="entityManagerFactory" ref="entityManagerFactory" /> -->
+<!-- 		<beans:property name="dataSource" ref="dataSource" /> -->
+<!-- 		<beans:property name="jpaDialect" ref="jpaDialect" /> -->
+<!-- 	</beans:bean> -->
 	
 	<tx:annotation-driven transaction-manager="transactionManager" />
 </beans:beans>

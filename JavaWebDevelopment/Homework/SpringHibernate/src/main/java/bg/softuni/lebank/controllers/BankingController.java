@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import bg.softuni.lebank.constants.OutputMessages;
-import bg.softuni.lebank.entities.DisplayData;
+import bg.softuni.lebank.dto.DisplayData;
 import bg.softuni.lebank.entities.NewAccountInput;
 import bg.softuni.lebank.entities.OperationInput;
 import bg.softuni.lebank.interfaces.AccountsRepository;
