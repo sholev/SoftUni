@@ -18,7 +18,6 @@ public class OperationsDao implements OperationsStorage {
 	private SessionFactory sessionFactory;
 	
 	@Override
-	@Transactional
 	public Boolean addOperation(
 			String id,
 			long accountNo,

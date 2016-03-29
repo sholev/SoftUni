@@ -1,18 +1,13 @@
 package bg.softuni.lebank.dao;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import bg.softuni.lebank.entities.DatabaseUser;
 import bg.softuni.lebank.interfaces.UsersStorage;
@@ -45,8 +40,7 @@ public class UsersDao implements UsersStorage {
 		
 		return usernames;
 	}
-
-	@Transactional
+	
 	private Boolean populateUsers() {		
 		if (this.Users == null) {
 			this.Users = new HashMap<String, SecurityUser>();
@@ -66,7 +60,7 @@ public class UsersDao implements UsersStorage {
 					new SecurityUser(
 							dbUser.getUsername(),
 							dbUser.getPassword(),
-							this.makeAuthorities(dbUser.getRole()));
+							dbUser.getRole());
 			
 			if (this.Users.containsKey(newUser.getUsername())) {
 				this.Users.replace(newUser.getUsername(), newUser);
@@ -76,14 +70,5 @@ public class UsersDao implements UsersStorage {
 		}		
 		
 		return true;
-	}
-	
-	private List<GrantedAuthority> makeAuthorities(String... roles) {
-		List<GrantedAuthority> authorities = new ArrayList<>();
-		for (String role : roles) {
-			authorities.add(new SimpleGrantedAuthority(role));
-		}
-		
-		return authorities;
 	}
 }

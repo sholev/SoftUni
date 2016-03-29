@@ -1,8 +1,11 @@
 package bg.softuni.lebank.security;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 public class SecurityUser implements UserDetails {
@@ -17,14 +20,15 @@ public class SecurityUser implements UserDetails {
 	private String password;
 	private Collection<GrantedAuthority> authorities;
 
-	public SecurityUser(String username, String password, Collection<GrantedAuthority> authorities) {
+	public SecurityUser(String username, String password, String... roles) {
 		this.enabled = true;
 		this.accountNonExpired = true;
 		this.credentialsNonExpired = true;
 		this.accountNonLocked = true;
 		this.username = username;
-		this.password = password;
-		this.authorities = authorities;
+		this.password = password;			
+		
+		this.authorities = this.makeAuthorities(roles);
 	}
 
 	public boolean isAccountNonExpired() {
@@ -81,5 +85,14 @@ public class SecurityUser implements UserDetails {
 
 	public void setAuthorities(Collection<GrantedAuthority> authorities) {
 		this.authorities = authorities;
-	}	
+	}
+	
+	private List<GrantedAuthority> makeAuthorities(String... roles) {
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		for (String role : roles) {
+			authorities.add(new SimpleGrantedAuthority(role));
+		}
+		
+		return authorities;
+	}
 }
