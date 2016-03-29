@@ -1,29 +1,33 @@
 package bg.softuni.lebank.dao;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import bg.softuni.lebank.entities.DatabaseUser;
 import bg.softuni.lebank.interfaces.UsersStorage;
-import bg.softuni.lebank.security.User;
+import bg.softuni.lebank.security.SecurityUser;
 
 @Repository
 public class UsersDao implements UsersStorage {
 
-	Map<String, User> Users;
+	@Autowired
+	SessionFactory sessionFactory;
+	
+	Map<String, SecurityUser> Users;
 	
 	@Override
-	public Map<String, User> getUsers() {
+	public Map<String, SecurityUser> getUsers() {
 		this.populateUsers();
 		
 		return this.Users;
@@ -41,38 +45,35 @@ public class UsersDao implements UsersStorage {
 		
 		return usernames;
 	}
-	
+
+	@Transactional
 	private Boolean populateUsers() {		
 		if (this.Users == null) {
-			this.Users = new HashMap<String, User>();
+			this.Users = new HashMap<String, SecurityUser>();
 		}
 		
-		try (
-				Connection connection = DbConnection.getConnection();
-				Statement statement = connection.createStatement();) {
+		Criteria criteria = sessionFactory
+				.openSession()
+				.createCriteria(DatabaseUser.class);		
+		
+		// This separation for the user classes is pretty bad,
+		// and it will most likely cause trouble in the long run, 
+		// however there is no long run for this homework. :)
+		for (Object user : criteria.list()) {
+			DatabaseUser dbUser = (DatabaseUser)user;
 			
-			String sql = "SELECT * FROM users";
+			SecurityUser newUser = 
+					new SecurityUser(
+							dbUser.getUsername(),
+							dbUser.getPassword(),
+							this.makeAuthorities(dbUser.getRole()));
 			
-			ResultSet result = statement.executeQuery(sql);
-			
-			while(result.next()) {
-				String username = result.getString("username");
-				String password = result.getString("password");
-				String role = result.getString("role");
-
-				User user = new User(username, password, this.makeAuthorities(role));
-				
-				if (this.Users.containsKey(username)) {
-					this.Users.replace(username, user);
-				} else {
-					this.Users.put(username, user);
-				}
+			if (this.Users.containsKey(newUser.getUsername())) {
+				this.Users.replace(newUser.getUsername(), newUser);
+			} else {
+				this.Users.put(newUser.getUsername(), newUser);
 			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
+		}		
 		
 		return true;
 	}

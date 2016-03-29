@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import bg.softuni.lebank.constants.OutputMessages;
 import bg.softuni.lebank.dto.DisplayData;
 import bg.softuni.lebank.entities.NewAccountInput;
-import bg.softuni.lebank.entities.OperationInput;
+import bg.softuni.lebank.entities.Operation;
 import bg.softuni.lebank.interfaces.AccountsRepository;
 import bg.softuni.lebank.interfaces.AccountsStorage;
 import bg.softuni.lebank.interfaces.UsersStorage;
@@ -57,7 +57,7 @@ public class BankingController {
 	}
 	
 	@RequestMapping(value = "/operation")
-	public String operation(Model model, @ModelAttribute(value = "SpringWeb") OperationInput input) {
+	public String operation(Model model, @ModelAttribute(value = "SpringWeb") Operation input) {
 		String username = this.getUsername();
 		String[] accountIds = this.dbAccounts.getUserIds(username);	
 		model.addAttribute("accountIds", accountIds);

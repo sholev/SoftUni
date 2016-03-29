@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import bg.softuni.lebank.entities.OperationInput;
+import bg.softuni.lebank.entities.Operation;
 import bg.softuni.lebank.interfaces.OperationsStorage;
 
 @Repository
@@ -27,7 +27,7 @@ public class OperationsDao implements OperationsStorage {
 			String currency,
 			String performedBy) {
 
-		OperationInput operationData = new OperationInput(
+		Operation operationData = new Operation(
 				accountNo, id, operation, amount, currency, performedBy);
 		
 		Transaction transaction = null;

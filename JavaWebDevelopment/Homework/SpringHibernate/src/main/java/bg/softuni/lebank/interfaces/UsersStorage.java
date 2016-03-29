@@ -2,11 +2,11 @@ package bg.softuni.lebank.interfaces;
 
 import java.util.Map;
 
-import bg.softuni.lebank.security.User;
+import bg.softuni.lebank.security.SecurityUser;
 
 public interface UsersStorage {
 
-	Map<String, User> getUsers();
+	Map<String, SecurityUser> getUsers();
 
 	String[] getUsernames();
 	

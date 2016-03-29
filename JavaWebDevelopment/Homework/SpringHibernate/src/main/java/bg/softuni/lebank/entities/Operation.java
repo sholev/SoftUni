@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "OPERATIONS")
-public class OperationInput {
+public class Operation {
 
 	@Column(name = "ACCOUNT_NO")
 	private long accountNumber;
@@ -28,11 +28,11 @@ public class OperationInput {
 	@Column(name = "PERFORMED_BY")
 	private String performedBy;
 
-	public OperationInput() {	
+	public Operation() {	
 		
 	}
 	
-	public OperationInput(
+	public Operation(
 			long accountNumber,
 			String selectedAccountId,
 			String selectedOperation,

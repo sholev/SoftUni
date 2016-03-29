@@ -16,7 +16,7 @@ public class UserService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Map<String, User> users = this.users.getUsers();
+		Map<String, SecurityUser> users = this.users.getUsers();
 		
 		if (users.containsKey(username)) {
 			return users.get(username);
