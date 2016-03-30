@@ -1,4 +1,4 @@
-package bg.softuni.lebank.dto;
+package bg.softuni.lebank.entities;
 
 public class DisplayData {
 

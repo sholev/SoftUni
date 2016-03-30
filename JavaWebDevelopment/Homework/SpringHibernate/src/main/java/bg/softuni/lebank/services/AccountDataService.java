@@ -10,25 +10,26 @@ import org.springframework.stereotype.Service;
 
 import bg.softuni.lebank.constants.OutputMessages;
 import bg.softuni.lebank.entities.ClientAccount;
+import bg.softuni.lebank.entities.DatabaseOperation;
 import bg.softuni.lebank.interfaces.AccountData;
-import bg.softuni.lebank.interfaces.AccountsRepository;
-import bg.softuni.lebank.interfaces.AccountsStorage;
+import bg.softuni.lebank.interfaces.AccountService;
+import bg.softuni.lebank.interfaces.AccountStorage;
 import bg.softuni.lebank.interfaces.CurrencyExchange;
-import bg.softuni.lebank.interfaces.OperationsStorage;
+import bg.softuni.lebank.interfaces.OperationStorage;
 
 @Service
-public class AccountDataRepository implements AccountsRepository {
+public class AccountDataService implements AccountService {
 
 	private CurrencyExchange rate;
 	
 	private Map<String, AccountData> accounts;
 
-	private AccountsStorage dbAccounts;
+	private AccountStorage dbAccounts;
 	
-	private OperationsStorage dbOperations;
+	private OperationStorage dbOperations;
 	
 	@Autowired
-	public AccountDataRepository(CurrencyExchange rate, AccountsStorage dbAccounts, OperationsStorage dbOperations) {
+	public AccountDataService(CurrencyExchange rate, AccountStorage dbAccounts, OperationStorage dbOperations) {
 		this.rate = rate;
 		this.accounts = dbAccounts.getAccounts();
 		this.dbAccounts = dbAccounts;
@@ -88,8 +89,9 @@ public class AccountDataRepository implements AccountsRepository {
 		} else {
 			if (!this.accounts.containsKey(accountId)){
 				this.accounts.put(accountId, new ClientAccount(depositAmount, currency));
+				DatabaseOperation operationData = new DatabaseOperation(accountNo, accountId, "deposit", amount, currency, currentUser);
+				this.dbOperations.addOperation(operationData);
 				
-				this.dbOperations.addOperation(accountId, accountNo, "deposit", amount, currency, currentUser);
 				output = OutputMessages.SUCCESSFUL_DEPOSIT_AND_REGISTER
 						+ depositAmount.setScale(2, BigDecimal.ROUND_DOWN).toString()
 						+ " "
@@ -100,7 +102,8 @@ public class AccountDataRepository implements AccountsRepository {
 				String amountAfterOperation = this.accounts.get(accountId).deposit(exchangedAmount);
 
 				this.dbAccounts.updateAccount(accountId, amountAfterOperation);
-				this.dbOperations.addOperation(accountId, accountNo, "deposit", amount, currency, currentUser);
+				DatabaseOperation operationData = new DatabaseOperation(accountNo, accountId, "deposit", amount, currency, currentUser);
+				this.dbOperations.addOperation(operationData);
 				output = OutputMessages.SUCCESSFUL_DEPOSIT
 						+ exchangedAmount.setScale(2, BigDecimal.ROUND_DOWN).toString()
 						+ " "
@@ -131,7 +134,8 @@ public class AccountDataRepository implements AccountsRepository {
 			
 			this.dbAccounts.updateAccount(accountId, amountAfterOperation);
 			long accountNo = Long.parseLong(accountId.split("-")[1]);
-			this.dbOperations.addOperation(accountId, accountNo, "withdrawal", amount, currency, currentUser);
+			DatabaseOperation operationData = new DatabaseOperation(accountNo, accountId, "withdrawal", amount, currency, currentUser);
+			this.dbOperations.addOperation(operationData);
 			output = OutputMessages.SUCCESSFUL_WITHDRAW
 					+ exchangedAmmount.setScale(2, BigDecimal.ROUND_DOWN).toString() 
 					+ " "

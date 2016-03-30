@@ -6,33 +6,25 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import bg.softuni.lebank.entities.Operation;
-import bg.softuni.lebank.interfaces.OperationsStorage;
+import bg.softuni.lebank.entities.DatabaseOperation;
+import bg.softuni.lebank.interfaces.OperationStorage;
 
 @Repository
-public class OperationsDao implements OperationsStorage {
+public class OperationsDao implements OperationStorage {
 
 	@Autowired
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public Boolean addOperation(
-			String id,
-			long accountNo,
-			String operation,
-			String amount,
-			String currency,
-			String performedBy) {
-
-		Operation operationData = new Operation(
-				accountNo, id, operation, amount, currency, performedBy);
+	public Boolean addOperation(DatabaseOperation operationData) {
 		
 		Transaction transaction = null;
 		try (Session session = this.sessionFactory.openSession();) {			
 			transaction = session.beginTransaction();
+			
 			session.save(operationData);
+			
 			transaction.commit();
 			
 		} catch (HibernateException e) {
@@ -40,6 +32,7 @@ public class OperationsDao implements OperationsStorage {
 				transaction.rollback();
 			}
 			e.printStackTrace();
+			
 			return false;
 		}
 		

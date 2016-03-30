@@ -4,7 +4,7 @@ import java.util.Map;
 
 import bg.softuni.lebank.security.SecurityUser;
 
-public interface UsersStorage {
+public interface UserStorage {
 
 	Map<String, SecurityUser> getUsers();
 

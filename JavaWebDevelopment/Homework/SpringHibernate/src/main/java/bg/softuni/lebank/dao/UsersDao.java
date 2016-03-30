@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import bg.softuni.lebank.entities.DatabaseUser;
-import bg.softuni.lebank.interfaces.UsersStorage;
+import bg.softuni.lebank.interfaces.UserStorage;
 import bg.softuni.lebank.security.SecurityUser;
 
 @Repository
-public class UsersDao implements UsersStorage {
+public class UsersDao implements UserStorage {
 
 	@Autowired
 	SessionFactory sessionFactory;
@@ -52,7 +52,8 @@ public class UsersDao implements UsersStorage {
 		
 		// This separation for the user classes is pretty bad,
 		// and it will most likely cause trouble in the long run, 
-		// however there is no long run for this homework. :)
+		// however there is no long run for this homework and
+		// I've hopefully learned the lesson. :)
 		for (Object user : criteria.list()) {
 			DatabaseUser dbUser = (DatabaseUser)user;
 			

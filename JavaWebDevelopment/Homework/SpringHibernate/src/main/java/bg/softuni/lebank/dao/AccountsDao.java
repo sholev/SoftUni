@@ -1,51 +1,50 @@
 package bg.softuni.lebank.dao;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.Property;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import bg.softuni.lebank.dto.DisplayData;
+import bg.softuni.lebank.entities.DatabaseAccount;
 import bg.softuni.lebank.entities.ClientAccount;
+import bg.softuni.lebank.entities.DisplayData;
 import bg.softuni.lebank.interfaces.AccountData;
-import bg.softuni.lebank.interfaces.AccountsStorage;
+import bg.softuni.lebank.interfaces.AccountStorage;
 
 @Repository
-public class AccountsDao implements AccountsStorage {
+public class AccountsDao implements AccountStorage {
+
+	@Autowired
+	private SessionFactory sessionFactory;
 	
 	@Override
-	public Boolean addAccount(
-			String id,
-			long accoungNo,
-			String username,
-			String amount,
-			String currency,
-			String createdBy) {
+	public Boolean addAccount(DatabaseAccount accountData) {
 		
-		String sql = "INSERT INTO accounts (id, account_no, username, amount, currency, created_by) VALUES (?,?,?,?,?,?)";		
-		try (
-				Connection connection = DbConnection.getConnection();
-				PreparedStatement statement = connection.prepareCall(sql);) {
-			statement.setString(1, id);
-			statement.setLong(2, accoungNo);
-			statement.setString(3, username);
-			statement.setString(4, amount);
-			statement.setString(5, currency);
-			statement.setString(6, createdBy);
+		
+		Transaction transaction = null;
+		try (Session session = this.sessionFactory.openSession();) {			
+			transaction = session.beginTransaction();
 			
-			statement.executeQuery();
+			session.save(accountData);
 			
-		} catch (SQLException e) {
+			transaction.commit();
+			
+		} catch (HibernateException e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
 			e.printStackTrace();
+			
 			return false;
 		}
 		
@@ -55,87 +54,69 @@ public class AccountsDao implements AccountsStorage {
 	@Override
 	public Boolean updateAccount(String accountId, String amount) {
 		
-		String sql = "UPDATE accounts SET amount = ? WHERE id = ?";		
-		try (
-				Connection connection = DbConnection.getConnection();
-				PreparedStatement statement = connection.prepareCall(sql);) {
+		Transaction transaction = null;
+		try (Session session = this.sessionFactory.openSession();) {			
+			transaction = session.beginTransaction();
 			
-				statement.setString(1, amount);
-				statement.setString(2, accountId);
-				
-				statement.executeQuery();
-				
-		} catch (SQLException e) {
+			DatabaseAccount accountData = session.load(DatabaseAccount.class, accountId);
+			accountData.setAmount(amount);
+			session.update(accountData);
+			
+			transaction.commit();	
+			
+		} catch (HibernateException e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
 			e.printStackTrace();
+			
 			return false;
 		}
+		
 		return true;
 	}
 	
 	@Override
-	public DisplayData[] getAccountDisplayData(String[] accountIds) {
-		List<String> ids = Arrays.asList(accountIds);
+	public List<DisplayData> getAccountDisplayData(List<String> accountIds) {
+		if (accountIds.size() == 0) {
+			return null;
+		}
+		
 		List<DisplayData> displayData = new ArrayList<>();
 		
-		try (
-				Connection connection = DbConnection.getConnection();
-				Statement statement = connection.createStatement();) {
-			
-			String sql = "SELECT * FROM accounts";
-			
-			ResultSet result = statement.executeQuery(sql);
-			
-			while(result.next()) {				
-				String id = result.getString("id");
-				if (ids.contains(id)) {
-
-					// TODO: Add the additional information in DisplayData
-					
-					//Long accountNo = result.getLong("accountNo");				
-					//String username = result.getString("username");
-					String amount = result.getString("amount");
-					String currency = result.getString("currency");
-					//String createdBy = result.getString("createdBy");
-
-					displayData.add(new DisplayData(id, amount, currency));
-				}
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
+		Criteria criteria = this.sessionFactory
+				.openSession()
+				.createCriteria(DatabaseAccount.class);	
+		
+		criteria.add(Property.forName("id").in(accountIds));
+		
+		for (Object obj : criteria.list()) {
+			DatabaseAccount acc = (DatabaseAccount)obj;		
+			displayData.add(
+					new DisplayData(acc.getId(), acc.getAmount(), acc.getCurrency()));
+		}
+		
+		if (displayData.size() == 0) {
 			return null;
 		}
 		
-		if (ids.size() == 0 || displayData.size() == 0) {
-			return null;
-		}
-		
-		return displayData.toArray(new DisplayData[0]);
+		return displayData;
 	}
 
 	@Override
 	public Map<String, AccountData> getAccounts() {
 		Map<String, AccountData> accounts = new HashMap<>();
 		
-		try (
-				Connection connection = DbConnection.getConnection();
-				Statement statement = connection.createStatement();) {
+		Criteria criteria = this.sessionFactory
+				.openSession()
+				.createCriteria(DatabaseAccount.class);	
+		
+		for (Object obj : criteria.list()) {
+			DatabaseAccount acc = (DatabaseAccount)obj;
 			
-			String sql = "SELECT * FROM accounts";
-			
-			ResultSet result = statement.executeQuery(sql);
-			
-			while(result.next()) {
-				String id = result.getString("id");
-				String amount = result.getString("amount");
-				String currency = result.getString("currency");
-
-				accounts.put(id, new ClientAccount(new BigDecimal(amount), currency));
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			accounts.put(
+					acc.getId(),
+					new ClientAccount(new BigDecimal(acc.getAmount()), acc.getCurrency()));
 		}
 		
 		if (accounts.isEmpty()) {
@@ -145,63 +126,38 @@ public class AccountsDao implements AccountsStorage {
 		return accounts;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public String[] getUserIds(String clientUsername) {
+	public List<String> getUserIds(String clientUsername) {
 		List<String> ids = new ArrayList<>();
 		
-		String sql = "SELECT id FROM accounts WHERE username = ?";		
-		try (
-				Connection connection = DbConnection.getConnection();
-				PreparedStatement statement = connection.prepareCall(sql);) {
-			
-			statement.setString(1, clientUsername);
-			
-			ResultSet result = statement.executeQuery();
-			
-			while(result.next()) {	
-				String id = result.getString("id");				
-				ids.add(id);
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
+		this.sessionFactory.openSession()
+			.createCriteria(DatabaseAccount.class)
+			.add(Property.forName("username").in(clientUsername))
+			.list()
+			.forEach(acc -> ids.add(((DatabaseAccount) acc).getId()));
 		
 		if (ids.size() == 0) {
 			return null;
 		}
 		
-		return ids.toArray(new String[0]);
+		return ids;
 	}
 
+	
+	@SuppressWarnings("unchecked")
 	@Override
-	public String[] getAllIds() {
-		List<String> ids = new ArrayList<>();		
-		try (
-				Connection connection = DbConnection.getConnection();
-				Statement statement = connection.createStatement();) {
-			
-			String sql = "SELECT id FROM accounts";
-			
-			ResultSet result = statement.executeQuery(sql);
-			
-			while(result.next()) {				
-				String id = result.getString("id");
-
-				ids.add(id);
-
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		}
+	public List<String> getAllIds() {
+		List<String> ids = new ArrayList<>();	
+		
+		this.sessionFactory.openSession()
+			.createCriteria(DatabaseAccount.class)
+			.list().forEach(acc -> ids.add(((DatabaseAccount)acc).getId()));
 		
 		if (ids.size() == 0) {
 			return null;
 		}
 		
-		return ids.toArray(new String[0]);
+		return ids;
 	}
 }

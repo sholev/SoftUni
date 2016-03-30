@@ -52,13 +52,13 @@
 	</beans:bean>
 	
 	<!-- JPA entity manager factory -->
-	<beans:bean id="entityManagerFactory"
-		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<beans:property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" />
-		<beans:property name="dataSource" ref="dataSource" />
-		<beans:property name="jpaVendorAdapter" ref="jpaVendorAdapter" />
-		<beans:property name="jpaDialect" ref="jpaDialect" />			
-	</beans:bean>
+<!-- 	<beans:bean id="entityManagerFactory" -->
+<!-- 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"> -->
+<!-- 		<beans:property name="persistenceXmlLocation" value="classpath:META-INF/persistence.xml" /> -->
+<!-- 		<beans:property name="dataSource" ref="dataSource" /> -->
+<!-- 		<beans:property name="jpaVendorAdapter" ref="jpaVendorAdapter" /> -->
+<!-- 		<beans:property name="jpaDialect" ref="jpaDialect" />			 -->
+<!-- 	</beans:bean> -->
 	
 	<!-- Hibernate session factory -->
 	<beans:bean id="sessionFactory"	class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
