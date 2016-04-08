@@ -1,4 +1,4 @@
-package bg.softuni.library.dao.user;
+package bg.softuni.library.dao.book;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -20,12 +20,12 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import bg.softuni.library.dto.user.UserSearch;
-import bg.softuni.library.entities.user.User;
-import bg.softuni.library.interfaces.UsersStorage;
+import bg.softuni.library.dto.book.BookSearch;
+import bg.softuni.library.entities.book.Book;
+import bg.softuni.library.interfaces.BooksStorage;
 
 @Repository
-public class UsersDao implements UsersStorage {
+public class BooksDao implements BooksStorage {
 
 	@Autowired
 	SessionFactory sessionFactory;
@@ -34,48 +34,25 @@ public class UsersDao implements UsersStorage {
 	private EntityManager entityManager;
 	
 	@Override
-	public Set<User> getUsers() {
-		Set<User> users = new TreeSet<>();
+	public Set<Book> getBooks() {
+		Set<Book> books = new TreeSet<>();
 		
 		Criteria criteria = sessionFactory
 				.openSession()
-				.createCriteria(User.class);
+				.createCriteria(Book.class);
 		
 		for (Object user : criteria.list()) {				
-			users.add((User)user);
+			books.add((Book)user);
 		}
 	
-		return users;
+		return books;
 	}
 
-//	@Override
-//	public Set<User> getUsers(UserSearch search) {
-//		Set<User>users = new TreeSet<>();
-//		Map<String, String> restrictions = new HashMap<>();
-//		
-//		
-//		Criteria criteria = sessionFactory
-//				.openSession()
-//				.createCriteria(User.class)
-//				.add(Restrictions.and(
-//						Restrictions.in("name", search.getName()),
-//						Restrictions.in("username", search.getUsername()))
-//						);
-//				//.add(Restrictions.in("enabled", search.isEnabled()))
-//				
-//		
-//		for (Object user : criteria.list()) {				
-//			users.add((User)user);
-//		}
-//	
-//		return users;
-//	}
-	
 	@Override
-	public Set<User> getUsers(UserSearch search) {
+	public Set<Book> getBooks(BookSearch search) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
-		Root<User> from = criteriaQuery.from(User.class);
+		CriteriaQuery<Book> criteriaQuery = criteriaBuilder.createQuery(Book.class);
+		Root<Book> from = criteriaQuery.from(Book.class);
 
 		Predicate predicate1 = criteriaBuilder.and();
 		Predicate predicate2 = criteriaBuilder.and();
@@ -83,28 +60,28 @@ public class UsersDao implements UsersStorage {
 		if (search.getName() != null && !search.getName().isEmpty()) {
 			predicate1 = from.get("name").in(search.getName());
 		}
-		if (search.getUsername() != null && !search.getUsername().isEmpty()) {
-			predicate2 = from.get("username").in(search.getUsername());
+		if (search.getAuthor() != null && !search.getAuthor().isEmpty()) {
+			predicate2 = from.get("author").in(search.getAuthor() );
 		}
-		if (search.getStatus() != null && !search.getStatus().isEmpty()) {
-			predicate3 = from.get("status").in(search.getStatus());
+		if (search.getPublishDate() != null) {
+			predicate3 = from.get("publishDate").in(search.getPublishDate());
 		}
 		criteriaQuery.where(predicate1, predicate2, predicate3);
 
 		criteriaQuery.select(from);
-		TypedQuery<User> query = entityManager.createQuery(criteriaQuery);
+		TypedQuery<Book> query = entityManager.createQuery(criteriaQuery);
 		
 		return query.getResultList().stream()
-				.collect(Collectors.toCollection(() -> new TreeSet<User>()));
+				.collect(Collectors.toCollection(() -> new TreeSet<Book>()));
 	}
 
 	@Override
-	public boolean addUser(User user) {		
+	public boolean addBook(Book book) {
 		Transaction transaction = null;
 		try (Session session = this.sessionFactory.openSession();) {			
 			transaction = session.beginTransaction();
 			
-			session.save(user);
+			session.save(book);
 			
 			transaction.commit();
 			
@@ -121,14 +98,36 @@ public class UsersDao implements UsersStorage {
 	}
 
 	@Override
-	public boolean deactivateUser(Long userId) {		
+	public boolean deleteBook(Book book) {
 		Transaction transaction = null;
 		try (Session session = this.sessionFactory.openSession();) {			
 			transaction = session.beginTransaction();
 			
-			User user = session.load(User.class, userId);
-			user.setStatus("disabled");
-			session.update(user);
+			session.delete(book);
+			
+			transaction.commit();
+			
+		} catch (HibernateException e) {
+			if (transaction != null) {
+				transaction.rollback();
+			}
+			e.printStackTrace();
+			
+			return false;
+		}
+		
+		return true;
+	}
+
+	@Override
+	public boolean editBook(Long bookId, Book updatedBook) {
+		Transaction transaction = null;
+		try (Session session = this.sessionFactory.openSession();) {			
+			transaction = session.beginTransaction();
+			
+			Book book = session.load(Book.class, bookId);
+			book = updatedBook;
+			session.update(book);
 			
 			transaction.commit();	
 			

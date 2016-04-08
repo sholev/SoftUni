@@ -1,10 +1,9 @@
-package bg.softuni.library.services;
+package bg.softuni.library.services.user;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import bg.softuni.library.dto.user.UserSearch;
@@ -12,6 +11,7 @@ import bg.softuni.library.entities.user.User;
 import bg.softuni.library.interfaces.RolesService;
 import bg.softuni.library.interfaces.UsersService;
 import bg.softuni.library.interfaces.UsersStorage;
+import bg.softuni.library.utils.user.UserUtils;
 
 @Service
 public class UsersRepositoryService implements UsersService {
@@ -60,7 +60,7 @@ public class UsersRepositoryService implements UsersService {
 	@Override
 	public boolean addUser(User user) {
 		user.setStatus("enabled");
-		user.setPassword(getMd5FromString(user.getPassword()));
+		user.setPassword(UserUtils.getMd5FromString(user.getPassword()));
 		
 		boolean addUserSuccessful = usersDao.addUser(user);
 		boolean addRolesSuccessful = false;
@@ -74,10 +74,5 @@ public class UsersRepositoryService implements UsersService {
 	@Override
 	public boolean deactivateUser(User user) {		
 		return usersDao.deactivateUser(user.getId());
-	}
-	
-	private String getMd5FromString(String input) {
-		Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-		return encoder.encodePassword(input, null);
 	}
 }

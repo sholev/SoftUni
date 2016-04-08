@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import bg.softuni.library.constants.UrlConstants;
 import bg.softuni.library.dto.user.UserSearch;
 import bg.softuni.library.entities.user.User;
-import bg.softuni.library.services.UsersRepositoryService;
+import bg.softuni.library.services.user.UsersRepositoryService;
 import bg.softuni.library.utils.user.UserUtils;
 
 @Controller
@@ -25,6 +25,7 @@ public class UsersController {
 		model.addAttribute("userRegistryUrl", UrlConstants.USER_REGISTRY_URL);
 		model.addAttribute("addUserUrl", UrlConstants.ADD_USER_URL);
 		model.addAttribute("deactivateUserUrl", UrlConstants.DEACTIVATE_USER_URL);
+		model.addAttribute("bookRegistryUrl", UrlConstants.BOOK_REGISTRY_URL);
 		model.addAttribute("user", UserUtils.getUser());
 
 		return "userRegistry";

@@ -24,10 +24,6 @@
 			<input type="submit" value="Deactivate">
 		</form:form>
 		
-		<form action="${contextPath}/logout" method="POST">
-			<input type="submit" value="Log out" />
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		</form>
 		<script>
 			function goBack() {
 			    window.history.back();

@@ -12,7 +12,15 @@
 			Users:
 		</h1>		
 
-		<div>Logged in as: <sec:authentication property="principal.username" /></div>
+		<div>
+			<form action="${contextPath}/logout" method="POST">
+				Logged in as <b><sec:authentication property="principal.username" /></b>
+				<input type="submit" value="Log out" />
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+			</form>
+			
+			<button type="button" onclick="location = '${contextPath}${bookRegistryUrl}'">Book Registry</button>
+		</div>
 		
 		<table>
 			<thead>
@@ -52,9 +60,5 @@
 			<button type="button" onclick="location = '${contextPath}${addUserUrl}'">Add</button>
 			<button type="button" onclick="location = '${contextPath}${deactivateUserUrl}'">Deactivate</button>
 		</sec:authorize>
-		<form action="${contextPath}/logout" method="POST">
-			<input type="submit" value="Log out" />
-			<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-		</form>
 	</body>
 </html>

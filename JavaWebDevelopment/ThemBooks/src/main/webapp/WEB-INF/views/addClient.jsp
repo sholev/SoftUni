@@ -6,33 +6,29 @@
 
 <html>
 	<head>
-		<title>Add user:</title>
+		<title>Add client:</title>
 	</head>	
 	<body>
 		<h1>
-			Add user:
+			Add client:
 		</h1>
-		<form:form method="POST" action="${contextPath}${addUserUrl}" modelAttribute="User">
+		<form:form method="POST" action="${contextPath}${addClientUrl}" modelAttribute="Client">
 			<table>					
 				<tr>
 					<td>Id</td>
 					<td><input type="number" name="id"></td>
 				</tr>
 				<tr>
-					<td>Username</td>
-					<td><input type="text" name="username"></td>
-				</tr>
-				<tr>
-					<td>Password</td>
-					<td><input type="password" name="password"></td>
-				</tr>
-				<tr>
 					<td>Name</td>
 					<td><input type="text" name="name"></td>
 				</tr>
 				<tr>
-					<td>Roles</td>
-					<td><input type="text" name="roles"></td>
+					<td>PID</td>
+					<td><input type="text" name="pid"></td>
+				</tr>
+				<tr>
+					<td>Birth Date</td>
+					<td><input type="date" name="birthDate"></td>
 				</tr>
 			</table>
 		

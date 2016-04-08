@@ -5,11 +5,11 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <html>
 	<head>
-		<title>Books</title>
+		<title>Clients</title>
 	</head>
 	<body>
 		<h1>
-			Books:
+			Clients:
 		</h1>		
 	
 		<div>
@@ -21,47 +21,45 @@
 									
 			<sec:authorize access="hasRole('ROLE_ADMIN')">
 				<button type="button" onclick="location = '${contextPath}${userRegistryUrl}'">User Registry</button>
-			</sec:authorize>			
-			<button type="button" onclick="location = '${contextPath}${clientRegistryUrl}'">Client Registry</button>
+			</sec:authorize>
+			<button type="button" onclick="location = '${contextPath}${bookRegistryUrl}'">Book Registry</button>
 		</div>
 		
 		<table>
 			<thead>
 				<tr>
-					<form:form method="GET" action="${contextPath}${bookRegistryUrl}" modelAttribute="BookSearch">
+					<form:form method="GET" action="${contextPath}${clientkRegistryUrl}" modelAttribute="Client">
 						<td></td>
 						<td><input type="text" name="name"></td>
-						<td><input type="text" name="author"></td>
-						<td><input type="date" name="publishDate"></td>
+						<td><input type="text" name="PID"></td>
+						<td><input type="date" name="birthDate"></td>
 						<td><input type=submit value="Filter"/></td>
 					</form:form>
 				</tr>
 				<tr>
 					<td>Id</td>
 					<td>Name</td>
-					<td>Author</td>
-					<td>Publish Date</td>
-					<td>Pages</td>
+					<td>PID</td>
+					<td>Birth Date</td>
 				</tr>
 			</thead>
-			<c:if test="${not empty books}">
+			<c:if test="${not empty clients}">
 		    	<tbody>
-			        <c:forEach var="book" items="${books}">
+			        <c:forEach var="client" items="${clients}">
 			            <tr>
-			            	<td>${book.id}.</td>
-			                <td>${book.name}</td>
-			                <td>${book.author}</td>
-			                <td>${book.publishDate}</td>
-			                <td>${book.pages}</td>			                
-							<td><button type="button" onclick="location = '${contextPath}${editBookUrl}${book.toUrl()}'">Edit</button></td>
-							<td><button type="button" onclick="location = '${contextPath}${deleteBookUrl}${book.toUrl()}'">Delete</button></td>
+			            	<td>${client.id}.</td>
+			                <td>${client.name}</td>
+			                <td>${client.pid}</td>
+			                <td>${client.birthDate}</td>	                
+							<td><button type="button" onclick="location = '${contextPath}${editClientUrl}${client.toUrl()}'">Edit</button></td>
+							<td><button type="button" onclick="location = '${contextPath}${deleteClientUrl}${client.toUrl()}'">Delete</button></td>
 			            </tr>
 			        </c:forEach>
 		        </tbody>
 			</c:if>
 		</table>
 		
-		<button type="button" onclick="location = '${contextPath}${addBookUrl}'">Add New Book</button>
+		<button type="button" onclick="location = '${contextPath}${addClientUrl}'">Add New Client</button>
 	
 	</body>
 </html>
