@@ -16,7 +16,7 @@
 			<table>					
 				<tr>
 					<td>Id</td>
-					<td>${book.id}</td>
+					<td><input readonly type="number" name="id" value="${book.id}"></td>
 				</tr>
 				<tr>
 					<td>Name</td>

@@ -2,10 +2,12 @@ package bg.softuni.library.interfaces;
 
 import java.util.Set;
 
-import bg.softuni.library.entities.client.Client;
+import bg.softuni.library.entity.client.Client;
 
 public interface ClientsService {
 
+	Set<Client> getClients();
+	
 	Set<Client> getClients(Client client);
 
 	boolean addClient(Client client);
@@ -13,5 +15,4 @@ public interface ClientsService {
 	boolean deleteClient(Client client);
 
 	boolean editClient(Client client);
-
 }

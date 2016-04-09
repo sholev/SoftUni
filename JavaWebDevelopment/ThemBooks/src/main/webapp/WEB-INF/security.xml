@@ -13,6 +13,7 @@
 		<security:intercept-url pattern="/login" access="permitAll"/>		
 		<security:intercept-url pattern="/userRegistry" access="hasRole('ADMIN')"/>
 		<security:intercept-url pattern="/addUser" access="hasRole('ADMIN')"/>
+		<security:intercept-url pattern="/deactivateUser" access="hasRole('ADMIN')"/>
 		<security:intercept-url pattern="/**" access="hasAnyRole('USER', 'ADMIN')"/>
 		<security:logout logout-success-url="/logout"
 			invalidate-session="true"

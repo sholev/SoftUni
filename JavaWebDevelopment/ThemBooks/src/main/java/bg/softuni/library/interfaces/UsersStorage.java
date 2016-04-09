@@ -3,7 +3,7 @@ package bg.softuni.library.interfaces;
 import java.util.Set;
 
 import bg.softuni.library.dto.user.UserSearch;
-import bg.softuni.library.entities.user.User;
+import bg.softuni.library.entity.user.User;
 
 public interface UsersStorage {
 

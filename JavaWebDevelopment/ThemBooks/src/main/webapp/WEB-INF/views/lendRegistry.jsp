@@ -5,11 +5,11 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}" />
 <html>
 	<head>
-		<title>Clients</title>
+		<title>Lends</title>
 	</head>
 	<body>
 		<h1>
-			Clients:
+			Lends:
 		</h1>		
 	
 		<div>
@@ -30,38 +30,44 @@
 		<table>
 			<thead>
 				<tr>
-					<form:form method="GET" action="${contextPath}${clientkRegistryUrl}" modelAttribute="Client">
+					<form:form method="GET" action="${contextPath}${lendRegistryUrl}" modelAttribute="LendSearch">
 						<td></td>
-						<td><input type="text" name="name"></td>
-						<td><input type="text" name="PID"></td>
-						<td><input type="date" name="birthDate"></td>
+						<td><input type="text" name="bookName"></td>
+						<td><input type="text" name="clientName"></td>
+						<td><input type="date" name="lendDate"></td>
+						<td><input type="date" name="returnDate"></td>
 						<td><input type=submit value="Filter"/></td>
 					</form:form>
 				</tr>
 				<tr>
-					<td>Id</td>
-					<td>Name</td>
-					<td>PID</td>
-					<td>Birth Date</td>
+					<td>Id.</td>
+					<td>Book</td>
+					<td>Client</td>
+					<td>Lend Date</td>
+					<td>Return Date</td>
 				</tr>
 			</thead>
-			<c:if test="${not empty clients}">
+			<c:if test="${not empty lends}">
 		    	<tbody>
-			        <c:forEach var="client" items="${clients}">
+			        <c:forEach var="lend" items="${lends}">
 			            <tr>
-			            	<td>${client.id}.</td>
-			                <td>${client.name}</td>
-			                <td>${client.pid}</td>
-			                <td>${client.birthDate}</td>	                
-							<td><button type="button" onclick="location = '${contextPath}${editClientUrl}${client.toUrl()}'">Edit</button></td>
-							<td><button type="button" onclick="location = '${contextPath}${deleteClientUrl}${client.toUrl()}'">Delete</button></td>
+			            	<td>${lend.id}.</td>
+			            	<td>${lend.book.name}</td>
+			                <td>${lend.client.name}</td>
+			                <td>${lend.lendDate}</td>
+			                <td>${lend.returnDate}</td>	                
+							<td>
+								<sec:authorize access="hasRole('ROLE_ADMIN')">
+									<button type="button" onclick="location = '${contextPath}${editLendUrl}${lend.toUrl()}'">Edit</button>
+								</sec:authorize>							
+							</td>
 			            </tr>
 			        </c:forEach>
 		        </tbody>
 			</c:if>
 		</table>
 		
-		<button type="button" onclick="location = '${contextPath}${addClientUrl}'">Add New Client</button>
+		<button type="button" onclick="location = '${contextPath}${addLendUrl}'">Add New Lend</button>
 	
 	</body>
 </html>

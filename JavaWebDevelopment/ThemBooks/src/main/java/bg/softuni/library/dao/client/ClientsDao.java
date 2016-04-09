@@ -1,4 +1,4 @@
-package bg.softuni.library.dao.book;
+package bg.softuni.library.dao.client;
 
 import java.util.Set;
 import java.util.TreeSet;
@@ -20,12 +20,11 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import bg.softuni.library.dto.book.BookSearch;
-import bg.softuni.library.entity.book.Book;
-import bg.softuni.library.interfaces.BooksStorage;
+import bg.softuni.library.entity.client.Client;
+import bg.softuni.library.interfaces.ClientsStorage;
 
 @Repository
-public class BooksDao implements BooksStorage {
+public class ClientsDao implements ClientsStorage {
 
 	@Autowired
 	SessionFactory sessionFactory;
@@ -34,25 +33,25 @@ public class BooksDao implements BooksStorage {
 	private EntityManager entityManager;
 	
 	@Override
-	public Set<Book> getBooks() {
-		Set<Book> books = new TreeSet<>();
+	public Set<Client> getClients() {
+		Set<Client> clients = new TreeSet<>();
 		
 		Criteria criteria = sessionFactory
 				.openSession()
-				.createCriteria(Book.class);
+				.createCriteria(Client.class);
 		
 		for (Object user : criteria.list()) {				
-			books.add((Book)user);
+			clients.add((Client)user);
 		}
 	
-		return books;
+		return clients;
 	}
 
 	@Override
-	public Set<Book> getBooks(BookSearch search) {
+	public Set<Client> getClients(Client search) {
 		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Book> criteriaQuery = criteriaBuilder.createQuery(Book.class);
-		Root<Book> from = criteriaQuery.from(Book.class);
+		CriteriaQuery<Client> criteriaQuery = criteriaBuilder.createQuery(Client.class);
+		Root<Client> from = criteriaQuery.from(Client.class);
 
 		Predicate predicate1 = criteriaBuilder.and();
 		Predicate predicate2 = criteriaBuilder.and();
@@ -60,28 +59,28 @@ public class BooksDao implements BooksStorage {
 		if (search.getName() != null && !search.getName().isEmpty()) {
 			predicate1 = from.get("name").in(search.getName());
 		}
-		if (search.getAuthor() != null && !search.getAuthor().isEmpty()) {
-			predicate2 = from.get("author").in(search.getAuthor() );
+		if (search.getPid() != null && !search.getPid().isEmpty()) {
+			predicate2 = from.get("pid").in(search.getPid() );
 		}
-		if (search.getPublishDate() != null) {
-			predicate3 = from.get("publishDate").in(search.getPublishDate());
+		if (search.getBirthDate() != null) {
+			predicate3 = from.get("birthDate").in(search.getBirthDate());
 		}
 		criteriaQuery.where(predicate1, predicate2, predicate3);
 
 		criteriaQuery.select(from);
-		TypedQuery<Book> query = entityManager.createQuery(criteriaQuery);
+		TypedQuery<Client> query = entityManager.createQuery(criteriaQuery);
 		
 		return query.getResultList().stream()
-				.collect(Collectors.toCollection(() -> new TreeSet<Book>()));
+				.collect(Collectors.toCollection(() -> new TreeSet<Client>()));
 	}
 
 	@Override
-	public boolean addBook(Book book) {
+	public boolean addClient(Client client) {
 		Transaction transaction = null;
 		try (Session session = this.sessionFactory.openSession();) {			
 			transaction = session.beginTransaction();
 			
-			session.save(book);
+			session.save(client);
 			
 			transaction.commit();
 			
@@ -98,12 +97,12 @@ public class BooksDao implements BooksStorage {
 	}
 
 	@Override
-	public boolean deleteBook(Book book) {
+	public boolean deleteClient(Client client) {
 		Transaction transaction = null;
 		try (Session session = this.sessionFactory.openSession();) {			
 			transaction = session.beginTransaction();
 			
-			session.delete(book);
+			session.delete(client);
 			
 			transaction.commit();
 			
@@ -120,14 +119,14 @@ public class BooksDao implements BooksStorage {
 	}
 
 	@Override
-	public boolean editBook(Long bookId, Book updatedBook) {
+	public boolean editClient(Long clientId, Client updatedClient) {
 		Transaction transaction = null;
 		try (Session session = this.sessionFactory.openSession();) {			
 			transaction = session.beginTransaction();
 			
-			Book book = session.load(Book.class, bookId);
-			book = updatedBook;
-			session.update(book);
+			Client client = session.load(Client.class, clientId);
+			client = updatedClient;
+			session.update(client);
 			
 			transaction.commit();	
 			

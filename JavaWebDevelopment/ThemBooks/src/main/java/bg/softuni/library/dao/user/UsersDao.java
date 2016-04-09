@@ -21,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import bg.softuni.library.dto.user.UserSearch;
-import bg.softuni.library.entities.user.User;
+import bg.softuni.library.entity.user.User;
 import bg.softuni.library.interfaces.UsersStorage;
 
 @Repository

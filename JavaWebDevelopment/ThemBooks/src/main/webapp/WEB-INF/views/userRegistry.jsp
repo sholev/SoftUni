@@ -19,7 +19,12 @@
 				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 			</form>
 			
+			<sec:authorize access="hasRole('ROLE_ADMIN')">
+				<button type="button" onclick="location = '${contextPath}${userRegistryUrl}'">User Registry</button>
+			</sec:authorize>
 			<button type="button" onclick="location = '${contextPath}${bookRegistryUrl}'">Book Registry</button>
+			<button type="button" onclick="location = '${contextPath}${clientRegistryUrl}'">Client Registry</button>
+			<button type="button" onclick="location = '${contextPath}${lendRegistryUrl}'">Lend Registry</button>
 		</div>
 		
 		<table>

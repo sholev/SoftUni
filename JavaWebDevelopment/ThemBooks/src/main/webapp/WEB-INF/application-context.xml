@@ -72,7 +72,7 @@
 			</beans:props>
 		</beans:property>
 
-		<beans:property name="packagesToScan" value="bg.softuni.library.entities" />
+		<beans:property name="packagesToScan" value="bg.softuni.library.entity" />
 	</beans:bean>
 	
 	<beans:bean id="transactionManager"

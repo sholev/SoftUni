@@ -6,17 +6,17 @@
 
 <html>
 	<head>
-		<title>Edit book:</title>
+		<title>Edit client:</title>
 	</head>	
 	<body>
 		<h1>
-			Edit book:
+			Edit client:
 		</h1>
 		<form:form method="POST" action="${contextPath}${editClientUrl}" modelAttribute="Client">
 			<table>					
 				<tr>
 					<td>Id</td>
-					<td>${client.id}</td>
+					<td><input readonly type="number" name="id" value="${client.id}"></td>
 				</tr>
 				<tr>
 					<td>Name</td>

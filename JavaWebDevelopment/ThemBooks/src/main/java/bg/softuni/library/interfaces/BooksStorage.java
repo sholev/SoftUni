@@ -3,7 +3,7 @@ package bg.softuni.library.interfaces;
 import java.util.Set;
 
 import bg.softuni.library.dto.book.BookSearch;
-import bg.softuni.library.entities.book.Book;
+import bg.softuni.library.entity.book.Book;
 
 public interface BooksStorage {
 	

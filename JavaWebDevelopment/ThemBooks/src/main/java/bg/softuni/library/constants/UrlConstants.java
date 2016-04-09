@@ -18,4 +18,8 @@ public class UrlConstants {
 	public static final String EDIT_CLIENT_URL = "/editClient";
 	public static final String DELETE_CLIENT_URL = "/deleteClient";
 	public static final String ADD_CLIENT_URL = "/addClient";
+	
+	public static final String LEND_REGISTRY_URL = "/lendRegistry";
+	public static final String EDIT_LEND_URL = "/editLend";
+	public static final String ADD_LEND_URL = "/addLend";
 }
