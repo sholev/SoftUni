@@ -1,8 +1,9 @@
-﻿namespace ThereBeLab
+﻿namespace ThereBeLab.Data
 {
     using System;
     using System.Collections.Generic;
 
+    using ThereBeLab.IO;
     using ThereBeLab.Messages;
 
     public static class StudentsRepository
@@ -15,7 +16,7 @@
         {
             if (!IsDataInitialized)
             {
-                OutputWriter.WriteMessageOnNewLine("Reading data...");
+                OutputWriter.WriteMessageOnNewLine(InformationMessages.ReadingData);
                 studentsByCourse = new Dictionary<string, Dictionary<string, List<int>>>();
                 ReadData();
             }

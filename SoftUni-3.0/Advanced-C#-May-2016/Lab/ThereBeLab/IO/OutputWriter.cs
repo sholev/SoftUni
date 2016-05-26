@@ -1,4 +1,4 @@
-﻿namespace ThereBeLab
+﻿namespace ThereBeLab.IO
 {
     using System;
     using System.Collections.Generic;

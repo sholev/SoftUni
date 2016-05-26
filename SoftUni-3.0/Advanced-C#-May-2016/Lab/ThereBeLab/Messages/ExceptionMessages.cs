@@ -13,5 +13,8 @@
 
         public const string InexistingStudentInDatabase =
             "The user name for the student you are trying to get does not exist.";
+
+        public const string InvalidPath =
+            "The path you've entered does not exist.";
     }
 }
