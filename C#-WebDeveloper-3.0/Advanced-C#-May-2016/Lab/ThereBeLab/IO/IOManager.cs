@@ -55,23 +55,36 @@
         public static string CreateDirectoryInCurrentFolder(string name)
         {
             var path = Directory.GetCurrentDirectory() + @"\" + name;
-            Directory.CreateDirectory(path);
+            try
+            {
+                Directory.CreateDirectory(path);
+            }
+            catch (ArgumentException)
+            {
+                OutputWriter.DisplayException(ExceptionMessages.ForbiddenSymbolsContainedInName);
+            }
 
             return path;
         }
 
         public static void ChangeCurrentDirectoryRelative(string relativePath)
         {
+            var currentPath = SessionData.CurrentPath;
             if (relativePath == "..")
             {
-                var currentPath = SessionData.CurrentPath;
-                int lastSlashIndex = currentPath.LastIndexOf(@"\");
-                var newPath = currentPath.Substring(0, lastSlashIndex);
-                SessionData.CurrentPath = newPath;
+                try
+                {
+                    int lastSlashIndex = currentPath.LastIndexOf(@"\");
+                    var newPath = currentPath.Substring(0, lastSlashIndex);
+                    SessionData.CurrentPath = newPath;
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    OutputWriter.DisplayException(ExceptionMessages.UnableToGoHigherInPartitionHierarchy);
+                }
             }
             else
             {
-                var currentPath = SessionData.CurrentPath;
                 currentPath += @"\" + relativePath;
                 ChangeCurrentDirectoryAbsolute(currentPath);
             }

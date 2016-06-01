@@ -4,6 +4,7 @@
     using System.IO;
 
     using ThereBeLab.IO;
+    using ThereBeLab.Messages;
 
     class Tester
     {
@@ -11,16 +12,24 @@
         {
             OutputWriter.WriteMessageOnNewLine("Reading files...");
 
-            var mismatchPath = GetMismatchPath(expectedOutputPath);
+            try
+            {
+                var mismatchPath = GetMismatchPath(expectedOutputPath);
 
-            var actualOutputLines = File.ReadAllLines(userOutputPath);
-            var expectedOutputLines = File.ReadAllLines(expectedOutputPath);
+                var actualOutputLines = File.ReadAllLines(userOutputPath);
+                var expectedOutputLines = File.ReadAllLines(expectedOutputPath);
 
-            bool hasMismatch;
-            var mismatches = GetLinesWithPossibleMismatches(actualOutputLines, expectedOutputLines, out hasMismatch);
+                bool hasMismatch;
+                var mismatches = GetLinesWithPossibleMismatches(actualOutputLines, expectedOutputLines, out hasMismatch);
 
-            PrintOutput(mismatches, hasMismatch, mismatchPath);
-            OutputWriter.WriteMessageOnNewLine("Files read!");
+                PrintOutput(mismatches, hasMismatch, mismatchPath);
+                OutputWriter.WriteMessageOnNewLine("Files read!");
+            }
+            catch (FileNotFoundException)
+            {
+                OutputWriter.DisplayException(ExceptionMessages.InvalidPath);
+            }
+
         }
 
         private static string[] GetLinesWithPossibleMismatches(string[] actualOutputLines, string[] expectedOutputLines, out bool hasMismatch)
@@ -28,10 +37,16 @@
             hasMismatch = false;
             var output = String.Empty;
 
-            var mismatches = new string[actualOutputLines.Length];
-            OutputWriter.WriteMessageOnNewLine("Comparing files...");
+            if (actualOutputLines.Length != expectedOutputLines.Length)
+            {
+                hasMismatch = true;
+                OutputWriter.DisplayException(ExceptionMessages.ComparisonOfFilesWithDifferentSizes);
+            }
 
-            for (int i = 0; i < actualOutputLines.Length; i++)
+            int minOutputLines = Math.Min(actualOutputLines.Length, expectedOutputLines.Length);
+            var mismatches = new string[minOutputLines];
+            OutputWriter.WriteMessageOnNewLine("Comparing files...");
+            for (int i = 0; i < minOutputLines; i++)
             {
                 var actualLine = actualOutputLines[i];
                 var expectedLine = expectedOutputLines[i];
@@ -74,7 +89,14 @@
                     OutputWriter.WriteMessageOnNewLine(mismatch);
                 }
 
-                File.WriteAllLines(mismatchesPath, mismatches);
+                try
+                {
+                    File.WriteAllLines(mismatchesPath, mismatches);
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    OutputWriter.DisplayException(ExceptionMessages.InvalidPath);
+                }
             }
             else
             {
