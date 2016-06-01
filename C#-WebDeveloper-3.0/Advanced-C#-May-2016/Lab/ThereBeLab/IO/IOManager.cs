@@ -3,15 +3,19 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
 
     using ThereBeLab.Messages;
 
     public static class IOManager
     {
-        public static void TraverseDirectory(string path)
+        public static void TraverseDirectory(int depth)
         {
             OutputWriter.WriteEmptyLine();
+            var path = SessionData.CurrentPath;
             int initialIndentation = path.Split('\\').Length;
+            int initialDepth = path.Count(c => c.Equals('\\'));
+
             Queue<string> subFolders =  new Queue<string>();
             subFolders.Enqueue(path);
 
@@ -19,20 +23,32 @@
             {
                 var currentPath = subFolders.Dequeue();
                 var indentation = currentPath.Split('\\').Length - initialIndentation;
+                var currentDepth = currentPath.Count(c => c.Equals('\\'));
 
                 OutputWriter.WriteMessageOnNewLine($"{new string('-', indentation)}{currentPath}");
 
-                foreach (var file in Directory.GetFiles(currentPath))
+                try
                 {
-                    int lastSlashIndex = file.LastIndexOf(@"\", StringComparison.Ordinal);
-                    var fileName = file.Substring(lastSlashIndex);
-                    OutputWriter.WriteMessageOnNewLine(new string('-', lastSlashIndex) + fileName);
+                    foreach (var file in Directory.GetFiles(currentPath))
+                    {
+                        int lastSlashIndex = file.LastIndexOf("\\", StringComparison.Ordinal);
+                        var fileName = file.Substring(lastSlashIndex);
+                        OutputWriter.WriteMessageOnNewLine($"+{new string('-', currentDepth)}{fileName}");
+                    }
+
+                    if (currentDepth - initialDepth < depth)
+                    {
+                        foreach (string directoryPath in Directory.GetDirectories(currentPath))
+                        {
+                            subFolders.Enqueue(directoryPath);
+                        }
+                    }
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    OutputWriter.DisplayException(ExceptionMessages.UnauthorizedAccessExceptionMessage);
                 }
 
-                foreach (string directoryPath in Directory.GetDirectories(currentPath))
-                {
-                    subFolders.Enqueue(directoryPath);
-                }
             }
         }
 
@@ -61,7 +77,7 @@
             }
         }
 
-        private static void ChangeCurrentDirectoryAbsolute(string absolutePath)
+        public static void ChangeCurrentDirectoryAbsolute(string absolutePath)
         {
             if (!Directory.Exists(absolutePath))
             {

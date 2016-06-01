@@ -10,7 +10,8 @@
         {
             //StudentsRepository.InitializeData();
             //StudentsRepository.GetAllStudentsFromCourse("Unity");
-            IOManager.TraverseDirectory(SessionData.CurrentPath);
+            IOManager.ChangeCurrentDirectoryAbsolute(@"C:\Windows");
+            IOManager.TraverseDirectory(1);
             //Tester.CompareContent(@"Resources\test2.txt", @"Resources\test3.txt");
             //var path = IOManager.CreateDirectoryInCurrentFolder("pesho");
             //Process.Start(path);
