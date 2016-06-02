@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
 
     using ThereBeLab.IO;
     using ThereBeLab.Messages;
@@ -12,13 +13,13 @@
 
         private static Dictionary<string, Dictionary<string, List<int>>> studentsByCourse;
 
-        public static void InitializeData()
+        public static void InitializeData(string fileName)
         {
             if (!IsDataInitialized)
             {
                 OutputWriter.WriteMessageOnNewLine(InformationMessages.ReadingData);
                 studentsByCourse = new Dictionary<string, Dictionary<string, List<int>>>();
-                ReadData();
+                ReadData(fileName);
             }
             else
             {
@@ -47,30 +48,34 @@
             }
         }
 
-        private static void ReadData()
+        private static void ReadData(string fileName)
         {
-            string input = Console.ReadLine();
+            var path = $"{SessionData.CurrentPath}\\{fileName}";
+            var inputLines = File.ReadAllLines(path);
 
-            while (!string.IsNullOrEmpty(input))
+            foreach (string inputLine in inputLines)
             {
-                string[] tokens = input.Split(' ');
-                string course = tokens[0];
-                string student = tokens[1];
-                int mark = int.Parse(tokens[2]);
+                var input = inputLine;
 
-                if (!studentsByCourse.ContainsKey(course))
+                if (!string.IsNullOrEmpty(input))
                 {
-                    studentsByCourse[course] = new Dictionary<string, List<int>>();
+                    string[] tokens = input.Split(' ');
+                    string course = tokens[0];
+                    string student = tokens[1];
+                    int mark = int.Parse(tokens[2]);
+
+                    if (!studentsByCourse.ContainsKey(course))
+                    {
+                        studentsByCourse[course] = new Dictionary<string, List<int>>();
+                    }
+
+                    if (!studentsByCourse[course].ContainsKey(student))
+                    {
+                        studentsByCourse[course][student] = new List<int>();
+                    }
+
+                    studentsByCourse[course][student].Add(mark);
                 }
-
-                if (!studentsByCourse[course].ContainsKey(student))
-                {
-                    studentsByCourse[course][student] = new List<int>();
-                }
-
-                studentsByCourse[course][student].Add(mark);
-
-                input = Console.ReadLine();
             }
 
             IsDataInitialized = true;

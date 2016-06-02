@@ -2,6 +2,9 @@
 {
     public static class ExceptionMessages
     {
+        public const string InvalidDepthNumber = 
+            "Invalid depth parameter.";
+
         public const string DataAlreadyInitialized = 
             "Data is already initialized.";
 
@@ -28,5 +31,8 @@
         
         public const string UnableToGoHigherInPartitionHierarchy = 
             "I'm sorry Mario! The princess is in another castle.";
+
+        public const string InvalidParameters = 
+            "The number of parameters was invalid";
     }
 }
