@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Data\StudentsRepository.cs" />
+    <Compile Include="Utils\CommandInterpreter.cs" />
     <Compile Include="IO\InputReader.cs" />
     <Compile Include="IO\IOManager.cs" />
     <Compile Include="IO\SessionData.cs" />

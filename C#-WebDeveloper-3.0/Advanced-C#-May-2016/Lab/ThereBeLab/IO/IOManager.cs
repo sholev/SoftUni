@@ -33,7 +33,7 @@
                     {
                         int lastSlashIndex = file.LastIndexOf("\\", StringComparison.Ordinal);
                         var fileName = file.Substring(lastSlashIndex);
-                        OutputWriter.WriteMessageOnNewLine($"+{new string('-', currentDepth)}{fileName}");
+                        OutputWriter.WriteMessageOnNewLine($"+{new string('-', indentation)}{fileName}");
                     }
 
                     if (currentDepth - initialDepth < depth)
@@ -96,8 +96,10 @@
             {
                 OutputWriter.DisplayException(ExceptionMessages.InvalidPath);
             }
-
-            SessionData.CurrentPath = absolutePath;
+            else
+            {
+                SessionData.CurrentPath = absolutePath;
+            }
         }
     }
 }
