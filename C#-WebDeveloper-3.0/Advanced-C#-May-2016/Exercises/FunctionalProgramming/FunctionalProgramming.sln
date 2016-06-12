@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PartyReservationModule", "P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfernoIII", "InfernoIII\InfernoIII.csproj", "{F74C85E0-165E-4DEF-94E1-706BBC7CF5BF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriFunction", "TriFunction\TriFunction.csproj", "{8D52D979-0422-4D59-87BB-E673D1D63A46}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,6 +83,10 @@ Global
 		{F74C85E0-165E-4DEF-94E1-706BBC7CF5BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F74C85E0-165E-4DEF-94E1-706BBC7CF5BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F74C85E0-165E-4DEF-94E1-706BBC7CF5BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D52D979-0422-4D59-87BB-E673D1D63A46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D52D979-0422-4D59-87BB-E673D1D63A46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D52D979-0422-4D59-87BB-E673D1D63A46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D52D979-0422-4D59-87BB-E673D1D63A46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
