@@ -1,4 +1,4 @@
-﻿namespace ThereBeLab.IO
+﻿namespace ThereBeLab.IO.File
 {
     using System;
     using System.Collections.Generic;
@@ -7,7 +7,7 @@
 
     using ThereBeLab.Messages;
 
-    public static class IOManager
+    public class IOManager
     {
         public static void TraverseDirectory(int depth)
         {

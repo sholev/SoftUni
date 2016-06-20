@@ -1,4 +1,4 @@
-﻿namespace ThereBeLab
+﻿namespace ThereBeLab.IO.File
 {
     using System;
     using System.IO;
@@ -6,7 +6,7 @@
     using ThereBeLab.IO;
     using ThereBeLab.Messages;
 
-    class Tester
+    public class Tester
     {
         public static void CompareContent(string userOutputPath, string expectedOutputPath)
         {

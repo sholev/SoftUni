@@ -2,6 +2,7 @@
 {
     using System;
 
+    using ThereBeLab.IO.File;
     using ThereBeLab.Utils;
 
     public class InputReader

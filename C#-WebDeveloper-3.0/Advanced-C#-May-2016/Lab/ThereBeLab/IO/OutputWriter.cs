@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
 
-    public static class OutputWriter
+    public class OutputWriter
     {
         public static void WriteMessage(string message)
         {

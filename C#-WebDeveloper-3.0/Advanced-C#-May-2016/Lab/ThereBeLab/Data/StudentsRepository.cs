@@ -3,12 +3,17 @@
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Text.RegularExpressions;
 
     using ThereBeLab.IO;
+    using ThereBeLab.IO.File;
     using ThereBeLab.Messages;
 
-    public static class StudentsRepository
+    public class StudentsRepository
     {
+        private const string ValidationPattern =
+            @"(?<course>[A-Z][a-zA-Z#+]*_[A-Z][a-z]{2}_\d{4})\s+(?<student>[A-Z][a-z]{0,3}\d{2}_\d{2,4})\s+(?<mark>\d+)";
+
         public static bool IsDataInitialized = false;
 
         private static Dictionary<string, Dictionary<string, List<int>>> studentsByCourse;
@@ -48,38 +53,77 @@
             }
         }
 
-        private static void ReadData(string fileName)
+        public static void FilterAndTake(string courseName, string filter, int? count = null)
         {
-            var path = $"{SessionData.CurrentPath}\\{fileName}";
-            var inputLines = File.ReadAllLines(path);
-
-            foreach (string inputLine in inputLines)
+            if (count == null)
             {
-                var input = inputLine;
-
-                if (!string.IsNullOrEmpty(input))
-                {
-                    string[] tokens = input.Split(' ');
-                    string course = tokens[0];
-                    string student = tokens[1];
-                    int mark = int.Parse(tokens[2]);
-
-                    if (!studentsByCourse.ContainsKey(course))
-                    {
-                        studentsByCourse[course] = new Dictionary<string, List<int>>();
-                    }
-
-                    if (!studentsByCourse[course].ContainsKey(student))
-                    {
-                        studentsByCourse[course][student] = new List<int>();
-                    }
-
-                    studentsByCourse[course][student].Add(mark);
-                }
+                count = studentsByCourse[courseName].Count;
             }
 
+            RepositoryFilters.FilterAndTake(studentsByCourse[courseName], filter, count.Value);
+        }
+
+        public static void OrderAndTake(string courseName, string comparison, int? count = null)
+        {
+            if (IsQueryForCoursePossible(courseName))
+            {
+                if (count == null)
+                {
+                    count = studentsByCourse[courseName].Count;
+                }
+
+                RepositorySorters.OrderAndTake(studentsByCourse[courseName], comparison, count.Value);
+            }
+        }
+
+        private static void ReadData(string fileName)
+        {
+            Regex validationRegex = new Regex(ValidationPattern);
+
+            var path = $"{SessionData.CurrentPath}\\{fileName}";
+
+            if (!File.Exists(path))
+            {
+                OutputWriter.DisplayException(ExceptionMessages.InvalidFile);
+                return;
+            }
+
+            var inputLines = File.ReadAllLines(path);
+            foreach (string input in inputLines)
+            {
+                if (!string.IsNullOrEmpty(input) && validationRegex.IsMatch(input))
+                {
+                    Match currentMatch = validationRegex.Match(input);
+
+                    string course = currentMatch.Groups["course"].Value;
+                    string student = currentMatch.Groups["student"].Value;
+
+                    int mark;
+                    bool markParseSuccess = int.TryParse(currentMatch.Groups["mark"].Value, out mark);
+
+                    if (markParseSuccess && mark >= 0 && mark <= 100)
+                    {
+                        if (!studentsByCourse.ContainsKey(course))
+                        {
+                            studentsByCourse[course] = new Dictionary<string, List<int>>();
+                        }
+
+                        if (!studentsByCourse[course].ContainsKey(student))
+                        {
+                            studentsByCourse[course][student] = new List<int>();
+                        }
+
+                        studentsByCourse[course][student].Add(mark);
+                        OutputWriter.WriteMessageOnNewLine(InformationMessages.SuccessfullyReadEntry + input);
+                    }
+                }
+                else
+                {
+                    OutputWriter.DisplayException(ExceptionMessages.InvalidEntry + input);
+                }
+            }
             IsDataInitialized = true;
-            Console.WriteLine("Done reading data.");
+            Console.WriteLine(InformationMessages.DoneReading);
         }
 
         private static bool IsQueryForCoursePossible(string courseName)

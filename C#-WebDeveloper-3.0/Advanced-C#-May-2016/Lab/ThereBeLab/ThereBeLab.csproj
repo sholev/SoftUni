@@ -43,23 +43,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\RepositoryFilters.cs" />
+    <Compile Include="Data\RepositorySorters.cs" />
     <Compile Include="Data\StudentsRepository.cs" />
+    <Compile Include="Messages\Commands.cs" />
+    <Compile Include="Network\DownloadManager.cs" />
     <Compile Include="Utils\CommandInterpreter.cs" />
     <Compile Include="IO\InputReader.cs" />
-    <Compile Include="IO\IOManager.cs" />
-    <Compile Include="IO\SessionData.cs" />
+    <Compile Include="IO\File\IOManager.cs" />
+    <Compile Include="IO\File\SessionData.cs" />
     <Compile Include="Messages\ExceptionMessages.cs" />
     <Compile Include="IO\OutputWriter.cs" />
     <Compile Include="Messages\InformationMessages.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="IO\Tester.cs" />
+    <Compile Include="Judge\Tester.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\CoursesData.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\dataNew.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Test3.txt">
@@ -72,6 +79,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

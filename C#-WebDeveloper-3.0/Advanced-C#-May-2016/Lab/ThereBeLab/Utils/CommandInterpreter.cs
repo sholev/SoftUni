@@ -1,11 +1,16 @@
 namespace ThereBeLab.Utils
 {
+    using System;
     using System.Diagnostics;
+    using System.IO;
+    using System.Runtime.CompilerServices;
     using System.Text.RegularExpressions;
 
     using ThereBeLab.Data;
     using ThereBeLab.IO;
+    using ThereBeLab.IO.File;
     using ThereBeLab.Messages;
+    using ThereBeLab.Network;
 
     public class CommandInterpreter
     {
@@ -18,43 +23,183 @@ namespace ThereBeLab.Utils
             string command = parameters[0];
             switch (command)
             {
-                case "open":
+                case Commands.OpenFile:
                     TryOpenFile(parameters);
                     break;
-                case "mkdir":
+                case Commands.MakeDirectory:
                     TryCreateDirectory(parameters);
                     break;
-                case "ls":
+                case Commands.ListDirectory:
                     TryTraverseFolders(parameters);
                     break;
-                case "cmp":
+                case Commands.CompareFiles:
                     TryCompareFiles(parameters);
                     break;
-                case "cdRel":
+                case Commands.RelativePath:
                     TryChangePathRelarively(parameters);
                     break;
-                case "cdAbs":
+                case Commands.AbsolutePath:
                     TryChangePathAbsolute(parameters);
                     break;
-                case "readDb":
+                case Commands.ReadDatabase:
                     TryReadDatabaseFile(parameters);
                     break;
-                case "help":
+                case Commands.Help:
                     TryGetHelp();
                     break;
-                case "filter":
+                case Commands.ShowData:
+                    TryShowData(input, parameters);
                     break;
-                case "order":
+                case Commands.Filter:
+                    TryFilterAndTake(input, parameters);
                     break;
-                case "decOrder":
+                case Commands.Order:
+                    TryOrderAndTake(input, parameters);
                     break;
-                case "download":
+                case Commands.Download:
+                    TryDownloadFile(input, parameters);
                     break;
-                case "downloadAsync":
+                case Commands.DownloadAsync:
+                    TryDownloadFileAsync(input, parameters);
                     break;
                 default:
                     DisplayInvalidCommandMessage(input);
                     break;
+            }
+        }
+
+        private static void TryDownloadFile(string input, string[] parameters)
+        {
+            if (parameters.Length == 2)
+            {
+                var url = parameters[1];
+                DownloadManager.Download(url);
+            }
+            else
+            {
+                DisplayInvalidCommandMessage(input);
+            }
+        }
+
+        private static void TryDownloadFileAsync(string input, string[] parameters)
+        {
+            if (parameters.Length == 2)
+            {
+                var url = parameters[1];
+                DownloadManager.DownloadAsync(url);
+            }
+            else
+            {
+                DisplayInvalidCommandMessage(input);
+            }
+        }
+
+        private static void TryOrderAndTake(string input, string[] parameters)
+        {
+            if (parameters.Length == 5)
+            {
+                string course = parameters[1];
+                string orderType = parameters[2].ToLower();
+                string takeCommand = parameters[3].ToLower();
+                string takeCount = parameters[4].ToLower();
+
+                TryParseParametersForOrderANdTake(takeCommand, takeCount, course, orderType);
+            }
+        }
+
+        private static void TryParseParametersForOrderANdTake(
+            string takeCommand,
+            string takeCount,
+            string course,
+            string orderType)
+        {
+            if (takeCommand == "take")
+            {
+                if (takeCount == "all")
+                {
+                    StudentsRepository.OrderAndTake(course, orderType);
+                }
+                else
+                {
+                    int count;
+                    var parseSuccessful = int.TryParse(takeCount, out count);
+                    if (parseSuccessful)
+                    {
+                        StudentsRepository.OrderAndTake(course, orderType, count);
+                    }
+                    else
+                    {
+                        OutputWriter.DisplayException(ExceptionMessages.InvalidOrderQuantityParameter);
+                    }
+                }
+            }
+            else
+            {
+                OutputWriter.DisplayException(ExceptionMessages.InvalidOrderCommand);
+            }
+        }
+
+        private static void TryFilterAndTake(string input, string[] parameters)
+        {
+            if (parameters.Length == 5)
+            {
+                string course = parameters[1];
+                string filter = parameters[2].ToLower();
+                string takeCommand = parameters[3].ToLower();
+                string takeCount = parameters[4].ToLower();
+
+                TryParseParametersForFilterAndTake(takeCommand, takeCount, course, filter);
+            }
+        }
+
+        private static void TryParseParametersForFilterAndTake(
+            string takeCommand,
+            string takeCount,
+            string course,
+            string filter)
+        {
+            if (takeCommand == "take")
+            {
+                if (takeCount == "all")
+                {
+                    StudentsRepository.FilterAndTake(course, filter);
+                }
+                else
+                {
+                    int count;
+                    var parseSuccessful = int.TryParse(takeCount, out count);
+                    if (parseSuccessful)
+                    {
+                        StudentsRepository.FilterAndTake(course, filter, count);
+                    }
+                    else
+                    {
+                        OutputWriter.DisplayException(ExceptionMessages.InvalidTakeQuantityParameter);
+                    }
+                }
+            }
+            else
+            {
+                OutputWriter.DisplayException(ExceptionMessages.InvalidTakeCommand);
+            }
+        }
+
+        private static void TryShowData(string input, string[] parameters)
+        {
+            if (parameters.Length == 2)
+            {
+                string course = parameters[1];
+                StudentsRepository.GetAllStudentsFromCourse(course);
+            }
+            else if (parameters.Length == 3)
+            {
+                string course = parameters[1];
+                string user = parameters[2];
+                StudentsRepository.GetStudentScoresFromCourse(course, user);
+            }
+            else
+            {
+                DisplayInvalidCommandMessage(input);
             }
         }
 
@@ -67,10 +212,14 @@ namespace ThereBeLab.Utils
             OutputWriter.WriteMessageOnNewLine($"|{"change directory - changeDirREl:relative path",-98}|");
             OutputWriter.WriteMessageOnNewLine($"|{"change directory - changeDir:absolute path",-98}|");
             OutputWriter.WriteMessageOnNewLine($"|{"read students data base - readDb: path",-98}|");
-            OutputWriter.WriteMessageOnNewLine($"|{"filter {courseName} excelent/average/poor  take 2/5/all students - filterExcelent (the output is written on the console)",-98}|");
-            OutputWriter.WriteMessageOnNewLine($"|{"order increasing students - order {courseName} ascending/descending take 20/10/all (the output is written on the console)",-98}|");
-            OutputWriter.WriteMessageOnNewLine($"|{"download file - download: path of file (saved in current directory)",-98}|");
-            OutputWriter.WriteMessageOnNewLine($"|{"download file asinchronously - downloadAsynch: path of file (save in the current directory)",-98}|");
+            OutputWriter.WriteMessageOnNewLine(
+                $"|{"filter {courseName} excelent/average/poor  take 2/5/all students - filterExcelent (the output is written on the console)",-98}|");
+            OutputWriter.WriteMessageOnNewLine(
+                $"|{"order increasing students - order {courseName} ascending/descending take 20/10/all (the output is written on the console)",-98}|");
+            OutputWriter.WriteMessageOnNewLine(
+                $"|{"download file - download: path of file (saved in current directory)",-98}|");
+            OutputWriter.WriteMessageOnNewLine(
+                $"|{"download file asinchronously - downloadAsynch: path of file (save in the current directory)",-98}|");
             OutputWriter.WriteMessageOnNewLine($"|{"get help – help",-98}|");
             OutputWriter.WriteMessageOnNewLine($"{new string('_', 100)}");
             OutputWriter.WriteEmptyLine();
